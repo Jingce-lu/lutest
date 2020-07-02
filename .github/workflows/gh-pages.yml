@@ -17,7 +17,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: GitHub Checkout
+        uses: actions/checkout@v2
+
       - name: Build & Deploy to GitHub Pages
         uses: joshlarsen/jekyll4-deploy-gh-pages@master
         env:
