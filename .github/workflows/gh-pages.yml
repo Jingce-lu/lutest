@@ -19,6 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build & Deploy to GitHub Pages
-        with:
-          REMOTE_BRANCH: gh-pages
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # with:
+        #   REMOTE_BRANCH: gh-pages
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash deploy.sh
