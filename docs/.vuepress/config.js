@@ -51,7 +51,7 @@ module.exports = {
     },
   },
   // base: '/lu-frontwiki/',
-  base: "/prepare/",
+  base: "/lutest/",
   // configureWebpack: {
   //   resolve: {
   //     alias: {
