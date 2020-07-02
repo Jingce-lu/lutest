@@ -20,10 +20,13 @@ jobs:
       - name: GitHub Checkout
         uses: actions/checkout@v2
 
+      # - name: Build & Deploy to GitHub Pages
+      #   uses: joshlarsen/jekyll4-deploy-gh-pages@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
+      #     GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+      #     JEKYLL_DESTINATION: dist
+
       - name: Build & Deploy to GitHub Pages
-        uses: joshlarsen/jekyll4-deploy-gh-pages@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
-          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
-          JEKYLL_DESTINATION: dist
+        run: bash deploy.sh
