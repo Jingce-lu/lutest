@@ -28,5 +28,19 @@ jobs:
       #     GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
       #     JEKYLL_DESTINATION: dist
 
+      # install dependency packages
+      - name: install
+        run: npm install
+
+        # build
+      - name: build
+        run: npm run build
+
+      # deploy to gh-pages
       - name: Build & Deploy to GitHub Pages
-        run: bash deploy.sh
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+      # - name: Build & Deploy to GitHub Pages
+      #   run: bash deploy.sh
