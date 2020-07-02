@@ -1,5 +1,5 @@
 {
-  "name": "lu-frontwiki",
+  "name": "lutest",
   "version": "1.0.0",
   "description": "世路如今已惯,此心到处悠然",
   "main": "index.js",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Jingce-lu/lu-frontwiki.git"
+    "url": "git+https://github.com/Jingce-lu/lutest.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Jingce-lu/lu-frontwiki/issues"
+    "url": "https://github.com/Jingce-lu/lutest/issues"
   },
-  "homepage": "https://github.com/Jingce-lu/lu-frontwiki#readme",
+  "homepage": "https://github.com/Jingce-lu/lutest#readme",
   "dependencies": {
     "@vuepress/plugin-back-to-top": "^1.2.0",
     "gh-pages": "^2.1.1",

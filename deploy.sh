@@ -7,7 +7,7 @@ REPO="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
 BRANCH="gh-pages"
 
 # 生成静态文件
-npm run build
+npm install && npm run build
 
 # 进入生成的文件夹
 cd dist
