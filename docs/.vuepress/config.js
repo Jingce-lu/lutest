@@ -42,7 +42,6 @@ module.exports = {
   title: "Lu notes",
   description: " ",
   dest: "./dist",
-  // dest:'./prepare',
   head: [["link", { rel: " ", href: " " }]],
   markdown: {
     lineNumbers: true, // 代码块显示行号
@@ -70,12 +69,12 @@ module.exports = {
   themeConfig: {
     nav: [
       { text: "首页", link: "/" },
-      // { text: 'Js', link: '/js/' },
+      { text: "Prepare", link: "/prepare/" },
+      { text: "Js", link: "/js/" },
       // { text: 'React', link: '/react/' },
       // { text: 'Vue', link: '/vue/' },
       // { text: '框架通识', link: '/framework/' },
       // { text: '安全性能', link: '/safety/' },
-      // { text: 'Prepare', link: '/prepare/' },
       // { text: 'FullStack', link: '/fullstack/' },
       // { text: '手撸代码无敌', link: '/handrolledcode/' },
       // { text: '数据算法', link: '/dataalgorithm/' },
@@ -84,11 +83,11 @@ module.exports = {
     ],
     sidebar: {
       "/js/": getSidebar("js"),
+      "/prepare/": getSidebar("prepare"),
       // '/react/':getSidebar('react'),
       // '/vue/':getSidebar('vue'),
       // '/framework/':getSidebar('framework'),
       // '/safety/':getSidebar('safety'),
-      // '/prepare/': getSidebar('prepare'),
       // '/fullstack/': getSidebar('fullstack'),
       // '/handrolledcode/': getSidebar('handrolledcode'),
       // '/dataalgorithm/': getSidebar('dataalgorithm'),
