@@ -2,51 +2,75 @@
 
 [[toc]]
 
-## 1. 为什么要有 react hooks
+## 1. React 生命周期有哪些，16 版本生命周期发生了哪些变化？
 
-动机：
+### 15 生命周期
 
-1. 在组件之间重用有状态逻辑很困难，Hooks 允许您在不更改组件层次结构的情况下重用有状态逻辑
-2. 复杂的组件变得难以理解， Hooks 允许您根据相关内容（例如设置订阅或获取数据）将一个组件拆分为较小的函数，而不是基于生命周期方法强制拆分。您还可以选择使用 reducer 管理组件的本地 state(状态)，以使其更具可预测性。
-3. Hooks 允许您在没有类的情况下使用更多 React 的功能
+<img :src="$withBase('/images/prepare/require/1909151.jpg')" alt="images/prepare/require/1909151.jpg">
 
-## 2. hooks 优缺点
+- 初始化阶段
 
-**React Hooks 优点:**
+  - `constructor` 构造函数
+  - `getDefaultProps props`默认值
+  - `getInitialState state`默认值
 
-1. **简洁，避免地狱式嵌套**  
-    React Hooks 解决了 HOC 和 Render Props 的嵌套问题,更加简洁
-   大量使用 HOC 的情况下让我们的代码变得嵌套层级非常深，使用 HOC，我们可以实现扁平式的状态逻辑复用，而避免了大量的组件嵌套。
-2. **解耦**  
-   React Hooks 可以更方便地把 UI 和状态分离,做到更彻底的解耦
-3. **函数友好**  
-   React Hooks 为函数组件而生,从而解决了类组件的几大问题:
-   - this 指向容易错误
-   - 分割在不同声明周期中的逻辑使得代码难以理解和维护
-   - 代码复用成本高（高阶组件容易使代码量剧增）
-4. **让组件更容易理解**  
-   在使用 class 组件构建我们的程序时，他们各自拥有自己的状态，业务逻辑的复杂使这些组件变得越来越庞大，各个生命周期中会调用越来越多的逻辑，越来越难以维护。使用 Hook，可以让你更大限度的将公用逻辑抽离，将一个组件分割成更小的函数，而不是强制基于生命周期方法进行分割。
-5. **减少状态逻辑复用的风险**  
-   Hook 和 Mixin 在用法上有一定的相似之处，但是 Mixin 引入的逻辑和状态是可以相互覆盖的，而多个 Hook 之间互不影响，这让我们不需要在把一部分精力放在防止避免逻辑复用的冲突上。在不遵守约定的情况下使用 HOC 也有可能带来一定冲突，比如 props 覆盖等等，使用 Hook 则可以避免这些问题。
-6. **组合**  
-   Hooks 中可以引用另外的 Hooks 形成新的 Hooks,组合变化万千
-7. **使用函数代替 class**  
-   相比函数，编写一个 class 可能需要掌握更多的知识，需要注意的点也越多，比如 this 指向、绑定事件等等。另外，计算机理解一个 class 比理解一个函数更快。Hooks 让你可以在 classes 之外使用更多 React 的新特性。
+- 挂载阶段
 
-**React Hooks 缺陷:**
+  - `componentWillMount` 组件初始化渲染前调用
+  - `render` 组件渲染
+  - `componentDidMount`组件挂载到 `DOM`后调用
 
-- 额外的学习成本（Functional Component 与 Class Component 之间的困惑）
-- 写法上有限制（不能出现在条件、循环中），并且写法限制增加了重构成本
-- 破坏了 PureComponent、React.memo 浅比较的性能优化效果（为了取最新的 props 和 state，每次 render()都要重新创建事件处函数）
-- 在闭包场景可能会引用到旧的 state、props 值
-- 内部实现上不直观（依赖一份可变的全局状态，不再那么“纯”）
-- React.memo 并不能完全替代 shouldComponentUpdate（因为拿不到 state change，只针对 props change）
+- 更新阶段
 
-## 3. hooks 原理
+  - `componentWillReceiveProps` 组件将要接收新 props 前调用
+  - `shouldComponentUpdate` 组件是否需要更新
+  - `componentWillUpdate` 组件更新前调用
+  - `render` 组件渲染
+  - `componentDidUpdate` 组件更新后调用
 
-Hooks 是一种函数，该函数允许您从函数式组件 “勾住(hook into)” React 状态和生命周期功能。 Hooks 在类内部不起作用 - 它们允许你无需类就使用 React。
+- 卸载阶段
+  - `componentWillUnmount` 组件卸载前调用
 
-## 4. redux 与 flux 的区别
+### 16 生命周期
+
+<img :src="$withBase('/images/prepare/require/1909152.jpg')" alt="images/prepare/require/1909152.jpg">
+
+- 初始化阶段
+
+  - `constructor` 构造函数
+  - `getDefaultProps props`默认值
+  - `getInitialState state`默认值
+
+- 挂载阶段
+
+  - `static getDerivedStateFromProps(props,state)`
+  - `render`
+  - `componentDidMount`
+
+  > `getDerivedStateFromProps`：组件每次被 `rerender`的时候，包括在组件构建之后(虚拟 `dom`之后，实际 `dom`挂载之前)，每次获取新的 `props`或 `state`之后；每次接收新的`props`之后都会返回一个对象作为新的 `state`，返回 null 则说明不需要更新 `state`；配合 `componentDidUpdate`，可以覆盖 `componentWillReceiveProps`的所有用法
+
+- 更新阶段
+
+  - `static getDerivedStateFromProps(props,state)`
+  - `shouldComponentUpdate`
+  - `render`
+  - `getSnapshotBeforeUpdate(prevProps,prevState)`
+  - `componentDidUpdate`
+
+  > `getSnapshotBeforeUpdate`：触发时间: `update`发生的时候，在 `render`之后，在组件 `dom`渲染之前；返回一个值，作为 `componentDidUpdate`的第三个参数；配合 `componentDidUpdate`, 可以覆盖 `componentWillUpdate`的所有用法
+
+- 卸载阶段
+
+  - componentWillUnmount
+
+- 错误处理
+  - componentDidCatch
+
+**React16**新的生命周期弃用了 `componentWillMount`、`componentWillReceivePorps`，`componentWillUpdate`新增了 `getDerivedStateFromProps`、`getSnapshotBeforeUpdate`来代替弃用的三个钩子函数。
+
+> **React16**并没有删除这三个钩子函数，但是不能和新增的钩子函数混用， **React17**将会删除这三个钩子函数，新增了对错误的处理（ `componentDidCatch`）
+
+## 2. redux 与 flux 的区别
 
 - redux 与 flux 很像，主要区别在于 flux 有多个可以改变应用状态的 store，它通过事件来触发这些变化，组件可以订阅这些时间来和当前状态同步。
 - redux 中没有分发器 dispatcher，但在 flux 中 dispatcher 被用来传递数据到注册的回调事件，另一个不同的是 flux 中有很多扩展是可用的，这也带来了一些混乱与矛盾。
@@ -79,7 +103,7 @@ Flux 的最大特点，就是数据的"单向流动"。
 4. Store 更新后，发出一个"change"事件
 5. View 收到"change"事件后，更新页面
 
-## 5. Redux
+## 3. Redux
 
 ### redux 整个工作流程：
 
@@ -117,7 +141,7 @@ Flux 的最大特点，就是数据的"单向流动"。
 
 reducer 的职责不允许有副作用，副作用简单来说就是不确定性，如果 reducer 有副作用，那么返回的 state 就不确定，
 
-## 6. mobx 原理
+## 4. mobx 原理
 
 Mobx 最关键的函数在于 autoRun，举个例子，它可以达到这样的效果：
 
@@ -143,249 +167,17 @@ autoRun 的用途
 依赖收集  
 autoRun 的专业名词叫做依赖收集，也就是通过自然的使用，来收集依赖，当变量改变时，根据收集的依赖来判断是否需要更新。
 
-## 7. Taro 原理
+## 5. Taro 原理
 
 Taro 是一套遵循 React 语法规范的 多端开发 解决方案
 
-## 8. 请用 React 实现一个搜索框组件
-
-功能包括：
-
-- 输入文本字数限制
-- 可配置输入文本约束，比如仅限输入数字
-- 用户输入时可支持关键字搜索，并出现下拉框展示相关项
-
-<div align="center"><img :src="$withBase('/images/prepare/new/2020050902.webp')" alt="images/prepare/new/2020050902.webp"></div>
-
-粗略写
-
-<div align="center"><img :src="$withBase('/images/prepare/new/2020050903.png')" alt="images/prepare/new/2020050903.png"></div>
-
-```jsx
-import React, { Component } from "react";
-import "./input.css";
-
-function debounce(fn, delay = 500) {
-  let timeout = null;
-  return function(e, ...args) {
-    e.persist && e.persist();
-    timeout && clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      fn.call(this, e, ...args);
-    }, delay);
-  };
-}
-
-class Tips extends Component {
-  render() {
-    const { tipsList } = this.props;
-    return tipsList && tipsList.length !== 0 ? (
-      <div className="tips__container">
-        {tipsList.map((item, index) => {
-          return (
-            <a href="#" key={index} className="link">
-              {item}
-            </a>
-          );
-        })}
-      </div>
-    ) : (
-      <div />
-    );
-  }
-}
-
-export default class Input extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      keyWords: [
-        "前端工程师1",
-        "前端高级开发1",
-        "后端工程师1",
-        "测试开发1",
-        "项目主管1",
-        "dress",
-        "Recent",
-        "123456",
-        "awdad1"
-      ],
-      inputValue: "",
-      inputType: "text",
-      inputMaxLen: 20,
-      wordsList: []
-    };
-    this.handleInput = debounce(this.handleInput, 200);
-    this.handleMaxLenChange = debounce(this.handleMaxLenChange, 400);
-  }
-
-  handleInput = e => {
-    const {
-      target: { value }
-    } = e;
-    const { keyWords } = this.state;
-    const tipsList = !value
-      ? []
-      : keyWords.filter(item => {
-          const res = item.search(new RegExp(value, "i"));
-          return res !== -1;
-        });
-    this.setState({
-      inputValue: value,
-      tipsList
-    });
-  };
-
-  handleTypeClick = e => {
-    const {
-      target: { name }
-    } = e;
-    this.setState({ inputType: name });
-  };
-
-  handleMaxLenChange = e => {
-    const {
-      target: { value }
-    } = e;
-    const { inputValue } = this.state;
-    const newInputValue = inputValue.substr(0, +value);
-    // 如果设置最大长度小于现在关键词的长度，则截取一下
-    this.input.value = newInputValue;
-    this.setState({ inputMaxLen: value, inputValue: newInputValue });
-  };
-
-  render() {
-    const { tipsList, inputType, inputMaxLen } = this.state;
-    return (
-      <div className="container">
-        <div className="control__container" onClick={this.handleTypeClick}>
-          <button name="text">文本</button>
-          <button name="number">数字</button>
-          <span>最大长度: </span>
-          <input
-            type="number"
-            placeholder="默认: 20"
-            onInput={this.handleMaxLenChange}
-          />
-        </div>
-        <div className="input__container">
-          <div className="input__wrap">
-            <input
-              ref={input => (this.input = input)}
-              placeholder="请输入关键词"
-              type={inputType}
-              maxLength={inputMaxLen}
-              onInput={this.handleInput}
-            />
-            <button>搜索</button>
-          </div>
-          <Tips tipsList={tipsList} />
-        </div>
-      </div>
-    );
-  }
-}
-```
-
-```css
-.container {
-  width: 600px;
-  height: 400px;
-  margin: 0 auto;
-  padding: 30px;
-  background: #fff;
-}
-
-.input__container {
-  margin-top: 30px;
-}
-
-.input__wrap {
-  display: flex;
-  align-items: center;
-}
-
-.input__wrap input {
-  box-sizing: border-box;
-  width: 85%;
-  height: 50px;
-  padding: 0 10px;
-  border: #666 1px solid;
-  border-right: 0;
-  outline: none;
-}
-
-.input__wrap button {
-  cursor: pointer;
-  box-sizing: border-box;
-  width: 15%;
-  height: 50px;
-  color: #fff;
-  font-size: 20px;
-  border: none;
-  border: #666 1px solid;
-  outline: none;
-  background: #1890ff;
-}
-
-.control__container {
-  display: flex;
-  align-items: center;
-}
-
-.control__container button {
-  cursor: pointer;
-  width: 50px;
-  height: 30px;
-  margin-right: 10px;
-  color: #fff;
-  outline: none;
-  border: #333 1px solid;
-  border-radius: 8px;
-  background: #1890ff;
-}
-
-.control__container span {
-  margin-left: auto;
-  margin-right: 10px;
-  color: #666;
-  font-size: 14px;
-}
-
-.tips__container {
-  overflow-y: scroll;
-  max-height: 200px;
-  border: #333 1px solid;
-  border-top: 0;
-}
-
-.tips__container .link {
-  display: block;
-  height: 30px;
-  padding: 5px 10px;
-  color: #666;
-  line-height: 30px;
-  text-decoration: none;
-}
-
-.tips__container .link:hover {
-  color: #fff;
-  background: #666;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  display: none;
-}
-```
-
-## 9. react 项目中，constructor(){ this.target = this.func.bind(this); }, JSX 里 onChange={this.target}的写法，为什么要比非 bind 的 func = () => {}的写法效率高 请解释其中的原理
+## 6. react 项目中，constructor(){ this.target = this.func.bind(this); }, JSX 里 onChange={this.target}的写法，为什么要比非 bind 的 func = () => {}的写法效率高 请解释其中的原理
 
 bind 之后锁定了上下文，不用向上查找
 
 箭头函数每次 render 都是新的，this.target 一直都是同一个，箭头函数会造成不必要的 diff
 
-## 10. 组件更新触发顺序如何
+## 7. 组件更新触发顺序如何
 
 父子组件加载和更新顺序和 vue 差不多，都是父组件先进入子组件完成后才会挂载完成父组件
 
@@ -411,13 +203,13 @@ bind 之后锁定了上下文，不用向上查找
    - render()
    - componentUpdate()
 
-## 11. React 的合成事件机制
+## 8. React 的合成事件机制
 
 - react 事件机制分为两个部分：1、事件注册 2、事件分发
 - 事件注册部分，所有的事件都会注册到 document 上，拥有统一的回调函数 dispatchEvent 来执行事件分发
 - 事件分发部分，首先生成合成事件，注意同一种事件类型只能生成一个合成事件 Event，如 onclick 这个类型的事件，dom 上所有带有通过 jsx 绑定的 onClick 的回调函数都会按顺序（冒泡或者捕获）会放到 Event.\_dispatchListeners 这个数组里，后面依次执行它。
 
-## 12. React 的事件处理机制是什么？
+## 9. React 的事件处理机制是什么？
 
 从官方代码中我们可以看到 React 的事件处理系统流程，由 DOM 触发事件，ReactEvent Listener 监听到事件，转换为 ReactEvent 进行触发，而不同的事件又被 React 进行了封装，以不同的 Plugin 形式插入。
 
@@ -449,7 +241,7 @@ for (var i = 0; i < dispatchListeners.length; i++) {
 }
 ```
 
-## 13. react Fiber 架构分析
+## 10. react Fiber 架构分析
 
 `react-fiber`是为了增强动画、布局、移动端手势领域的适用性，最重要的特性是对页面渲染的优化: 允许将渲染方面的工作拆分为多段进行。
 
@@ -490,7 +282,52 @@ function fiber(剩余时间) {
 }
 ```
 
-## 14. 请用 React Hooks 模拟生命周期
+## 11. react hooks
+
+**动机**：
+
+1. 在组件之间重用有状态逻辑很困难，Hooks 允许您在不更改组件层次结构的情况下重用有状态逻辑
+2. 复杂的组件变得难以理解， Hooks 允许您根据相关内容（例如设置订阅或获取数据）将一个组件拆分为较小的函数，而不是基于生命周期方法强制拆分。您还可以选择使用 reducer 管理组件的本地 state(状态)，以使其更具可预测性。
+3. Hooks 允许您在没有类的情况下使用更多 React 的功能
+
+**hooks 原理**：
+
+Hooks 是一种函数，该函数允许您从函数式组件 “勾住(hook into)” React 状态和生命周期功能。 Hooks 在类内部不起作用 - 它们允许你无需类就使用 React。
+
+## 12. hooks 优缺点
+
+**React Hooks 优点:**
+
+1. **简洁，避免地狱式嵌套**  
+    React Hooks 解决了 HOC 和 Render Props 的嵌套问题,更加简洁
+   大量使用 HOC 的情况下让我们的代码变得嵌套层级非常深，使用 HOC，我们可以实现扁平式的状态逻辑复用，而避免了大量的组件嵌套。
+2. **解耦**  
+   React Hooks 可以更方便地把 UI 和状态分离,做到更彻底的解耦
+3. **函数友好**  
+   React Hooks 为函数组件而生,从而解决了类组件的几大问题:
+   - this 指向容易错误
+   - 分割在不同声明周期中的逻辑使得代码难以理解和维护
+   - 代码复用成本高（高阶组件容易使代码量剧增）
+4. **让组件更容易理解**  
+   在使用 class 组件构建我们的程序时，他们各自拥有自己的状态，业务逻辑的复杂使这些组件变得越来越庞大，各个生命周期中会调用越来越多的逻辑，越来越难以维护。使用 Hook，可以让你更大限度的将公用逻辑抽离，将一个组件分割成更小的函数，而不是强制基于生命周期方法进行分割。
+5. **减少状态逻辑复用的风险**  
+   Hook 和 Mixin 在用法上有一定的相似之处，但是 Mixin 引入的逻辑和状态是可以相互覆盖的，而多个 Hook 之间互不影响，这让我们不需要在把一部分精力放在防止避免逻辑复用的冲突上。在不遵守约定的情况下使用 HOC 也有可能带来一定冲突，比如 props 覆盖等等，使用 Hook 则可以避免这些问题。
+6. **组合**  
+   Hooks 中可以引用另外的 Hooks 形成新的 Hooks,组合变化万千
+7. **使用函数代替 class**  
+   相比函数，编写一个 class 可能需要掌握更多的知识，需要注意的点也越多，比如 this 指向、绑定事件等等。另外，计算机理解一个 class 比理解一个函数更快。Hooks 让你可以在 classes 之外使用更多 React 的新特性。
+
+**React Hooks 缺陷:**
+
+- 额外的学习成本（Functional Component 与 Class Component 之间的困惑）
+- 写法上有限制（不能出现在条件、循环中），并且写法限制增加了重构成本
+- 破坏了 PureComponent、React.memo 浅比较的性能优化效果（为了取最新的 props 和 state，每次 render()都要重新创建事件处函数）
+- 在闭包场景可能会引用到旧的 state、props 值
+- 内部实现上不直观（依赖一份可变的全局状态，不再那么“纯”）
+- React.memo 并不能完全替代 shouldComponentUpdate（因为拿不到 state change，只针对 props change）
+  x
+
+## 13. 请用 React Hooks 模拟生命周期
 
 ### componentDidMount
 
@@ -603,7 +440,7 @@ useEffect(() => {
 return isMount;
 ```
 
-## 15. Hooks api
+## 14. Hooks api
 
 ### useCallback 记忆函数
 
@@ -928,7 +765,7 @@ function App() {
 
 在上面的例子中，useLayoutEffect 会在 render，DOM 更新之后同步触发函数，会优于 useEffect 异步触发函数。
 
-## 16. useEffect 和 useLayoutEffect 有什么区别？
+## 15. useEffect 和 useLayoutEffect 有什么区别？
 
 **简单来说就是调用时机不同，`useLayoutEffect`和原来`componentDidMount` & `componentDidUpdate`一致，在 react 完成 DOM 更新后马上同步调用的代码，会阻塞页面渲染。而 useEffect 是会在整个页面渲染完才会调用的代码。**
 
@@ -938,7 +775,7 @@ function App() {
 
 不过`useLayoutEffect`在服务端渲染时会出现一个 warning，要消除的话得用 useEffect 代替或者推迟渲染时机。
 
-## 17. 自定义 Hook
+## 16. 自定义 Hook
 
 自定义`hooks`可以说成是一种约定而不是功能。当一个函数以`use`开头并且在函数内部调用其他 hooks，那么这个函数就可以成为自定义 hooks，比如说`useSomething`。
 
@@ -971,7 +808,7 @@ const CustomComp = () => {
 
 主函数中使用解构赋值的方式接受这三个值使用，这是一种非常简单的自定义 Hook。如果项目大的话使用自定义 Hook 会抽离可以抽离公共代码，极大的减少我们的代码量，提高开发效率。
 
-## 18. 如何管理 redux 之间不同模块的数据
+## 17. 如何管理 redux 之间不同模块的数据
 
 1. 利用 store 存储数据信息，利用 store.getState()得到当前的状态值
    导入 redux 中的 createStore 方法,创建一个 store
@@ -999,7 +836,7 @@ const CustomComp = () => {
 5. 在 createStore 中传入一个函数作为参数（必须），这个函数是 reducer，定义 dispatch 某个 action 后 state 针对这个 action 如何更新.
    reducer(initialState,action)。由于它的功能是根据初始 state 和 action 类型生成更新后的 state,它接收初始 initialState,action 作为参数
 
-## 19. 讲一下使用 redux-saga 控制数据流的具体需求的实现
+## 18. 讲一下使用 redux-saga 控制数据流的具体需求的实现
 
 redux-saga 写一个 hellosaga
 跟 redux-thunk,redux-saga 是控制执行的 generator，在 redux-saga 中 action 是原始的 js 对象，把所有的异步副作用操作放在了 saga 函数里面。这样既统一了 action 的形式，又使得异步操作集中可以被集中处理。
@@ -1026,7 +863,7 @@ redux-saga 是通过 genetator 实现的，如果不支持 generator 需要通�
 
 和调用 redux 的其他中间件一样，如果想使用 redux-saga 中间件，那么只要在 applyMiddleware 中调用一个 createSagaMiddleware 的实例。唯一不同的是需要调用 run 方法使得 generator 可以开始执行。
 
-## 20. redux 与 mobx 的区别?
+## 19. redux 与 mobx 的区别?
 
 两者对比:
 
@@ -1054,11 +891,11 @@ redux-saga 是通过 genetator 实现的，如果不支持 generator 需要通�
 - mobx 适合短平快的项目: mobx 上手简单,样板代码少,可以很大程度上提高开发效率.
 - 当然 mobx 和 redux 也并不一定是非此即彼的关系,你也可以在项目中用 redux 作为全局状态管理,用 mobx 作为组件局部状态管理器来用.
 
-## 21. Redux 和 vuex 有什么区别？
+## 20. Redux 和 vuex 有什么区别？
 
 vuex 改进了 redux 中的`action`和`reducer`函数，以`mutation`变化函数取代`reducer`，无需 switch，只需在对应的 mutation 函数里改变 state 值即可。
 
-## 22. Redux 的中间件
+## 21. Redux 的中间件
 
 Redux middleware 提供了一个分类处理 action 的机会
 
@@ -1145,7 +982,7 @@ const addLoggingToDispatch = store => {
 };
 ```
 
-## 23. 为什么 redux 能做到局部渲染呢？
+## 22. 为什么 redux 能做到局部渲染呢？
 
 Redux 将 React 组件分为容器型组件和展示型组件。容器型组件一般通过 connet 函数生成，它订阅了全局状态的变化，通过 mapStateToProps 函数，我们可以对全局状态进行过滤，只返回该容器型组件关注的局部状态：
 
@@ -1160,7 +997,7 @@ module.exports = connect(mapStateToProps)(TodoApp);
 
 而展示型组件不直接从 global state 获取数据，其数据来源于父组件。当容器型组件对应 global state 有变化时，它会将变化传播到其所有的子组件(一般为展示型组件)。简单来说容器型组件与展示型组件是父子关系
 
-## 24. mapStateToProps 和 mapDispatchToProps
+## 23. mapStateToProps 和 mapDispatchToProps
 
 ```js
 import { bindActionCreators } from 'redux';
@@ -1182,7 +1019,7 @@ const mapDispatchToProps = (dispatch, ownProps) => return {
 }
 ```
 
-## 25. Redux connect 方法隐藏的性能优化思想
+## 24. Redux connect 方法隐藏的性能优化思想
 
 对于复杂类型，比如在 mapStateToProps 中导出一个对象，则比较的是内存地址，而不是“值是否相等”
 
@@ -1236,7 +1073,7 @@ connect(
 )(someComponent);
 ```
 
-## 26. compose 方法接收了 chain 数组和原始的 store.dispatch 方法
+## 25. compose 方法接收了 chain 数组和原始的 store.dispatch 方法
 
 ```js
 export default function compose(...) {
@@ -1260,7 +1097,7 @@ middlewareA(middlewareB(middlewareC(store.dispatch)));
 
 这是只有三个中间件 middlewareA、 middlewareB、 middlewareC 的情况，关于更多中间的情况，依次类推
 
-## 27. React 中的 refs 在源码中是如何创建的
+## 26. React 中的 refs 在源码中是如何创建的
 
 Refs 是 React 提供给我们安全的访问 DOM 元素或者某个组件实例的句柄,我们可以为元素添加 ref 属性然后在回调函数中接收该元素在 DOM 树中的句柄,该值会作为回调函数的第一个参数的返回.
 
@@ -1347,7 +1184,7 @@ attachRef 方法又是什么时候被调用的呢？我们这儿就不源码分�
 
 代码很简单，delete 掉 ref 字符串指向的成员即可。至于 detachRef 的调用链，我们还得从 unmountComponent 方法说起。unmountComponent 会调用 detachRefs 方法，而 detachRefs 中则会调用 detachRef，从而将子元素引用从 refs 中释放掉，防止内存泄漏。也就是说在 unmountComponent 时，React 自动帮我们完成了子元素 ref 删除，防止内存泄漏。
 
-## 28. React 中 constructor 中 super 的作用，super 是否一定要写 props，谈谈原因
+## 27. React 中 constructor 中 super 的作用，super 是否一定要写 props，谈谈原因
 
 - constructor( )——构造方法  
    这是 ES6 对类的默认方法，通过 new 命令生成对象实例时自动调用该方法。并且，该方法是类中必须有的，如果没有显示定义，则会默认添加空的 constructor( )方法。
@@ -1362,7 +1199,7 @@ attachRef 方法又是什么时候被调用的呢？我们这儿就不源码分�
 
 可以不写 constructor，一旦写了 constructor，就必须在此函数中写 super(),此时组件才有自己的 this，在组件的全局中都可以使用 this 关键字，否则如果只是 constructor 而不执行 super() 那么以后的 this 都是错的！！！
 
-## 29. 谈谈 React 中受控组件和非受控组件以及 Vue 中双向绑定的区别
+## 28. 谈谈 React 中受控组件和非受控组件以及 Vue 中双向绑定的区别
 
 受控组件就是可以被 react 状态控制的组件  
 在 react 中，Input textarea 等组件默认是非受控组件（输入框内部的值是用户控制，和 React 无关）。但是也可以转化成受控组件，就是通过 onChange 事件获取当前输入内容，将当前输入内容作为 value 传入，此时就成为受控组件。  
@@ -1471,7 +1308,7 @@ class Sum extends Component {
 ReactDOM.render(<Sum />, window.app);
 ```
 
-## 30. 谈谈 jsx 的深刻认识，总结出优点
+## 29. 谈谈 jsx 的深刻认识，总结出优点
 
 JSX 是一种 JavaScript 的语法扩展
 
@@ -1481,7 +1318,7 @@ JSX 是一种 JavaScript 的语法扩展
 2. JSX 是类型安全的，在编译过程中就能发现错误
 3. 使用 JSX 编写模板更简单快速
 
-## 31. React 订阅(sub)/发布(pub)实现原理是什么
+## 30. React 订阅(sub)/发布(pub)实现原理是什么
 
 ```js
 class PubSub {
@@ -1536,7 +1373,7 @@ pubsub.emit("A", {
 pubsub.emit("B", "event B");
 ```
 
-## 32. 为什么不直接更新 state 状态，源码中式如何解读的？
+## 31. 为什么不直接更新 state 状态，源码中式如何解读的？
 
 setState 是组件原型链上的方法，参数为 partialState, callback，看样子长得还是比较 55 开的，参数也不多。提前预告几个参数，\_pendingStateQueue, dirtyComponents, isBatchingUpdates, internalInstance, transaction
 
@@ -1562,13 +1399,13 @@ ReactComponent.prototype.setState = function(partialState, callback) {
 };
 ```
 
-## 33. React 中调用 setState 之后发生了什么事情?
+## 32. React 中调用 setState 之后发生了什么事情?
 
 调用 setState >> 将传入参数与组件当前状态合并 >> 触发 Reconciliation 调和过程(生成最终状态) >> 高效构建虚拟 DOM,并准备 renderUI 界面 >> 计算新旧 DOM 异同 >> 根据异同进行 render 不同点 >> 完成按需更新
 
 在代码中调用 setState 函数之后，React 会将传入的参数对象与组件当前的状态合并，然后触发所谓的调和过程（Reconciliation）。经过调和过程，React 会以相对高效的方式根据新的状态构建 React 元素树并且着手重新渲染整个 UI 界面。在 React 得到元素树之后，React 会自动计算出新的树与老树的节点差异，然后根据差异对界面进行最小化重渲染。在差异计算算法中，React 能够相对精确地知道哪些位置发生了改变以及应该如何改变，这就保证了按需更新，而不是全部重新渲染。
 
-## 34. react 中的 setState 批量更新的过程是什么？
+## 33. react 中的 setState 批量更新的过程是什么？
 
 在 React 的生命周期和合成事件执行前后都有相应的钩子，分别是`pre钩子`和`post钩子`，pre 钩子会调用`batchedUpdate`方法将`isBatchingUpdates`变量置为`true`，开启批量更新，而 post 钩子会将`isBatchingUpdates`置为`false`
 
@@ -1576,7 +1413,7 @@ ReactComponent.prototype.setState = function(partialState, callback) {
 
 而在原生事件和异步操作中，不会执行 pre 钩子，或者生命周期的中的异步操作之前执行了 pre 钩子，但是 pos 钩子也在异步操作之前执行完了，`isBatchingUpdates`必定为 false，也就不会进行批量更新。
 
-## 35. 模态框 && 插槽(Portals)
+## 34. 模态框 && 插槽(Portals)
 
 ```js
 class Modal extends Component {
@@ -1620,7 +1457,7 @@ render() {
 2. 第一个参数（child）是任何可渲染的 React 子元素，例如一个元素，字符串或 片段(fragment)。第二个参数（container）则是一个 DOM 元素。
 3. 对于 portal 的一个典型用例是当父组件有 overflow: hidden 或 z-index 样式，但你需要子组件能够在视觉上 “跳出(break out)” 其容器。例如，对话框、hovercards 以及提示框。所以一般 react 组件里的模态框，就是这样实现的。
 
-## 36. 在 react 使用 HOC 有遇到过哪些问题？如何解决？
+## 35. 在 react 使用 HOC 有遇到过哪些问题？如何解决？
 
 1. 当有多个 HOC 一同使用时，无法直接判断子组件的 props 是哪个 HOC 负责传递的。
 2. 重复命名的问题：若父子组件有同样名称的 props，或使用的多个 HOC 中存在相同名称的 props，则存在覆盖问题，而且 react 并不会报错。当然可以通过规范命名空间的方式避免。
@@ -1656,7 +1493,7 @@ export default (WrappedComponent, name) => {
 
 现在 `NewComponent` 会根据第二个参数 `name` 在挂载阶段从 LocalStorage 加载数据，并且 `setState` 到自己的 `state.data` 中，而渲染的时候将 `state.data` 通过 `props.data` 传给 `WrappedComponent`。
 
-## 37. HOC
+## 36. HOC
 
 定义高阶组件的意义：
 
@@ -1749,7 +1586,7 @@ function getDisplayName(WrappedComponent) {
 }
 ```
 
-## 38. React 的单元测试
+## 37. React 的单元测试
 
 ```js
 import ShallowRenderer from "react-test-renderer/shallow"; // ES6
@@ -1786,13 +1623,13 @@ expect(result.props.children).toEqual([
 ]);
 ```
 
-## 39. 怎样在 react 中使用 innerHTML？
+## 38. 怎样在 react 中使用 innerHTML？
 
 ```
 <div dangerouslySetInnerHTML={{ __html: "<div>123</div>" }} />
 ```
 
-## 40. Consumer
+## 39. Consumer
 
 当 Provider 提供的值更改时，Consumer 必须重新渲染
 
@@ -1846,7 +1683,7 @@ class Middle extends React.Component {
 export default App;
 ```
 
-## 41. suspense 组件
+## 40. suspense 组件
 
 Suspense 指的是 React 在等待组件时“suspend（暂停）”渲染，并显示加载标识的新功能。 在 React 16.6 中，Suspense 只支持一个场景：使用 `React.lazy()` 和 `<React.Suspense>` 实现的懒加载组件。
 
@@ -1890,7 +1727,7 @@ function MyComponent() {
 }
 ```
 
-## 42. 用 shouldComponentUpdate 模拟 PureComponent
+## 41. 用 shouldComponentUpdate 模拟 PureComponent
 
 ```js
 class Demo1 extends React.Component {
@@ -1908,7 +1745,7 @@ class Demo1 extends React.Component {
 class Demo2 extends React.PureComponent {}
 ```
 
-## 43. 任意组件通讯
+## 42. 任意组件通讯
 
 1. 利用共同祖先
 2. 状态管理
@@ -1984,7 +1821,7 @@ class Demo2 extends React.PureComponent {}
    }
    ```
 
-## 44. asyncComponent
+## 43. asyncComponent
 
 ```jsx
 import React, { Component } from "react";
@@ -2017,7 +1854,7 @@ export default function asyncComponent(importComponent) {
 }
 ```
 
-## 45. React 的 displayName 有什么作用？
+## 44. React 的 displayName 有什么作用？
 
 定义调试时的组件 name
 
@@ -2055,7 +1892,7 @@ App = withHOC(App);
     ...
 ```
 
-## 46. 你对 Time Slice 的理解?
+## 45. 你对 Time Slice 的理解?
 
 时间分片
 
@@ -2065,7 +1902,7 @@ App = withHOC(App);
 - 虽然是异步渲染，但是你将会看到完整的渲染，而不是一个组件一行行的渲染出来
 - 同样书写组件的方式
 
-## 47. diff
+## 46. diff
 
 ### diff 策略
 
@@ -2095,7 +1932,7 @@ React 是基于组件构建应用的，对于组件间的比较所采取的策�
 - **MOVE_EXISTING**: 旧集合中有新组件类型，且 element 是可更新的类型， generateComponent-Children 已调用 receiveComponent,这种情况下 prevChild=nextChild,就需要做移动操作，可以服用以前的 DOM 节点
 - **REMOVE_NODE**: 旧组件类型，在新集合里也有，但对应的 element 不同则不能直接复用和更新，需要执行删除操作，或者旧组件不在新集合里的，也需要执行删除操作
 
-## 48. react 是如何防止 XSS 的
+## 47. react 是如何防止 XSS 的
 
 `reactElement` 对象还有一个`$$typeof`属性，它是一个 `Symbol` 类型的变量`Symbol.for('react.element')`，当环境不支持 Symbol 时，`$$typeof` 被赋值为 `0xeac7`。
 
@@ -2407,4 +2244,236 @@ export default () => {
     </div>
   );
 };
+```
+
+## 52. 请用 React 实现一个搜索框组件
+
+功能包括：
+
+- 输入文本字数限制
+- 可配置输入文本约束，比如仅限输入数字
+- 用户输入时可支持关键字搜索，并出现下拉框展示相关项
+
+<div align="center"><img :src="$withBase('/images/prepare/new/2020050902.webp')" alt="images/prepare/new/2020050902.webp"></div>
+
+粗略写
+
+<div align="center"><img :src="$withBase('/images/prepare/new/2020050903.png')" alt="images/prepare/new/2020050903.png"></div>
+
+```jsx
+import React, { Component } from "react";
+import "./input.css";
+
+function debounce(fn, delay = 500) {
+  let timeout = null;
+  return function(e, ...args) {
+    e.persist && e.persist();
+    timeout && clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      fn.call(this, e, ...args);
+    }, delay);
+  };
+}
+
+class Tips extends Component {
+  render() {
+    const { tipsList } = this.props;
+    return tipsList && tipsList.length !== 0 ? (
+      <div className="tips__container">
+        {tipsList.map((item, index) => {
+          return (
+            <a href="#" key={index} className="link">
+              {item}
+            </a>
+          );
+        })}
+      </div>
+    ) : (
+      <div />
+    );
+  }
+}
+
+export default class Input extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      keyWords: [
+        "前端工程师1",
+        "前端高级开发1",
+        "后端工程师1",
+        "测试开发1",
+        "项目主管1",
+        "dress",
+        "Recent",
+        "123456",
+        "awdad1"
+      ],
+      inputValue: "",
+      inputType: "text",
+      inputMaxLen: 20,
+      wordsList: []
+    };
+    this.handleInput = debounce(this.handleInput, 200);
+    this.handleMaxLenChange = debounce(this.handleMaxLenChange, 400);
+  }
+
+  handleInput = e => {
+    const {
+      target: { value }
+    } = e;
+    const { keyWords } = this.state;
+    const tipsList = !value
+      ? []
+      : keyWords.filter(item => {
+          const res = item.search(new RegExp(value, "i"));
+          return res !== -1;
+        });
+    this.setState({
+      inputValue: value,
+      tipsList
+    });
+  };
+
+  handleTypeClick = e => {
+    const {
+      target: { name }
+    } = e;
+    this.setState({ inputType: name });
+  };
+
+  handleMaxLenChange = e => {
+    const {
+      target: { value }
+    } = e;
+    const { inputValue } = this.state;
+    const newInputValue = inputValue.substr(0, +value);
+    // 如果设置最大长度小于现在关键词的长度，则截取一下
+    this.input.value = newInputValue;
+    this.setState({ inputMaxLen: value, inputValue: newInputValue });
+  };
+
+  render() {
+    const { tipsList, inputType, inputMaxLen } = this.state;
+    return (
+      <div className="container">
+        <div className="control__container" onClick={this.handleTypeClick}>
+          <button name="text">文本</button>
+          <button name="number">数字</button>
+          <span>最大长度: </span>
+          <input
+            type="number"
+            placeholder="默认: 20"
+            onInput={this.handleMaxLenChange}
+          />
+        </div>
+        <div className="input__container">
+          <div className="input__wrap">
+            <input
+              ref={input => (this.input = input)}
+              placeholder="请输入关键词"
+              type={inputType}
+              maxLength={inputMaxLen}
+              onInput={this.handleInput}
+            />
+            <button>搜索</button>
+          </div>
+          <Tips tipsList={tipsList} />
+        </div>
+      </div>
+    );
+  }
+}
+```
+
+```css
+.container {
+  width: 600px;
+  height: 400px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #fff;
+}
+
+.input__container {
+  margin-top: 30px;
+}
+
+.input__wrap {
+  display: flex;
+  align-items: center;
+}
+
+.input__wrap input {
+  box-sizing: border-box;
+  width: 85%;
+  height: 50px;
+  padding: 0 10px;
+  border: #666 1px solid;
+  border-right: 0;
+  outline: none;
+}
+
+.input__wrap button {
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 15%;
+  height: 50px;
+  color: #fff;
+  font-size: 20px;
+  border: none;
+  border: #666 1px solid;
+  outline: none;
+  background: #1890ff;
+}
+
+.control__container {
+  display: flex;
+  align-items: center;
+}
+
+.control__container button {
+  cursor: pointer;
+  width: 50px;
+  height: 30px;
+  margin-right: 10px;
+  color: #fff;
+  outline: none;
+  border: #333 1px solid;
+  border-radius: 8px;
+  background: #1890ff;
+}
+
+.control__container span {
+  margin-left: auto;
+  margin-right: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+.tips__container {
+  overflow-y: scroll;
+  max-height: 200px;
+  border: #333 1px solid;
+  border-top: 0;
+}
+
+.tips__container .link {
+  display: block;
+  height: 30px;
+  padding: 5px 10px;
+  color: #666;
+  line-height: 30px;
+  text-decoration: none;
+}
+
+.tips__container .link:hover {
+  color: #fff;
+  background: #666;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
 ```
