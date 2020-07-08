@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>webpack 整体配置结构 | Lu notes</title>
+    <meta name="generator" content="VuePress 1.5.2">
+    <link rel=" " href=" ">
+    <meta name="description" content=" ">
+    <link rel="preload" href="/lutest/assets/css/0.styles.cce74b5b.css" as="style"><link rel="preload" href="/lutest/assets/js/app.292ced45.js" as="script"><link rel="preload" href="/lutest/assets/js/2.9740266b.js" as="script"><link rel="preload" href="/lutest/assets/js/3.fe54688f.js" as="script"><link rel="preload" href="/lutest/assets/js/12.444f7724.js" as="script"><link rel="prefetch" href="/lutest/assets/js/10.f9fc8d32.js"><link rel="prefetch" href="/lutest/assets/js/11.e8757cfe.js"><link rel="prefetch" href="/lutest/assets/js/13.c4e78e65.js"><link rel="prefetch" href="/lutest/assets/js/14.744863a3.js"><link rel="prefetch" href="/lutest/assets/js/15.2c3c7cb9.js"><link rel="prefetch" href="/lutest/assets/js/16.d2aad6b6.js"><link rel="prefetch" href="/lutest/assets/js/17.d27ff675.js"><link rel="prefetch" href="/lutest/assets/js/18.5fadc5a9.js"><link rel="prefetch" href="/lutest/assets/js/19.aaf01017.js"><link rel="prefetch" href="/lutest/assets/js/20.a0987e43.js"><link rel="prefetch" href="/lutest/assets/js/21.3fc4c18a.js"><link rel="prefetch" href="/lutest/assets/js/22.f17dcca8.js"><link rel="prefetch" href="/lutest/assets/js/23.8e0fa808.js"><link rel="prefetch" href="/lutest/assets/js/24.b6720075.js"><link rel="prefetch" href="/lutest/assets/js/25.378445e2.js"><link rel="prefetch" href="/lutest/assets/js/26.81292f49.js"><link rel="prefetch" href="/lutest/assets/js/27.06185e3a.js"><link rel="prefetch" href="/lutest/assets/js/28.b625135a.js"><link rel="prefetch" href="/lutest/assets/js/29.0331449e.js"><link rel="prefetch" href="/lutest/assets/js/30.fc30593a.js"><link rel="prefetch" href="/lutest/assets/js/31.9df5464d.js"><link rel="prefetch" href="/lutest/assets/js/32.8e1b10cb.js"><link rel="prefetch" href="/lutest/assets/js/33.cef44900.js"><link rel="prefetch" href="/lutest/assets/js/34.ecdd08d0.js"><link rel="prefetch" href="/lutest/assets/js/35.6e857490.js"><link rel="prefetch" href="/lutest/assets/js/36.a59abeed.js"><link rel="prefetch" href="/lutest/assets/js/37.9876da5f.js"><link rel="prefetch" href="/lutest/assets/js/38.47fa3544.js"><link rel="prefetch" href="/lutest/assets/js/39.facee24f.js"><link rel="prefetch" href="/lutest/assets/js/4.4dc286c5.js"><link rel="prefetch" href="/lutest/assets/js/40.1315a747.js"><link rel="prefetch" href="/lutest/assets/js/41.a947bb18.js"><link rel="prefetch" href="/lutest/assets/js/42.5d4bcc1b.js"><link rel="prefetch" href="/lutest/assets/js/43.6130dd13.js"><link rel="prefetch" href="/lutest/assets/js/44.4af72750.js"><link rel="prefetch" href="/lutest/assets/js/45.da2465df.js"><link rel="prefetch" href="/lutest/assets/js/5.c729589a.js"><link rel="prefetch" href="/lutest/assets/js/6.166d06bb.js"><link rel="prefetch" href="/lutest/assets/js/7.76b7655e.js"><link rel="prefetch" href="/lutest/assets/js/8.ea335d0b.js"><link rel="prefetch" href="/lutest/assets/js/9.7b3c83ec.js">
+    <link rel="stylesheet" href="/lutest/assets/css/0.styles.cce74b5b.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/lutest/" class="home-link router-link-active"><!----> <span class="site-name">Lu notes</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/lutest/" class="nav-link">首页</a></div><div class="nav-item"><a href="/lutest/prepare/" class="nav-link router-link-active">Prepare</a></div><div class="nav-item"><a href="/lutest/js/" class="nav-link">Js</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/lutest/" class="nav-link">首页</a></div><div class="nav-item"><a href="/lutest/prepare/" class="nav-link router-link-active">Prepare</a></div><div class="nav-item"><a href="/lutest/js/" class="nav-link">Js</a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><a href="/lutest/prepare/Engineering/" class="sidebar-heading clickable router-link-active open"><span>Engineering</span> <span class="arrow down"></span></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/lutest/prepare/Engineering/01-grunt.html" class="sidebar-link">01-grunt</a></li><li><a href="/lutest/prepare/Engineering/02-gulp.html" class="sidebar-link">02-gulp</a></li><li><a href="/lutest/prepare/Engineering/03-webpack.html" class="sidebar-link">03-webpack</a></li><li><a href="/lutest/prepare/Engineering/04-webpack整体配置结构.html" class="active sidebar-link">04-webpack整体配置结构</a></li><li><a href="/lutest/prepare/Engineering/05-webpack优化.html" class="sidebar-link">05-webpack优化</a></li><li><a href="/lutest/prepare/Engineering/06-webpack优化.html" class="sidebar-link">06-webpack优化</a></li><li><a href="/lutest/prepare/Engineering/07-webpackPlugin插件总结.html" class="sidebar-link">07-webpackPlugin插件总结</a></li><li><a href="/lutest/prepare/Engineering/08-编写Loader.html" class="sidebar-link">08-编写Loader</a></li><li><a href="/lutest/prepare/Engineering/09-编写Plugin.html" class="sidebar-link">09-编写Plugin</a></li><li><a href="/lutest/prepare/Engineering/10-5分钟撸一个VueCLI插件.html" class="sidebar-link">10-5分钟撸一个VueCLI插件</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/lutest/prepare/Mobile/" class="sidebar-heading clickable"><span>Mobile</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/lutest/prepare/Require/" class="sidebar-heading clickable"><span>Require</span> <span class="arrow right"></span></a> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="webpack-整体配置结构"><a href="#webpack-整体配置结构" class="header-anchor">#</a> webpack 整体配置结构</h1> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;path&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> CommonsChunkPlugin <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;webpack/lib/optimize/CommonsChunkPlugin&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">// entry 表示 入口，Webpack 执行构建的第一步将从 Entry 开始，可抽象成输入。</span>
+  <span class="token comment">// 类型可以是 string | object | array</span>
+  entry<span class="token operator">:</span> <span class="token string">&quot;./app/entry&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 只有1个入口，入口只有1个文件</span>
+  entry<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;./app/entry1&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;./app/entry2&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// 只有1个入口，入口有2个文件</span>
+  entry<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 有2个入口</span>
+    a<span class="token operator">:</span> <span class="token string">&quot;./app/entry-a&quot;</span><span class="token punctuation">,</span>
+    b<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;./app/entry-b1&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;./app/entry-b2&quot;</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token comment">// 如何输出结果：在 Webpack 经过一系列处理后，如何输出最终想要的代码。</span>
+  output<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 输出文件存放的目录，必须是 string 类型的绝对路径。</span>
+    path<span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">&quot;dist&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// 输出文件的名称</span>
+    filename<span class="token operator">:</span> <span class="token string">&quot;bundle.js&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 完整的名称</span>
+    filename<span class="token operator">:</span> <span class="token string">&quot;[name].js&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 当配置了多个 entry 时，通过名称模版为不同的 entry 生成不同的文件名称</span>
+    filename<span class="token operator">:</span> <span class="token string">&quot;[chunkhash].js&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 根据文件内容 hash 值生成文件名称，用于浏览器长时间缓存文件</span>
+
+    <span class="token comment">// 发布到线上的所有资源的 URL 前缀，string 类型</span>
+    publicPath<span class="token operator">:</span> <span class="token string">&quot;/assets/&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 放到指定目录下</span>
+    publicPath<span class="token operator">:</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 放到根目录下</span>
+    publicPath<span class="token operator">:</span> <span class="token string">&quot;https://cdn.example.com/&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 放到 CDN 上去</span>
+
+    <span class="token comment">// 导出库的名称，string 类型</span>
+    <span class="token comment">// 不填它时，默认输出格式是匿名的立即执行函数</span>
+    library<span class="token operator">:</span> <span class="token string">&quot;MyLibrary&quot;</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// 导出库的类型，枚举类型，默认是 var</span>
+    <span class="token comment">// 可以是 umd | umd2 | commonjs2 | commonjs | amd | this | var | assign | window | global | jsonp ，</span>
+    libraryTarget<span class="token operator">:</span> <span class="token string">&quot;umd&quot;</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// 是否包含有用的文件路径信息到生成的代码里去，boolean 类型</span>
+    pathinfo<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// 附加 Chunk 的文件名称</span>
+    chunkFilename<span class="token operator">:</span> <span class="token string">&quot;[id].js&quot;</span><span class="token punctuation">,</span>
+    chunkFilename<span class="token operator">:</span> <span class="token string">&quot;[chunkhash].js&quot;</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// JSONP 异步加载资源时的回调函数名称，需要和服务端搭配使用</span>
+    jsonpFunction<span class="token operator">:</span> <span class="token string">&quot;myWebpackJsonp&quot;</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// 生成的 Source Map 文件名称</span>
+    sourceMapFilename<span class="token operator">:</span> <span class="token string">&quot;[file].map&quot;</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// 浏览器开发者工具里显示的源码模块名称</span>
+    devtoolModuleFilenameTemplate<span class="token operator">:</span> <span class="token string">&quot;webpack:///[resource-path]&quot;</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// 异步加载跨域的资源时使用的方式</span>
+    crossOriginLoading<span class="token operator">:</span> <span class="token string">&quot;use-credentials&quot;</span><span class="token punctuation">,</span>
+    crossOriginLoading<span class="token operator">:</span> <span class="token string">&quot;anonymous&quot;</span><span class="token punctuation">,</span>
+    crossOriginLoading<span class="token operator">:</span> <span class="token boolean">false</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token comment">// 配置模块相关</span>
+  module<span class="token operator">:</span> <span class="token punctuation">{</span>
+    rules<span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token comment">// 配置 Loader</span>
+      <span class="token punctuation">{</span>
+        test<span class="token operator">:</span> <span class="token regex">/\.jsx?$/</span><span class="token punctuation">,</span> <span class="token comment">// 正则匹配命中要使用 Loader 的文件</span>
+        include<span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token comment">// 只会命中这里面的文件</span>
+          path<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">&quot;app&quot;</span><span class="token punctuation">)</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        exclude<span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token comment">// 忽略这里面的文件</span>
+          path<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">&quot;app/demo-files&quot;</span><span class="token punctuation">)</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        use<span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token comment">// 使用那些 Loader，有先后次序，从后往前执行</span>
+          <span class="token string">&quot;style-loader&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 直接使用 Loader 的名称</span>
+          <span class="token punctuation">{</span>
+            loader<span class="token operator">:</span> <span class="token string">&quot;css-loader&quot;</span><span class="token punctuation">,</span>
+            options<span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token comment">// 给 html-loader 传一些参数</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    noParse<span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token comment">// 不用解析和处理的模块</span>
+      <span class="token operator">/</span>special<span class="token operator">-</span>library\<span class="token punctuation">.</span>js$<span class="token operator">/</span> <span class="token comment">// 用正则匹配</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token comment">// 配置插件</span>
+  plugins<span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token comment">// 所有页面都会用到的公共代码提取到 common 代码块中</span>
+    <span class="token keyword">new</span> <span class="token class-name">CommonsChunkPlugin</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      name<span class="token operator">:</span> <span class="token string">&quot;common&quot;</span><span class="token punctuation">,</span>
+      chunks<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;a&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;b&quot;</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+
+  <span class="token comment">// 配置寻找模块的规则</span>
+  resolve<span class="token operator">:</span> <span class="token punctuation">{</span>
+    modules<span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token comment">// 寻找模块的根目录，array 类型，默认以 node_modules 为根目录</span>
+      <span class="token string">&quot;node_modules&quot;</span><span class="token punctuation">,</span>
+      path<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">&quot;app&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    extensions<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;.js&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;.json&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;.jsx&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;.css&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// 模块的后缀名</span>
+    alias<span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 模块别名配置，用于映射模块</span>
+      <span class="token comment">// 把 'module' 映射 'new-module'，同样的 'module/path/file' 也会被映射成 'new-module/path/file'</span>
+      module<span class="token operator">:</span> <span class="token string">&quot;new-module&quot;</span><span class="token punctuation">,</span>
+      <span class="token comment">// 使用结尾符号 $ 后，把 'only-module' 映射成 'new-module'，</span>
+      <span class="token comment">// 但是不像上面的，'module/path/file' 不会被映射成 'new-module/path/file'</span>
+      <span class="token string">&quot;only-module$&quot;</span><span class="token operator">:</span> <span class="token string">&quot;new-module&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    alias<span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token comment">// alias 还支持使用数组来更详细的配置</span>
+      <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token string">&quot;module&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 老的模块</span>
+        alias<span class="token operator">:</span> <span class="token string">&quot;new-module&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 新的模块</span>
+        <span class="token comment">// 是否是只映射模块，如果是 true 只有 'module' 会被映射，如果是 false 'module/inner/path' 也会被映射</span>
+        onlyModule<span class="token operator">:</span> <span class="token boolean">true</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    symlinks<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// 是否跟随文件软链接去搜寻模块的路径</span>
+    descriptionFiles<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;package.json&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// 模块的描述文件</span>
+    mainFields<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;main&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// 模块的描述文件里的描述入口的文件的字段名称</span>
+    enforceExtension<span class="token operator">:</span> <span class="token boolean">false</span> <span class="token comment">// 是否强制导入语句必须要写明文件后缀</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token comment">// 输出文件性能检查配置</span>
+  performance<span class="token operator">:</span> <span class="token punctuation">{</span>
+    hints<span class="token operator">:</span> <span class="token string">&quot;warning&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 有性能问题时输出警告</span>
+    hints<span class="token operator">:</span> <span class="token string">&quot;error&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 有性能问题时输出错误</span>
+    hints<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">// 关闭性能检查</span>
+    maxAssetSize<span class="token operator">:</span> <span class="token number">200000</span><span class="token punctuation">,</span> <span class="token comment">// 最大文件大小 (单位 bytes)</span>
+    maxEntrypointSize<span class="token operator">:</span> <span class="token number">400000</span><span class="token punctuation">,</span> <span class="token comment">// 最大入口文件大小 (单位 bytes)</span>
+    <span class="token function-variable function">assetFilter</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">assetFilename</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 过滤要检查的文件</span>
+      <span class="token keyword">return</span> assetFilename<span class="token punctuation">.</span><span class="token function">endsWith</span><span class="token punctuation">(</span><span class="token string">&quot;.css&quot;</span><span class="token punctuation">)</span> <span class="token operator">||</span> assetFilename<span class="token punctuation">.</span><span class="token function">endsWith</span><span class="token punctuation">(</span><span class="token string">&quot;.js&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  devtool<span class="token operator">:</span> <span class="token string">&quot;source-map&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 配置 source-map 类型</span>
+
+  context<span class="token operator">:</span> __dirname<span class="token punctuation">,</span> <span class="token comment">// Webpack 使用的根目录，string 类型必须是绝对路径</span>
+
+  <span class="token comment">// 配置输出代码的运行环境</span>
+  target<span class="token operator">:</span> <span class="token string">&quot;web&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 浏览器，默认</span>
+  target<span class="token operator">:</span> <span class="token string">&quot;webworker&quot;</span><span class="token punctuation">,</span> <span class="token comment">// WebWorker</span>
+  target<span class="token operator">:</span> <span class="token string">&quot;node&quot;</span><span class="token punctuation">,</span> <span class="token comment">// Node.js，使用 `require` 语句加载 Chunk 代码</span>
+  target<span class="token operator">:</span> <span class="token string">&quot;async-node&quot;</span><span class="token punctuation">,</span> <span class="token comment">// Node.js，异步加载 Chunk 代码</span>
+  target<span class="token operator">:</span> <span class="token string">&quot;node-webkit&quot;</span><span class="token punctuation">,</span> <span class="token comment">// nw.js</span>
+  target<span class="token operator">:</span> <span class="token string">&quot;electron-main&quot;</span><span class="token punctuation">,</span> <span class="token comment">// electron, 主线程</span>
+  target<span class="token operator">:</span> <span class="token string">&quot;electron-renderer&quot;</span><span class="token punctuation">,</span> <span class="token comment">// electron, 渲染线程</span>
+
+  externals<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 使用来自 JavaScript 运行环境提供的全局变量</span>
+    jquery<span class="token operator">:</span> <span class="token string">&quot;jQuery&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  stats<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 控制台输出日志控制</span>
+    assets<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    colors<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    errors<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    errorDetails<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    hash<span class="token operator">:</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  devServer<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// DevServer 相关的配置</span>
+    proxy<span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 代理到后端服务接口</span>
+      <span class="token string">&quot;/api&quot;</span><span class="token operator">:</span> <span class="token string">&quot;http://localhost:3000&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    contentBase<span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">&quot;public&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// 配置 DevServer HTTP 服务器的文件根目录</span>
+    compress<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// 是否开启 gzip 压缩</span>
+    historyApiFallback<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// 是否开发 HTML5 History API 网页</span>
+    hot<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// 是否开启模块热替换功能</span>
+    https<span class="token operator">:</span> <span class="token boolean">false</span> <span class="token comment">// 是否开启 HTTPS 模式</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  profile<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// 是否捕捉 Webpack 构建的性能信息，用于分析什么原因导致构建性能不佳</span>
+
+  cache<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">// 是否启用缓存提升构建速度</span>
+
+  watch<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// 是否开始</span>
+  watchOptions<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 监听模式选项</span>
+    <span class="token comment">// 不监听的文件或文件夹，支持正则匹配。默认为空</span>
+    ignored<span class="token operator">:</span> <span class="token regex">/node_modules/</span><span class="token punctuation">,</span>
+    <span class="token comment">// 监听到变化发生后会等300ms再去执行动作，防止文件更新太快导致重新编译频率太高</span>
+    <span class="token comment">// 默认为300ms</span>
+    aggregateTimeout<span class="token operator">:</span> <span class="token number">300</span><span class="token punctuation">,</span>
+    <span class="token comment">// 判断文件是否发生变化是不停的去询问系统指定文件有没有变化，默认每隔1000毫秒询问一次</span>
+    poll<span class="token operator">:</span> <span class="token number">1000</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br><span class="line-number">110</span><br><span class="line-number">111</span><br><span class="line-number">112</span><br><span class="line-number">113</span><br><span class="line-number">114</span><br><span class="line-number">115</span><br><span class="line-number">116</span><br><span class="line-number">117</span><br><span class="line-number">118</span><br><span class="line-number">119</span><br><span class="line-number">120</span><br><span class="line-number">121</span><br><span class="line-number">122</span><br><span class="line-number">123</span><br><span class="line-number">124</span><br><span class="line-number">125</span><br><span class="line-number">126</span><br><span class="line-number">127</span><br><span class="line-number">128</span><br><span class="line-number">129</span><br><span class="line-number">130</span><br><span class="line-number">131</span><br><span class="line-number">132</span><br><span class="line-number">133</span><br><span class="line-number">134</span><br><span class="line-number">135</span><br><span class="line-number">136</span><br><span class="line-number">137</span><br><span class="line-number">138</span><br><span class="line-number">139</span><br><span class="line-number">140</span><br><span class="line-number">141</span><br><span class="line-number">142</span><br><span class="line-number">143</span><br><span class="line-number">144</span><br><span class="line-number">145</span><br><span class="line-number">146</span><br><span class="line-number">147</span><br><span class="line-number">148</span><br><span class="line-number">149</span><br><span class="line-number">150</span><br><span class="line-number">151</span><br><span class="line-number">152</span><br><span class="line-number">153</span><br><span class="line-number">154</span><br><span class="line-number">155</span><br><span class="line-number">156</span><br><span class="line-number">157</span><br><span class="line-number">158</span><br><span class="line-number">159</span><br><span class="line-number">160</span><br><span class="line-number">161</span><br><span class="line-number">162</span><br><span class="line-number">163</span><br><span class="line-number">164</span><br><span class="line-number">165</span><br><span class="line-number">166</span><br><span class="line-number">167</span><br><span class="line-number">168</span><br><span class="line-number">169</span><br><span class="line-number">170</span><br><span class="line-number">171</span><br><span class="line-number">172</span><br><span class="line-number">173</span><br><span class="line-number">174</span><br><span class="line-number">175</span><br><span class="line-number">176</span><br><span class="line-number">177</span><br><span class="line-number">178</span><br><span class="line-number">179</span><br><span class="line-number">180</span><br><span class="line-number">181</span><br><span class="line-number">182</span><br><span class="line-number">183</span><br><span class="line-number">184</span><br><span class="line-number">185</span><br><span class="line-number">186</span><br><span class="line-number">187</span><br><span class="line-number">188</span><br><span class="line-number">189</span><br><span class="line-number">190</span><br><span class="line-number">191</span><br><span class="line-number">192</span><br><span class="line-number">193</span><br><span class="line-number">194</span><br><span class="line-number">195</span><br><span class="line-number">196</span><br><span class="line-number">197</span><br><span class="line-number">198</span><br><span class="line-number">199</span><br><span class="line-number">200</span><br></div></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/lutest/prepare/Engineering/03-webpack.html" class="prev">03-webpack</a></span> <span class="next"><a href="/lutest/prepare/Engineering/05-webpack优化.html">05-webpack优化</a>
+      →
+    </span></p></div> </main> <span data-v-2ae0ee72></span></div><div class="global-ui"></div></div>
+    <script src="/lutest/assets/js/app.292ced45.js" defer></script><script src="/lutest/assets/js/2.9740266b.js" defer></script><script src="/lutest/assets/js/3.fe54688f.js" defer></script><script src="/lutest/assets/js/12.444f7724.js" defer></script>
+  </body>
+</html>
