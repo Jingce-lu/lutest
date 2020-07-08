@@ -1,4 +1,4 @@
-# Add 2020 CSS
+# CSS
 
 [[toc]]
 
