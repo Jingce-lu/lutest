@@ -8,6 +8,9 @@
 2. 每一个内在的盒子有: width/height, padding, border, margin 这几个控制盒子大小的属性。其中 width/height 控制元素内容大小，padding 则控制元素内容到 border 线内侧距离，border 则是元素外围边框大小，而 margin 则是控制与其他元素的间距，它的背景透明。
 3. 对于早期，计算一个元素的占据大小，需要通过 `width +2* padding + 2*border` 来计算，css3 中提出了 box-sizing：border-box，通过这样设置，就可以使元素最终的宽高就是设定的 width/height, 浏览器会根据 width/height, padding, border 的大小来自动调整内部元素的大小。
 
+- **标准模式**: `box-sizing: content-box;` 宽高不包括内边距和边框
+- **怪异模式**: `box-sizing: border-box`
+
 ## 2. 什么是 BFC、可以解决哪些问题
 
 BFC 就是块级格式上下文，是页面盒模型布局中的一种 CSS 渲染模式，相当于一个独立的容器，里面的元素和外部的元素相互不影响。
@@ -16,9 +19,10 @@ BFC 就是块级格式上下文，是页面盒模型布局中的一种 CSS 渲�
 
 1. html 根元素
 2. float 浮动
-3. 绝对定位
+3. 绝对定位 position 的值为 fixed / absolute；
 4. overflow 不为 visiable
-5. display 为表格布局或者弹性布局
+5. display 为表格布局或者弹性布局  
+   display 的值为 table-cell / table-caption / inline-block / flex / inline-flex。
 
 BFC 主要的作用是：
 
@@ -243,13 +247,11 @@ position 属性共有 5 和属性值，分别如下
 
 ## 10. Css 有哪些引入方式？通过 link 和@import 引入有什么区别？
 
-Css 引入方式有 4 种 内联、内嵌、外链、导入
+Css 引入方式有 4 种 `内联`、`内嵌`、`外链`、`导入`
 
-外链 link 除了可以加载 css 之外,还可以定义 rss、rel 等属性，没有兼容性问题，支持使用 javascript 改变样式
-
-`@import` 是 css 提供的，只能用于加载 css，不支持通过 javascript 修改样式
-
-▲ 页面被加载的时候，link 会被同时加载，而`@import`则需等到页面加载完后再加载，可能出现无样式网页
+- `外链 link` 除了可以加载 css 之外,还可以定义 rss、rel 等属性，没有兼容性问题，支持使用 javascript 改变样式
+- `@import` 是 css 提供的，只能用于加载 css，不支持通过 javascript 修改样式
+- ▲ 页面被加载的时候，`link` 会被同时加载，而`@import`则需等到页面加载完后再加载，可能出现无样式网页
 
 ## 11. Css 优化，如何提高性能
 
@@ -1515,6 +1517,19 @@ p {
 `margin-block-start /end`等效于上下外边距
 `margin-inline-start/end`等效于左右外边距
 
-## 39.
+## 39. 标准模式和怪异模式
 
-## 40.
+- document.compatMode 属性可以判断是否是标准模式，当 document.compatMode 为“CSS1Compat”，是标准模式，“BackCompat”是怪异模式。
+- 怪异模式是为了兼容旧版本的浏览器, 因为 IE 低版本 document.documentElement.clientWidth 获取不到
+- 怪异模式盒模型: box-sizing: border-box; 标准模式: box-sizing: content-box
+
+## 40. overflow 原理
+
+overflow: hidden 能清除块内子元素的浮动影响. 因为该属性进行超出隐藏时需要计算盒子内所有元素的高度, 所以会隐式清除浮动
+
+## 41. 关于 vh, vw
+
+- vw：viewpoint width，视窗宽度，1vw 等于视窗宽度的 1%。
+- vh：viewpoint height，视窗高度，1vh 等于视窗高度的 1%。
+- vmin：vw 和 vh 中较小的那个。
+- vmax：vw 和 vh 中较大的那个。

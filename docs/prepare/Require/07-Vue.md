@@ -356,6 +356,62 @@ vue.js 是**采用数据劫持结合发布者-订阅者模式的方式**，通�
 </html>
 ```
 
+```js
+// 依赖收集
+// 简化版
+var obj = {};
+var name;
+//第一个参数：定义属性的对象。
+//第二个参数：要定义或修改的属性的名称。
+//第三个参数：将被定义或修改的属性描述符。
+Object.defineProperty(obj, "data", {
+  //获取值
+  get: function() {
+    return name;
+  },
+  //设置值
+  set: function(val) {
+    name = val;
+    console.log(val);
+  }
+});
+//赋值调用set
+obj.data = "aaa";
+//取值调用get
+console.log(obj.data);
+
+// 详细版
+myVue.prototype._obverse = function(obj) {
+  // obj = {number: 0}
+  var value;
+  for (key in obj) {
+    //遍历obj对象
+    if (obj.hasOwnProperty(key)) {
+      value = obj[key];
+      if (typeof value === "object") {
+        //如果值是对象，则递归处理
+        this._obverse(value);
+      }
+      Object.defineProperty(this.$data, key, {
+        //关键
+        enumerable: true,
+        configurable: true,
+        get: function() {
+          console.log(`获取${value}`);
+          return value;
+        },
+        set: function(newVal) {
+          console.log(`更新${newVal}`);
+          if (value !== newVal) {
+            value = newVal;
+          }
+        }
+      });
+    }
+  }
+};
+```
+
 ## 12. Vue 中如何在组件内部实现一个双向数据绑定？
 
 假设有一个输入框组件，用户输入时，同步父组件页面中的数据。
@@ -2171,3 +2227,59 @@ VUEX
 - **容器组件的差异**。React-Redux 提倡容器组件和表现组件分离的最佳实践，而 VUEX 框架下不做区分，全都是表现（展示）组件。我觉得不分优劣，React-Redux 的做法更清晰、更具有强制性和规范性，而 VUEX 的方式更加简化和易于理解。
 
 总的来说，就是谁包谁，谁插谁的问题。Redux 毕竟是独立于 React 的状态管理，它与 React 的结合则需要对 React 组件进行一下外包装。而 VUEX 就是为 VUE 定制，作为插件、以及使用插入的方式就可以生效，而且提供了很大的灵活性。
+
+## 75. 登录验证拦截(通过 router)
+
+1. 先设置 requireAuth:
+   ```js
+   routes = [
+     {
+       name: "detail",
+       path: "/detail",
+       meta: {
+         requireAuth: true
+       }
+     },
+     {
+       name: "login",
+       path: "/login"
+     }
+   ];
+   ```
+2. 再配置 router.beforeEach:
+   ```js
+   router.beforeEach((from, to, next) => {
+     if (to.meta.requireAuth) {
+       // 判断跳转的路由是否需要登录
+       if (store.state.token) {
+         // vuex.state判断token是否存在
+         next(); // 已登录
+       } else {
+         next({
+           path: "/login",
+           query: { redirect: to.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+         });
+       }
+     } else {
+       next();
+     }
+   });
+   ```
+
+## 76. vue 解除双向绑定
+
+```js
+let obj = JSON.parse(JSON.stringify(this.temp1));
+```
+
+## 77. vue 异步组件
+
+为了简化，Vue 允许你以一个工厂函数的方式定义你的组件，这个工厂函数会异步解析你的组件定义。Vue 只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把结果缓存起来供未来重渲染
+
+```js
+Vue.component(
+  "async-webpack-example",
+  // 这个 `import` 函数会返回一个 `Promise` 对象。
+  () => import("./my-async-component")
+);
+```
