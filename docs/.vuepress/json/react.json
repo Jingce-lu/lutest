@@ -1,0 +1,1598 @@
+{
+  "msg": "success",
+  "result": {
+    "list": [
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴", "掌门一对一", "喜马拉雅", "蘑菇街"],
+        "date": "Fri, 19 Jun 2020 16:21:40 GMT",
+        "favorite_num": 11,
+        "qid": 25,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "react组件间通信常见的几种情况:\n- 1. 父组件向子组件通信\n- 2. 子组件向父组件通信\n- 3. 跨级组件通信\n- 4. 非嵌套关系的组件通信\n\n\n1）父组件向子组件通信：父组件通过 props 向子组件传递需要的信息。\n\n```js\n// 子组件: Child\nconst Child = props =>{\n  return <p>{props.name}</p>\n}\n\n// 父组件 Parent\nconst Parent = ()=>{\n    return <Child name=\"路小二\"></Child>\n}\n```\n\n2）子组件向父组件通信：: props+回调的方式。\n\n```js\n// 子组件: Child\nconst Child = props =>{\n  const cb = msg =>{\n      return ()=>{\n          props.callback(msg)\n      }\n  }\n  return (\n      <button onClick={cb(\"路小二欢迎你!\")}>路小二欢迎你</button>\n  )\n}\n\n// 父组件 Parent\nclass Parent extends Component {\n    callback(msg){\n        console.log(msg)\n    }\n    render(){\n        return <Child callback={this.callback.bind(this)}></Child>    \n    }\n}\n```\n\n\n3）跨级组件通信：即父组件向子组件的子组件通信，向更深层子组件通信。\n\n- 使用props，利用中间组件层层传递,但是如果父组件结构较深，那么中间每一层组件都要去传递props，增加了复杂度，并且这些props并不是中间组件自己需要的。\n- 使用context，context相当于一个大容器，我们可以把要通信的内容放在这个容器中，这样不管嵌套多深，都可以随意取用，对于跨越多层的全局数据可以使用context实现。\n\n```js\n// context方式实现跨级组件通信 \n// Context 设计目的是为了共享那些对于一个组件树而言是“全局”的数据\n\nconst BatteryContext = createContext();\n\n//  子组件的子组件 \nclass GrandChild extends Component {\n    render(){\n        return (\n            <BatteryContext.Consumer>\n                {\n                    color => <h1 style={{\"color\":color}}>我是红色的:{color}</h1>\n                }\n            </BatteryContext.Consumer>\n        ) \n    }\n}\n\n//  子组件\nconst Child = () =>{\n    return (\n        <GrandChild/>\n    )\n}\n// 父组件\nclass Parent extends Component {\n      state = {\n          color:\"red\"\n      }\n      render(){\n          const {color} = this.state\n          return (\n          <BatteryContext.Provider value={color}>\n              <Child></Child>\n          </BatteryContext.Provider> \n          )\n      }\n}\n```\n\n4）非嵌套关系的组件通信：即没有任何包含关系的组件，包括兄弟组件以及不在同一个父级中的非兄弟组件。\n- 1. 可以使用自定义事件通信（发布订阅模式）\n- 2. 可以通过redux等进行全局状态管理\n- 3. 如果是兄弟组件通信，可以找到这两个兄弟节点共同的父节点, 结合父子间通信方式进行通信。\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 25,
+          "subject": "",
+          "title": "React 组件通信方式"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴", "沪江"],
+        "date": "Fri, 19 Jun 2020 16:21:40 GMT",
+        "favorite_num": 11,
+        "qid": 17,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "React并不是将click事件绑在该div的真实DOM上，而是在document处监听所有支持的事件，当事件发生并冒泡至document处时，React将事件内容封装并交由真正的处理函数运行。这样的方式不仅减少了内存消耗，还能在组件挂载销毁时统一订阅和移除事件。\n\n另外冒泡到 document 上的事件也不是原生浏览器事件，而是 React 自己实现的合成事件（SyntheticEvent）。因此我们如果不想要事件冒泡的话，调用 event.stopPropagation 是无效的，而应该调用 event.preventDefault。\n\n![react事件绑定原理](http://img-static.yidengxuetang.com/wxapp/issue-img/qid-17.png)\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 17,
+          "subject": "",
+          "title": "React 事件绑定原理"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["头条", "滴滴", "菜鸟网络", "挖财", "喜马拉雅"],
+        "date": "Fri, 19 Jun 2020 16:21:40 GMT",
+        "favorite_num": 10,
+        "qid": 27,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "1）背景\n\n- react在进行组件渲染时，从setState开始到渲染完成整个过程是同步的（“一气呵成”）。如果需要渲染的组件比较庞大，js执行会占据主线程时间较长，会导致页面响应度变差，使得react在动画、手势等应用中效果比较差。\n- 页面卡顿：Stack reconciler的工作流程很像函数的调用过程。父组件里调子组件，可以类比为函数的递归；对于特别庞大的vDOM树来说，reconciliation过程会很长(x00ms)，超过16ms,在这期间，主线程是被js占用的，因此任何交互、布局、渲染都会停止，给用户的感觉就是页面被卡住了。\n\n2）实现原理\n\n> 旧版 React 通过递归的方式进行渲染，使用的是 JS 引擎自身的函数调用栈，它会一直执行到栈空为止。而Fiber实现了自己的组件调用栈，它以链表的形式遍历组件树，可以灵活的暂停、继续和丢弃执行的任务。实现方式是使用了浏览器的requestIdleCallback这一 API。\n> Fiber 其实指的是一种数据结构，它可以用一个纯 JS 对象来表示：\n\n```js\nconst fiber = {\n    stateNode,    // 节点实例\n    child,        // 子节点\n    sibling,      // 兄弟节点\n    return,       // 父节点\n}\n```\n\n- react内部运转分三层：\n  - Virtual DOM 层，描述页面长什么样。\n  - Reconciler 层，负责调用组件生命周期方法，进行 Diff 运算等。\n  - Renderer 层，根据不同的平台，渲染出相应的页面，比较常见的是 ReactDOM 和 ReactNative。\n- 为了实现不卡顿，就需要有一个调度器 (Scheduler) 来进行任务分配。优先级高的任务（如键盘输入）可以打断优先级低的任务（如Diff）的执行，从而更快的生效。任务的优先级有六种：\n  - synchronous，与之前的Stack Reconciler操作一样，同步执行\n  - task，在next tick之前执行\n  - animation，下一帧之前执行\n  - high，在不久的将来立即执行\n  - low，稍微延迟执行也没关系\n  - offscreen，下一次render时或scroll时才执行\n- Fiber Reconciler（react ）执行阶段：\n  - 阶段一，生成 Fiber 树，得出需要更新的节点信息。这一步是一个渐进的过程，可以被打断。\n  - 阶段二，将需要更新的节点一次过批量更新，这个过程不能被打断。\n- Fiber树：Fiber Reconciler在阶段一进行Diff计算的时候，会基于Virtual DOM树生成一棵Fiber树，它的本质是链表。\n- 从Stack Reconciler到Fiber Reconciler，源码层面其实就是干了一件递归改循环的事情",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 27,
+          "subject": "",
+          "title": "说一下 react-fiber"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["掌门一对一"],
+        "date": "Fri, 19 Jun 2020 16:21:40 GMT",
+        "favorite_num": 7,
+        "qid": 26,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "1）状态管理\n- redux-sage 是 redux 的一个异步处理的中间件。\n- mobx 是数据管理库，和 redux 一样。\n\n2）设计思想\n- redux-sage 属于 flux 体系， 函数式编程思想。\n- mobx 不属于 flux 体系，面向对象编程和响应式编程。\n\n3）主要特点\n- redux-sage 因为是中间件，更关注异步处理的，通过  Generator 函数来将异步变为同步，使代码可读性高，结构清晰。action 也不是 action creator 而是 pure action，\n- 在 Generator 函数中通过 call 或者 put 方法直接声明式调用，并自带一些方法，如 takeEvery，takeLast，race等，控制多个异步操作，让多个异步更简单。\n- mobx 是更简单更方便更灵活的处理数据。 Store 是包含了 state 和 action。state 包装成一个可被观察的对象， action 可以直接修改 state，之后通过 Computed values 将依赖 state 的计算属性更新 ，之后触发 Reactions 响应依赖 state 的变更，输出相应的副作用 ，但不生成新的 state。\n\n4）数据可变性\n- redux-sage 强调 state 不可变，不能直接操作 state，通过 action 和 reducer 在原来的 state 的基础上返回一个新的 state 达到改变 state 的目的。\n- mobx 直接在方法中更改 state，同时所有使用的 state 都发生变化，不生成新的 state。\n\n5）写法难易度\n- redux-sage 比 redux 在 action 和 reducer 上要简单一些。需要用 dispatch 触发 state 的改变，需要 mapStateToProps 订阅 state。\n- mobx 在非严格模式下不用 action 和 reducer，在严格模式下需要在 action 中修改 state，并且自动触发相关依赖的更新。 \n\n6）使用场景\n- redux-sage 很好的解决了 redux 关于异步处理时的复杂度和代码冗余的问题，数据流向比较好追踪。但是 redux 的学习成本比 较高，代码比较冗余，不是特别需要状态管理，最好用别\n   的方式代替。\n- mobx 学习成本低，能快速上手，代码比较简洁。但是可能因为代码编写的原因和数据更新时相对黑盒，导致数据流向不利于追踪。",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 26,
+          "subject": "",
+          "title": "redux-saga 和 mobx 的比较"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴", "掌门一对一", "网易", "有赞", "沪江", "喜马拉雅", "酷家乐", "快手"],
+        "date": "Fri, 19 Jun 2020 16:21:40 GMT",
+        "favorite_num": 21,
+        "qid": 6,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "1）对于正常的项目优化，一般都涉及到几个方面，**开发过程中**、**上线之后的首屏**、**运行过程的状态**\n\n- 来聊聊上线之后的首屏及运行状态：\n  - 首屏优化一般涉及到几个指标FP、FCP、FMP；要有一个良好的体验是尽可能的把FCP提前，需要做一些工程化的处理，去优化资源的加载\n  - 方式及分包策略，资源的减少是最有效的加快首屏打开的方式；\n  - 对于CSR的应用，FCP的过程一般是首先加载js与css资源，js在本地执行完成，然后加载数据回来，做内容初始化渲染，这中间就有几次的网络反复请求的过程；所以CSR可以考虑使用骨架屏及预渲染（部分结构预渲染）、suspence与lazy做懒加载动态组件的方式\n  - 当然还有另外一种方式就是SSR的方式，SSR对于首屏的优化有一定的优势，但是这种瓶颈一般在Node服务端的处理，建议使用stream流的方式来处理，对于体验与node端的内存管理等，都有优势；\n  - 不管对于CSR或者SSR，都建议配合使用Service worker，来控制资源的调配及骨架屏秒开的体验\n  - react项目上线之后，首先需要保障的是可用性，所以可以通过React.Profiler分析组件的渲染次数及耗时的一些任务，但是Profile记录的是commit阶段的数据，所以对于react的调和阶段就需要结合performance API一起分析；\n  - 由于React是父级props改变之后，所有与props不相关子组件在没有添加条件控制的情况之下，也会触发render渲染，这是没有必要的，可以结合React的PureComponent以及React.memo等做浅比较处理，这中间有涉及到不可变数据的处理，当然也可以结合使用ShouldComponentUpdate做深比较处理；\n  - 所有的运行状态优化，都是减少不必要的render，React.useMemo与React.useCallback也是可以做很多优化的地方；\n  - 在很多应用中，都会涉及到使用redux以及使用context，这两个都可能造成许多不必要的render，所以在使用的时候，也需要谨慎的处理一些数据；\n\n  - 最后就是保证整个应用的可用性，为组件创建错误边界，可以使用componentDidCatch来处理；\n\n- 实际项目中开发过程中还有很多其他的优化点：\n\n  - 1.保证数据的不可变性\n  - 2.使用唯一的键值迭代\n  - 3.使用web worker做密集型的任务处理\n  - 4.不在render中处理数据\n  - 5.不必要的标签，使用React.Fragments",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 6,
+          "subject": "",
+          "title": "React 项目中有哪些细节可以优化？实际开发中都做过哪些性能优化"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴"],
+        "date": "Fri, 19 Jun 2020 16:21:40 GMT",
+        "favorite_num": 11,
+        "qid": 7,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "1）React 16.x的三大新特性 Time Slicing, Suspense，hooks\n\n- 1. Time Slicing（解决CPU速度问题）使得在执行任务的期间可以随时暂停，跑去干别的事情，这个特性使得react能在性能极其差的机器跑时，仍然保持有良好的性能\n- 2. Suspense （解决网络IO问题）和lazy配合，实现异步加载组件。 能暂停当前组件的渲染, 当完成某件事以后再继续渲染，解决从react出生到现在都存在的「异步副作用」的问题，而且解决得非\n- 的优雅，使用的是「异步但是同步的写法」，我个人认为，这是最好的解决异步问题的方式\n- 3. 此外，还提供了一个内置函数 componentDidCatch，当有错误发生时, 我们可以友好地展示 fallback 组件；可以捕捉到它的子元素（包括嵌套子元素）抛出的异常；可以复用错误组件。\n\n2）React16.8\n- 加入hooks，让React函数式组件更加灵活\n- hooks之前，React存在很多问题\n  - 1. 在组件间复用状态逻辑很难\n  - 2. 复杂组件变得难以理解，高阶组件和函数组件的嵌套过深。\n  - 3. class组件的this指向问题\n  - 4. 难以记忆的生命周期\n- hooks很好的解决了上述问题，hooks提供了很多方法\n  - 1. useState 返回有状态值，以及更新这个状态值的函数\n  - 2. useEffect 接受包含命令式，可能有副作用代码的函数。\n  - 3. useContext 接受上下文对象（从React.createContext返回的值）并返回当前上下文值，\n  - 4. useReducer useState的替代方案。接受类型为(state，action) => newState的reducer，并返回与dispatch方法配对的当前状态。 \n  - 5. useCallback  返回一个回忆的memoized版本，该版本仅在其中一个输入发生更改时才会更改。纯函数的输入输出确定性\n  - 6. useMemo 纯的一个记忆函数\n  - 7. useRef 返回一个可变的ref对象，其.current属性被初始化为传递的参数\n  - 8. useImperativeMethods 自定义使用ref时公开给父组件的实例值\n  - 9. useMutationEffect 更新兄弟组件之前，它在React执行其DOM改变的同一阶段同步触发\n  - 10. useLayoutEffect DOM改变后同步触发。使用它来从DOM读取布局并同步重新渲染\n\n3）React16.9 \n- 1. 重命名 Unsafe 的生命周期方法。新的 UNSAFE_ 前缀将有助于在代码 review 和 debug 期间，使这些有问题的字样更突出\n- 2. 废弃 javascript: 形式的 URL。以 javascript: 开头的 URL 非常容易遭受攻击，造成安全漏洞。\n- 3. 废弃 “Factory” 组件。 工厂组件会导致 React 变大且变慢。\n- 4. act() 也支持异步函数，并且你可以在调用它时使用 await。\n- 5. 使用 <React.Profiler> 进行性能评估。 在较大的应用中追踪性能回归可能会很方便 \n\n4）React16.13.0\n- 1. 支持在渲染期间调用setState，但仅适用于同一组件\n- 2. 可检测冲突的样式规则并记录警告\n- 3. 废弃unstable_createPortal，使用createPortal\n- 4. 将组件堆栈添加到其开发警告中，使开发人员能够隔离bug并调试其程序，这可以清楚地说明问题所在，并更快地定位和修复错误。",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 7,
+          "subject": "",
+          "title": "react 最新版本解决了什么问题 加了哪些东西"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": [],
+        "date": "Fri, 19 Jun 2020 16:20:44 GMT",
+        "favorite_num": 4,
+        "qid": 766,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "#### 代码实现\n\n```js\nimport React from 'react'\nimport ReactDOM from 'react-dom'\n\nfunction replacer(key, value) {\n  if (typeof value === 'function') {\n    return `function ${value.name}() {...}`\n  }\n  return value\n}\n\nfunction stringify(value) {\n  return JSON.stringify(value, replacer, 2)\n}\n\nfunction DebuggerHOC(WrappedComponent) {\n  return class II extends WrappedComponent {\n    render() {\n      return (\n        <div>\n          <h2>\n            HOC 调试器组件\n          </h2>\n          <p>\n            Props\n          </p >\n          <pre>{stringify(this.props)}</pre>\n          <p>\n            State\n          </p >\n          <pre>{stringify(this.state)}</pre>\n          {super.render()}\n        </div>\n      )\n    }\n  }\n}\n\n// Props Proxy and state abstraction demonstration\nfunction PPHOC(WrappedComponent) {\n  return class PP extends React.Component {\n    constructor(props) {\n      super(props)\n      this.state = { fields: {} }\n    }\n\n    getField(fieldName) {\n      if (!this.state.fields[fieldName]) {\n        this.state.fields[fieldName] = {\n          value: '',\n          onChange: event => {\n            this.state.fields[fieldName].value = event.target.value\n            this.forceUpdate()\n          }\n        }\n      }\n\n      return {\n        value: this.state.fields[fieldName].value,\n        onChange: this.state.fields[fieldName].onChange\n      }\n    }\n\n    render() {\n      const props = Object.assign({}, this.props, {\n        fields: this.getField.bind(this),\n      })\n      return (\n        <div>\n          <h2>\n            PP HOC\n          </h2>\n          <p>我是一个Props代理HOC，抽象控制输入</p >\n          <WrappedComponent {...props}/>\n        </div>\n      )\n    }\n  }\n}\n\n\nclass Example extends React.Component {\n  render() {\n    return (\n      <div>\n        <h2>\n          Example组件\n        </h2>\n        <p>\n          Props\n        </p >\n        <pre>{stringify(this.props)}</pre>\n        <form>\n          <label>自动控制输入!</label>\n          <input type=\"email\" {...this.props.fields('email')}/>\n        </form>\n      </div>\n    )\n  }\n}\n\nexport default DebuggerHOC(PPHOC(Example))\n// const EnhancedExample = DebuggerHOC(PPHOC(Example))\n//\n// ReactDOM.render(<EnhancedExample date={(new Date).toISOString()}/>, document.getElementById('root'))\n```\n\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 766,
+          "subject": "",
+          "title": "如何实现双向绑定，并抽象成公共组件"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["爱范儿"],
+        "date": "Fri, 19 Jun 2020 16:20:44 GMT",
+        "favorite_num": 30,
+        "qid": 703,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "#### 1.原生方式实现\n\n- **html**\n\n```html\n<body>\n    <button id=\"expire1\">过期设置(暴力法)</button>\n    <button id=\"expire2\">过期设置(innerHTMl)</button>\n    <ul id=\"wrap\"></ul>\n</body>\n```\n\n- **JavaScript**\n\n```js\n//生成大量dom \nlet start = new Date().getTime()\nlet $ul = document.getElementById(\"wrap\");\n\nlet el = document.createDocumentFragment()\nlet allKeys = []\nfor(var i = 0; i < 1000; i++){\n    let li = document.createElement('li');\n    li.dataset.key = i  //key\n    li.innerHTML = i\n    el.appendChild(li)\n    allKeys.push(i)\n}\n$ul.appendChild(el)\n\n\n// 生成过期项 模拟服务端生成的数据\nfunction getExpireKeys(){\n    let keys = []\n    while(keys.length < 100){\n    let randomKey = Math.floor(Math.random() * 1000)\n    if(keys.indexOf(randomKey) === -1){\n        keys.push(randomKey)\n    }else{\n        continue\n    }\n    }\n    return keys\n}\n\n// 暴力项 逐项遍历\ndocument.getElementById('expire1').onclick = function(){\n    let expireKeys = getExpireKeys()\n    let children = $ul.children;\n    let start = Date.now()\n    for (let i = 0; i < expireKeys.length; i++) {\n    const element = document.querySelector(`[data-key=\"${expireKeys[i]}\"]`);\n    element.innerHTML = element.innerHTML + '已过期'\n    }\n}\n\n//模板字符串 innerHtml替换\ndocument.getElementById('expire2').onclick = function(){\n    let expireKeys = getExpireKeys()\n    const item = []\n    for (let i = 0; i < allKeys.length; i++) {\n    item.push( `<li>${allKeys[i]} ${expireKeys.indexOf(allKeys[i]) !== -1 ? '已过期' : ''}</li>`)\n    }\n    $ul.innerHTML = item.join('')\n}\n```\n\n#### 2.Vue方式处理\n\n```js\n// template\n<button @click=setExpire>过期</button>\n<ul>\n  <li v-for=\"item in allKeys\" :key=\"item.value\">\n    {{item.value}}\n    {{item.expire ? '已过期' : ''}}\n  </li>\n</ul>\n\n// script\n<script>\nexport default {\n  data() {\n    return {\n      allKeys: [],  //所有项\n      expireKeys: []  //过期项\n    }\n  },\n  created(){\n    for(var i = 0; i < 1000; i++){\n      this.allKeys.push({\n        value: i,\n        expire: false\n      })\n    }\n  },\n  methods: {\n    setExpire(){\n      let keys = this.getExpireKeys()\n      for (let i = 0; i < this.allKeys.length; i++) {\n        if(keys.indexOf(this.allKeys[i].value) !== -1){\n          this.allKeys[i].expire = true\n        }\n      }\n    },\n    // 生成过期项 模拟服务端生成的数据\n    getExpireKeys(){\n      let keys = []\n      while(keys.length < 100){\n        let randomKey = Math.floor(Math.random() * 1000)\n        if(keys.indexOf(randomKey) === -1){\n          keys.push(randomKey)\n        }else{\n          continue\n        }\n      }\n      return keys\n    }\n  },\n}\n</script>\n```\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 703,
+          "subject": "```js\n/* \n  a)在不使用vue、react的前提下写代码解决一下问题\n    一个List页面上，含有1000个条目的待办列表，现其中100项在同一时间达到了过期时间，需要在对应项的text-node里添加“已过期”文字。需要尽可能减少dom重绘次数以提升性能。\n  b)尝试使用vue或react解决上述问题\n*/\n```\n",
+          "title": "按要求完成题目"
+        },
+        "tech_tag": ["JavaScript", "Vue", "React", "编程题"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": [],
+        "date": "Fri, 19 Jun 2020 16:20:44 GMT",
+        "favorite_num": 5,
+        "qid": 764,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "#### 1.借助状态提升的方式间接实现通信\n\n即把组件之间要共享的状态提升至最近的共同父组件中统一管理。而任意一个兄弟组件可通过从父组件传来的回调函数更新共享状态，新的共享状态再通过父组件的props回传给子组件。\n\n#### 2.利用自定义事件\n\n也就是典型的发布订阅模式，通过向事件对象上添加监听器和触发事件来实现组件之间的通信。\n\n#### 3.利用context api\n\ncontext 提供了一个无需为每层组件手动添加 props，就能在组件树间进行数据传递的方法\n\n#### 4.利用redux/mobx等全局状态管理工具",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 764,
+          "subject": "",
+          "title": "React兄弟组件的通信方式？(需回答两种以上)"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": [],
+        "date": "Fri, 19 Jun 2020 16:20:44 GMT",
+        "favorite_num": 4,
+        "qid": 765,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 一、Stack算法原理\n\n假如有A、B、C、D四个组件，层级结构为：\n\n![Stack](http://img-static.yidengxuetang.com/wxapp/issue-img/qid-765-stach.png)\n\n**组件的生命周期为:**\n\n- 挂载阶段：constructor()、componentWillMount()、render()、componentDidMount()\n- 更新阶段为componentWillReceiveProps()、shouldComponentUpdate()、componentWillUpdate()、render()、componentDidUpdate\n\n**在挂载阶段，A,B,C,D的生命周期渲染顺序是**\n\n![组件生成周期](http://img-static.yidengxuetang.com/wxapp/issue-img/qid-765-lifcycle.png)\n\n以render()函数为分界线。从顶层组件开始，一直往下，直至最底层子组件。然后再往上，组件update阶段同理。\n\n**Stack存在的问题**\n\n底层使用递归，递归并不好中途被打断，如果这是一个很大，层级很深的组件，react渲染它需要几十甚至几百毫秒，在这期间，react会一直占用浏览器主线程，任何其他的操作（包括用户的点击，鼠标移动等操作）都无法执行。这种情况下，页面就会出现卡顿甚至假死的现象。\n\n### 二、Fiber算法原理\n\nFiber架构用了分片的方式解决上面的问题，就是把一个任务分成很多小片，当分配给这个小片的时间用尽的时候，就检查任务列表中有没有新的、优先级更高的任务，有就做这个新任务，没有就继续做原来的任务。这种方式被叫做异步渲染(Async Rendering)。如下图所示：\n\n![异步渲染](http://img-static.yidengxuetang.com/wxapp/issue-img/qid-654-fiber-arch.png)\n\n加入fiber的react将组件更新分为两个时期：phase1和phase2，这两个时期以render为分界，render前的生命周期为phase1,render后的生命周期为phase2。\n\n**phase1的生命周期是可以被打断的**，每隔一段时间它会跳出当前渲染进程，去确定是否有其他更重要的任务。此过程，React 在 workingProgressTree （并不是真实的virtualDomTree）上复用 current 上的 Fiber 数据结构来一步地（通过requestIdleCallback）来构建新的 tree，标记出需要更新的节点，放入队列中。\n\n**phase2的生命周期是不可被打断的**，React 将其所有的变更一次性更新到DOM上。这里最重要的是phase1这是时期所做的事。因此我们需要具体了解phase1的机制。如果不被打断，那么phase1执行完会直接进入render函数，构建真实的virtualDomTree。如果组件再phase1过程中被打断，即当前组件只渲染到一半（也许是在willMount,也许是willUpdate~反正是在render之前的生命周期），那么react会怎么干呢？ react会放弃当前组件所有干到一半的事情，去做更高优先级更重要的任务（当然，也可能是用户鼠标移动，或者其他react监听之外的任务），当所有高优先级任务执行完之后，react通过callback回到之前渲染到一半的组件，从头开始渲染。（看起来放弃已经渲染完的生命周期，会有点不合理，反而会增加渲染时长，但是react确实是这么干的）。也就是 所有phase1的生命周期函数都可能被执行多次，因为可能会被打断重来。因为可能会被执行多次，那么我们最好就得保证phase1的生命周期每一次执行的结果都是一样的，否则就会有问题，因此，最好都是纯函数。\n\n### 三、fiber数据结构\n\nfiber本质是个链表，有child和sibing属性，指向第一个子节点和相邻的兄弟节点，从而构成fiber tree。return属性指向其父节点。\n\n更新队列，updateQueue，是一个链表，有first和last两个属性，指向第一个和最后一个update对象。每个fiber有一个属性updateQueue指向其对应的更新队列。\n\n每个fiber（当前fiber可以称为current）有一个属性alternate，开始时指向一个自己的clone体，update的变化会先更新到alternate上，当更新完毕，alternate替换current。\n\n结构如下图所示：\n\n![fiber数据结构](http://img-static.yidengxuetang.com/wxapp/issue-img/qid-654-fiberprinciple.png)\n\n由上图可以看出：通过链表，每个节点都可以找到它的父节点、兄弟节点、子节点。这里需要注意的是，父节点只指向它的第一个子节点，而不是全部，兄弟节点也是指向下一个兄弟节点，不是全部。\n\n### 四、关键API：requestIdleCallback\n\nMDN对该api描述如下：`window.requestIdleCallback()`方法将在浏览器的空闲时段内调用的函数排队。这使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间timeout，则有可能为了在超时前执行函数而打乱执行顺序。你可以在空闲回调函数中调用requestIdleCallback()，以便在下一次通过事件循环之前调度另一个回调。\n\n使用该方法，fiber实现了分片\n\n### 五、fiber 架构的本质\n\n1. 循环条件：利用 requestIdeCallback 空闲时间递减。\n2. 遍历过程：利用链表，找孩子找兄弟找父亲。\n3. React Fiber 是一种基于浏览器的单线程调度算法.React 16之前 ，reconcilation 算法实际上是递归，想要中断递归是很困难的，React 16 开始使用了循环来代替之前的递归。\n\n`fiber`是React16的新特性，是对之前`diff`算法的重写，主要是把一次计算，改变为多次计算，在浏览器有高级任务时，暂停计算。`fiber`的问世就是为了解决之前大量计算导致浏览器掉帧的现象。\n\n相对于之前`stack`，源码上核心的变化就是讲原先递归改为循环。\n\n旧版`stack`算法是一条路走到黑，运作的过程是不能被打断的，通过递归的方式进行渲染，使用的是JS引擎自身的函数调用栈，它会一直执行到栈空为止，由于JS是单线程的，所以大量计算会导致主线程长时间被占用。\n\n新版`fiber`实现了自己的调用栈，它以链表的形式遍历组件树，可以灵活的暂停、继续和丢弃执行的任务。实现方式是使用了浏览器的`requestIdleCallback`这一 API，在主线程空闲时计算。\n\n1）为了达到这种效果，就需要有一个调度器 (Scheduler) 来进行任务分配。\n\n任务的优先级有六种：\n\n- synchronous，与之前的Stack Reconciler操作一样，同步执行\n- task，在next tick之前执行\n- animation，下一帧之前执行\t\n- high，在不久的将来立即执行\n- low，稍微延迟执行也没关系\n- offscreen，下一次render时或scroll时才执行\n\n2）优先级高的任务（如键盘输入）可以打断优先级低的任务（如Diff）的执行，从而更快的生效\n\n`fiber`实际上是一种数据结构，用`js`对象表示就是：\n\n```js\nconst fiber = {\n    stateNode,    // 节点实例\t\n    child,        // 子节点\n    sibling,      // 兄弟节点\n    return,       // 父节点\n}\n```\n\n3）Fiber Reconciler 在执行过程中，会分为 2 个阶段。\n\n- 阶段一，生成`Fiber tree`，得出需要更新的节点信息。这一步是一个渐进的过程，可以被打断。\n- 阶段二，将需要更新的节点一次过批量更新，这个过程不能被打断。\n\n阶段一可被打断的特性，让优先级更高的任务先执行，从框架层面大大降低了页面掉帧的概率。\n\n### 六、fiber与stack比较\n\n**1）数据结构的调整**\n\n- 现在使用扁平化的 链表 的数据存储结构，使用循环迭代来代替之前的递归；\n- 每个 VirtualDOM 节点内部现在使用 Fiber node表示,模拟函数调用栈，保存了节点处理的上下文信息，方便中断和恢复；\n\n```js\n export type Fiber = {\n    ...\n    //  链表结构\n    return: Fiber | null,  // 指向父节点，或者render该节点的组件\n    child: Fiber | null, // 指向第一个子节点\n    sibling: Fiber | null, // 指向下一个兄弟节点\n    ...\n}\n```\n\n**2）两个阶段的拆分**\n\n之前是一边Diff一边commit提交的, 现在分为两个阶段\n\n**①reconciliation 协调阶段** \n\n协调阶段是可以被打断的\n\n- constructor\n- componentWillMount 废弃\n- componentWillReceiveProps 废弃\n- static getDerivedStateFromProps\n- shouldComponentUpdate\n- componentWillUpdate 废弃\n- render\n\n因为Reconciliation阶段能被打断，所以会出现多次调用的情况，所以这些生命周期函数应该避免使用，16版之后标记为不安全的；\n\n**②commit 提交阶段**\n\n不能暂停，一直到界面更新完成；\n\n- getSnapshotBeforeUpdate()\n- componentDidMount\n- componentDidUpdate\n- componentWillUnmount\n\n该阶段为了正确地处理各种副作用，包括DOM变更、还有你在componentDidMount中发起的异步请求、useEffect 中定义的副作用等等。\n\n因为有副作用，所以必须保证按照次序只调用一次，况且会有用户可以察觉到的变更, 所以不能中断；\n\n### 七、总结\n\n旧版React在一些响应体验要求较高的场景不适用，比如动画，布局和手势。\n\n根本原因是渲染/更新过程一旦开始无法中断，持续占用主线程，主线程忙于执行JS，无暇他顾（布局、动画），造成掉帧、延迟响应（甚至无响应）等不佳体验。`Fiber`就是用来解决这类问题的，把渲染/更新过程拆分为小块任务，通过合理的调度机制来控制时间，更细粒度、更强的控制力。\n\nFiber：一种将 recocilation （递归 diff），拆分成无数个小任务的算法；它随时能够停止，恢复。停止恢复的时机取决于当前的一帧（16ms）内，还有没有足够的时间允许计算。这种算法并没有减少渲染时间，相反，由于某些函数中途中断，再从头开始执行，时间反而有可能会增加。但是通过把重要的任务提前，空间时间执行非重要任务，解决了那些组件深层递归的页面的卡顿和假死现象，提升了用户体验。\n\n\n\n\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 765,
+          "subject": "",
+          "title": "Fiber算法原理，相比之前的stack算法哪些方面做了优化？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["微医"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 5,
+        "qid": 504,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "#### 1.RN\n\nRN是React Native的简称。其中React（有时叫React.js或ReactJS）是一套开源JavaScript 库（也可以称为前端 UI 框架），而React Native则是React向移动端的延伸。我们可以认为React Native分为两层，React 层是一套JavaScript 库；Native层则扮演桥梁的功能，根据平台不同映射为不同的原生控件；通过这种设计实现了—开发者构建的RN代码可以在不同的平台上（暂时支持Android和IOS）运行，也就是Learn once, write anywhere。\n\n\n#### 2.虚拟 DOM 对跨平台技术的意义\n\n为什么使用虚拟 DOM？\n\n是因为快（实际上不一定快）？。是因为解耦？是因为响应式？\n\n对跨平台技术来说，更重要的意义在于：\n\n虚拟 DOM 是 DOM 在内存中的一种轻量级表达方式，是一种统一约定！可以通过不同的渲染引擎生成不同平台下的 UI！\n\n虚拟 DOM 的可移植性非常好，这意味着可以渲染到 DOM 以外的任何端，发挥你的想象力，可以做的事情很多。\n\n所以这也是为什么3 大框架出现以后就出现很多 native（RN）框架。主要原因还是虚拟dom。\n\n> 注：虚拟 DOM 真正的价值从来都不是性能，而是不管数据怎么变化，都可以用最小的代价来更新 DOM，而且掩盖了底层的 DOM 操作，让你用更声明式的方式来描述你的目的，从而让你的代码更容易维护。\n\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 504,
+          "subject": "",
+          "title": "为什么 3 大框架出现以后就出现很多 native（RN）框架（虚拟 DOM）"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["酷家乐"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 538,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "#### 1.props \n\n- 函数组件的props就是一个函数的入参组件\n- 类组件：`this.props` 包括被该组件调用或者定义的props\n\n#### 2.state\n\n- 组件中的 state 包含了随时可能发生变化的数据。\n- state 由用户自定义，它是一个普通 JavaScript 对象。\n\n#### 3.区别\n\n- props 是传递给组件的（类似于函数的形参），而 state 是在组件内被组件自己管理的（类似于在一个函数内声明的变量）。\n- props 是不可修改的，所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。\n- state 是在组件中创建的，一般在 constructor中初始化 state\n- state 是多变的、可以修改，每次setState都异步更新的。",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 538,
+          "subject": "",
+          "title": "props 和 state 的区别"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["寺库"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 509,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 实现\n\n以iOS为例，实现一个普通模块，iOS新建一个类继承NSObject实现RCTBridgeModule协议，在类实现文件里添加RCT_EXPORT_MODULE()的宏，标记自己是个准备给js调用的模块，这里可以传模块名，默认为类名。然后通过RCT_EXPORT_METHOD()或RCT_REMAP_METHOD()暴露方法给到js调用，结果可以通过block回调，也可以是返回一个Promise。在js层通过NativeModules.模块名.方法名来调用。\n\n如果是实现一个原生UI模块，则新建类继承RCTViewManager实现RCTBridgeModule协议，类里比普通模块多实现-(UIView *)view方法，返回一个原生组件的UIView实例。ReactJS 层使用时先使用requireNativeComponent方法引进，就可以在js层愉快的使用原生组件了。\n\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 509,
+          "subject": "",
+          "title": "RN 如何实现一个原生的组件？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["寺库"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 512,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 原理\n\n我们可以把RN整个架构分为三层\n\n**一是最上层我们写的React 的js代码层**，这里面写的代码是跑在jsc上，debug调试模式下跑在浏览器js解析引擎，通过websocket发送到移动设备。\n\n**第二层是RN建立的一个bridge桥接js和native** ,在0.59之前是所有通信都是json序列化后通过bridge异步通信，0.59开始用了新架构Fabric实现的JSI实现了js 和 native的直接共享内存调用，而无需再经过bridge。\n\n**三是native层**，主要渲染原生组件，和把事件传递出去。js上的虚拟节点是通过yoga解析，映射为原生组件再渲染，所以能实现一套js代码可以在安卓和ios上运行。\n\n在js层写的代码最终都会被打包为jsbundle文件，jsbundle里面是一个自执行的函数，参数为含所有模块标记的数组。\n\n以iOS为例，要在iOS上跑这个文件，主要通过RCTBridge初始化加载这个文件，然后 RCTRootView 初始化调用这个bridge。在RCTBridge 初始化过程中会在初始化一个 RCTCxxBridge 的实例batchedBridge 挂在自己身上，然后batchedBridge调用start方法，这个方法主要做4件事情：\n\n1. 是新建一个js线程，js代码执行就是跑在这个线程上，挂到 runloop 上让他不退出。\n\n2. 加载所有要暴露给js层的原生模块，包括RN实现的和开发者自己实现的，每个模块都生成对应的RCTModuleData。接着使用上面创建好的js线程执行Instance的初始化，过程中主要初始化了一个NativeToJsBridge实例变量，在这过程中又初始化了一个JSIExecutor的实例，这是Fabric架构的主角。\n\n3. 开始异步加载jsbundle资源，此步骤是和2一起开始的。\n\n4. 在2、3都完成之后则开始执行这个js代码，执行代码是调用RCTCxxBridge的executeSourceCode方法，在这方法里就一层层的使用了步骤2初始化的Instance，NativeToJsBridge，JSIExecutor。最后在JSIExecutor的loadApplicationScript方法里往js的执行环境向global注入了一个对象和两个方法，这个对象是nativeModuleProxy，是native 模块的配置信息，包含着native module 的模块id 和方法id，这个配置信息在原生一侧也缓存了一份，在未来js调用native时，就是传着模块id 和方法id实现原生模块的调用。JSIExecutor最后会触发jsc的JSEvaluateScript方法执行js源码。\n\n在js源码执行完成后，RCTCxxBridge发通知给到RCTRootView去执行runApplication方法，这个方法会把模块名方法名等信息发到js层，AppRegistry的runApplication在被调用后做了一系列操作，然后开始创建试图，然后经过yoga解析渲染出原生UI。\n\n交互过程中，js call native时，js 不会直接调用native的方法，而是存在一个队列里等着native call js 后顺道带回去执行，如果native 迟迟未调用（超过预设时间5ms）则js 会调用之前注入到global 的 nativeFlushQueueImmediate方法，告诉native 快来执行。",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 512,
+          "subject": "",
+          "title": "RN 的原理，为什么可以同时在安卓和 IOS 端运行"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["宝宝树"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 517,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 区别\n\nRedux 是 JavaScript 应用状态容器，提供可预测化的状态管理。\n\n1. 相对于全局管理，Redux的状态是可以预测的、可追踪的，也就减少了代码维护，问题排查的成本\n2. Redux是一种状态管理的设计思想，全局管理是一种方式，概念不一致，另外全局管理可能会有命名冲突等问题",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 517,
+          "subject": "",
+          "title": "rudux 和全局管理有什么区别"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["海风教育"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 549,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 一、对React的看法？\n\nReact是一个javascript UI库，用于构建高效、快速的用户界面。遵循组件设计模式、声明式编程范式和函数式编程概念，以使前端应用程序更高效。它使用虚拟DOM来有效地操作DOM。遵循单向数据流，让状态管理更加可控。\n\n\n### 二、优缺点\n\n**优点:**\n\n1. 提供应用的性能\n2. 方便在客户端和服务器端使用\n3. 使用JSX，代码的可读性很好\n4. 声明式、函数式编程，对应单测更加方便\n\n**缺点:**\n\n1. React是一个UI库，而不是一个完整的框架\n2. 深入学习成本高，对于新手不友好\n\n\n### 三、使用过程中遇到的问题，如何解决的？\n\n1. SPA应用，首屏时间过长，可以增加Loading态、骨架屏、异步加载、SSR等方法解决\n2. 父节点状态更新会导致无关子节点也会更新，使用`shouldComponentUpdate`、`PureComponent`、`React.memo` 等方式避免没有必要的渲染\n3. `setState` 并非都是同步执行，所以需要注意 `setState` 的状态更新、多次setState会被忽略等问题；另外object类型的state更新需要注意引用问题\n4. 复杂组件state难于管理难于追踪，应尽量避免使用state，可以使用Redux等方式统一管理state",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 549,
+          "subject": "",
+          "title": "对 React 的看法，它的优缺点，使用过程中遇到的问题，如何解决的"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["百分点"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 543,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 一、哪些方法会触发 react 重新渲染？\n\n#### 1.`setState()` 方法被调用\n\nsetState 是 React 中最常用的命令，通常情况下，执行 setState 会触发 render。但是这里有个点值得关注，执行 setState 的时候一定会重新渲染吗？\n\n答案是不一定。当 setState 传入 null 的时候，并不会触发 render。\n\n```js\nclass App extends React.Component {\n  state = {\n    a: 1\n  };\n\n  render() {\n    console.log(\"render\");\n    return (\n      <React.Fragement>\n        <p>{this.state.a}</p>\n        <button\n          onClick={() => {\n            this.setState({ a: 1 }); // 这里并没有改变 a 的值\n          }}\n        >\n          Click me\n        </button>\n        <button onClick={() => this.setState(null)}>setState null</button>\n        <Child />\n      </React.Fragement>\n    );\n  }\n}\n```\n\n#### 2.父组件重新渲染\n\n只要父组件重新渲染了，即使传入子组件的 props 未发生变化，那么子组件也会重新渲染，进而触发 render。\n\n### 二、重新渲染 render 会做些什么？\n\n1. 会对新旧 VNode 进行对比，也就是我们所说的DoM diff。\n2. 对新旧两棵树进行一个深度优先遍历，这样每一个节点都会一个标记，在到深度遍历的时候，每遍历到一和个节点，就把该节点和新的节点树进行对比，如果有差异就放到一个对象里面\n3. 遍历差异对象，根据差异的类型，根据对应对规则更新VNode\n\nReact 的处理 render 的基本思维模式是每次一有变动就会去重新渲染整个应用。在 Virtual DOM 没有出现之前，最简单的方法就是直接调用 innerHTML。Virtual DOM 厉害的地方并不是说它比直接操作 DOM 快，而是说不管数据怎么变，都会尽量以最小的代价去更新 DOM。React 将 render 函数返回的虚拟 DOM 树与老的进行比较，从而确定 DOM 要不要更新、怎么更新。当 DOM 树很大时，遍历两棵树进行各种比对还是相当耗性能的，特别是在顶层 setState 一个微小的修改，默认会去遍历整棵树。尽管 React 使用高度优化的 Diff 算法 ，但是这个过程仍然会损耗性能。\n\n### 三、总结\n\nReact 基于虚拟 DOM 和高效 Diff 算法的完美配合，实现了对 DOM 最小粒度的更新。大多数情况下，React 对 DOM 的渲染效率足以我们的业务日常。但在个别复杂业务场景下，性能问题依然会困扰我们。此时需要采取一些措施来提升运行性能，其很重要的一个方向，就是避免不必要的渲染（Render）。\n\n这里提下优化的点\n\n#### 1.shouldComponentUpdate 和 PureComponent\n\n在 React 类组件中，可以利用 shouldComponentUpdate 或者 PureComponent 来减少因父组件更新而触发子组件的 render，从而达到目的。shouldComponentUpdate 来决定是否组件是否重新渲染，如果不希望组件重新渲染，返回 false 即可。\n\n#### 2.利用高阶组件\n\n在函数组件中，并没有 shouldComponentUpdate 这个生命周期，可以利用高阶组件，封装一个类似 PureComponet 的功能\n\n#### 3.使用 React.memo\n\nReact.memo 是 React 16.6 新的一个 API，用来缓存组件的渲染，避免不必要的更新，其实也是一个高阶组件，与 PureComponent 十分类似，但不同的是， React.memo 只能用于函数组件 。\n\n#### 4.合理拆分组件\n\n微服务的核心思想是：以更轻、更小的粒度来纵向拆分应用，各个小应用能够独立选择技术、发展、部署。我们在开发组件的过程中也能用到类似的思想。试想当一个整个页面只有一个组件时，无论哪处改动都会触发整个页面的重新渲染。在对组件进行拆分之后，render 的粒度更加精细，性能也能得到一定的提升。\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 543,
+          "subject": "",
+          "title": "哪些方法会触发 react 重新渲染？重新渲染 render 会做些什么？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["微医"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 5,
+        "qid": 503,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 一、React中setState后发生了什么\n\n在代码中调用setState函数之后，React 会将传入的参数对象与组件当前的状态合并，然后触发所谓的调和过程（Reconciliation）。\n\n经过调和过程，React 会以相对高效的方式根据新的状态构建 React 元素树并且着手重新渲染整个UI界面。\n\n在 React 得到元素树之后，React 会自动计算出新的树与老树的节点差异，然后根据差异对界面进行最小化重渲染。\n\n在差异计算算法中，React 能够相对精确地知道哪些位置发生了改变以及应该如何改变，这就保证了按需更新，而不是全部重新渲染。\n\n### 二、setState 为什么默认是异步\n\n假如所有setState是同步的，意味着每执行一次setState时（有可能一个同步代码中，多次setState），都重新vnode diff + dom修改，这对性能来说是极为不好的。如果是异步，则可以把一个同步代码中的多个setState合并成一次组件更新。\n\n### 三、setState 什么时候是同步\n\n在setTimeout或者原生事件中，setState是同步的。",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 503,
+          "subject": "",
+          "title": "React 中 setState 后发生了什么？setState 为什么默认是异步？setState 什么时候是同步？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["蘑菇街", "海风教育"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 530,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### React\n\n1. React为了解决的问题：传统UI操作关注的细节太多。\n2. React的核心概念`f(state) = UI`：隐藏细节，UI是函数根据状态执行得到的结果，所以我们只需要关心UI和state关心即可，不需要关心去如何操作DOM修改UI。\n3. 一切都是组件，以组件的形式来考虑UI的构建，组件内部封装细节，组件的组合可以得到新的组件。\n4. 虚拟DOM，通过Dom diff，最小化更新UI，提升性能",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 530,
+          "subject": "",
+          "title": "介绍 React 设计思路，它的理念是什么？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["寺库"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 5,
+        "qid": 508,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 508,
+          "subject": "",
+          "title": "RN 有没有做热加载？RN 遇到的兼容性问题？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["寺库"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 510,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 510,
+          "subject": "",
+          "title": "RN 混原生和原生混 RN 有什么不同？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["寺库", "海康威视"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 10,
+        "qid": 511,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 511,
+          "subject": "",
+          "title": "介绍单页应用和多页应用？"
+        },
+        "tech_tag": ["React", "Vue"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["百分点"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 544,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 544,
+          "subject": "",
+          "title": "state 和 props 触发更新的生命周期分别有什么区别？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["百分点"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 545,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 545,
+          "subject": "",
+          "title": "React setState 是同步还是异步？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["百分点"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 4,
+        "qid": 546,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 546,
+          "subject": "",
+          "title": "对无状态组件的理解"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["百分点"],
+        "date": "Fri, 19 Jun 2020 16:20:43 GMT",
+        "favorite_num": 5,
+        "qid": 547,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 547,
+          "subject": "",
+          "title": "介绍箭头函数的 this"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["头条"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 354,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "**设计思想**\n\n在 jQuery 时代的时候，我们是「面向过程开发」，随着 react 的普及，我们提出了状态驱动 UI 的开发模式。我们认为：Web 应用就是状态与 UI 一一对应的关系。\n\n但是随着我们的 web 应用日趋的复杂化，一个应用所对应的背后的 state 也变的越来越难以管理。而 Redux 就是 Web 应用的一个状态管理方案。\n\nRedux是Flux思想的一种实现，同时又在其基础上做了改进。主要体现在：\n\n- 单向的数据流\n- Store是唯一的数据源\n\n**Redux三大原则**\n\n- 单一数据源\n- State 只读\n- 使用纯函数来修改",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 354,
+          "subject": "",
+          "title": "redux 的设计思想"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["阿里", "滴滴"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 347,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 347,
+          "subject": "",
+          "title": "如何配置 React-Router 实现路由切换"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["阿里"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 349,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 349,
+          "subject": "",
+          "title": "介绍 Redux 数据流的流程"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["阿里"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 350,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 350,
+          "subject": "",
+          "title": "Redux 如何实现多个组件之间的通信，多个组件使用相同状态如何进行管理"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["阿里"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 351,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 351,
+          "subject": "",
+          "title": "React 路由的动态加载模块"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["阿里"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 352,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 352,
+          "subject": "",
+          "title": "多个组件之间如何拆分各自的 state，每块小的组件有自己的状态，它们之间还有一些公共的状态需要维护，这如何思考"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["阿里"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 353,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 353,
+          "subject": "",
+          "title": "使用过的 Redux 中间件"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["网易"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 372,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 372,
+          "subject": "",
+          "title": "redux 请求中间件如何处理并发"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["网易"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 375,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 375,
+          "subject": "",
+          "title": "React 组件中怎么做事件代理？它的原理是什么？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["网易"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 377,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 377,
+          "subject": "",
+          "title": "前端如何控制管理路由"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["网易"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 379,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 379,
+          "subject": "",
+          "title": "React 怎么做数据的检查和变化"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 380,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 380,
+          "subject": "",
+          "title": "react-router 里的 Link 标签和 a 标签有什么区别"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 391,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 391,
+          "subject": "",
+          "title": "React 中 Dom 结构发生变化后内部经历了哪些变化"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 5,
+        "qid": 392,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 392,
+          "subject": "",
+          "title": "React 挂载的时候有 3 个组件，textComponent、composeComponent、domComponent，区别和关系，Dom 结构发生变化时怎么区分 data 的变化，怎么更新，更新怎么调度，如果更新的时候还有其他任务存在怎么处理"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["饿了么"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 393,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 393,
+          "subject": "",
+          "title": "React 子父组件之间如何传值"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 394,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 394,
+          "subject": "",
+          "title": "Redux 中间件是什么东西？接受几个参数？柯里化函数两端的参数具体是什么东西？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 395,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 395,
+          "subject": "",
+          "title": "Redux 中间件· 中间件是怎么拿到 store 和 action？然后怎么处理？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 5,
+        "qid": 396,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 396,
+          "subject": "",
+          "title": "state 是怎么注入到组件的，从 reducer 到组件经历了什么样的过程"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["头条", "宝宝树"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 405,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 405,
+          "subject": "",
+          "title": "接入 Redux 过程？绑定 connect 的过程？connect 的原理"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["寺库", "宝宝树"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 416,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 416,
+          "subject": "",
+          "title": "RN 如何调用原生的一些功能、如何和原生进行通信"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["有赞"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 417,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 417,
+          "subject": "",
+          "title": "react 异步渲染的概念,介绍 Time Slicing 和 Suspense"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["有赞"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 418,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 418,
+          "subject": "",
+          "title": "16.X 中 props 改变后在哪个生命周期中处理"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["有赞"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 421,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 421,
+          "subject": "",
+          "title": "如何做 RN 在安卓和 IOS 端的适配"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["有赞"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 422,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 422,
+          "subject": "",
+          "title": "RN 为什么能在原生中绘制成原生组件"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["有赞", "微医", "58"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 8,
+        "qid": 423,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 423,
+          "subject": "",
+          "title": "对虚拟 DOM 的理解？虚拟 DOM 主要做了什么？虚拟 DOM 本身是什么？"
+        },
+        "tech_tag": ["React", "Vue"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["有赞", "饿了么", "喜马拉雅", "乘法云"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 426,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 426,
+          "subject": "",
+          "title": "介绍下 React 高阶组件，和普通组件有什么区别，适用什么场景"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["挖财"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 432,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 432,
+          "subject": "",
+          "title": "native 提供了什么能力给 RN"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["挖财"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 435,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 435,
+          "subject": "",
+          "title": "shouldComponentUpdate 是为了解决什么问题"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["挖财"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 436,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 436,
+          "subject": "",
+          "title": "如何解决 props 层级过深的问题"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["沪江"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 5,
+        "qid": 445,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 445,
+          "subject": "",
+          "title": "React 遇到性能问题一般在哪个生命周期里解决"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["沪江"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 447,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 447,
+          "subject": "",
+          "title": "React/Redux 中哪些功能用到了哪些设计模式"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["饿了么"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 452,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 452,
+          "subject": "",
+          "title": "一个对象数组，每个子对象包含一个 id 和 name，React 如何渲染出全部的 name？在哪个生命周期里写？其中有几个 name 不存在，通过异步接口获取，如何做？渲染的时候 key 给什么值？可以使用 index 吗？用 id 好还是 index 好？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["喜马拉雅"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 465,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 465,
+          "subject": "",
+          "title": "componentWillReceiveProps 的触发条件是什么"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["喜马拉雅"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 466,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 466,
+          "subject": "",
+          "title": "Redux 怎么实现属性传递，介绍下原理"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["兑吧", "蘑菇街"],
+        "date": "Fri, 19 Jun 2020 16:20:42 GMT",
+        "favorite_num": 4,
+        "qid": 481,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 481,
+          "subject": "",
+          "title": "Redux 状态管理器和变量挂载到 window 中有什么区别"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["脉脉", "兑吧", "寺库", "蘑菇街", "百分点"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 5,
+        "qid": 225,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "**1）原理**\n\nRedux源码主要分为以下几个模块文件\n\n- compose.js 提供从右到左进行函数式编程\n- createStore.js 提供作为生成唯一store的函数\n- combineReducers.js 提供合并多个reducer的函数，保证store的唯一性\n- bindActionCreators.js 可以让开发者在不直接接触dispacth的前提下进行更改state的操作\n- applyMiddleware.js  这个方法通过中间件来增强dispatch的功能\n\n```js\nconst actionTypes = {\n    ADD: 'ADD',\n    CHANGEINFO: 'CHANGEINFO',\n}\n\nconst initState = {\n    info: '初始化',\n}\n\nexport default function initReducer(state=initState, action) {\n    switch(action.type) {\n        case actionTypes.CHANGEINFO:\n            return {\n                ...state,\n                info: action.preload.info || '',\n            }\n        default:\n            return { ...state };\n    }\n}\n\nexport default function createStore(reducer, initialState, middleFunc) {\n\n    if (initialState && typeof initialState === 'function') {\n        middleFunc = initialState;\n        initialState = undefined;\n    }\n\n    let currentState = initialState;\n\n    const listeners = [];\n\n    if (middleFunc && typeof middleFunc === 'function') {\n        // 封装dispatch \n        return middleFunc(createStore)(reducer, initialState);\n    }\n\n    const getState = () => {\n        return currentState;\n    }\n\n    const dispatch = (action) => {\n        currentState = reducer(currentState, action);\n\n        listeners.forEach(listener => {\n            listener();\n        })\n    }\n\n    const subscribe = (listener) => {\n        listeners.push(listener);\n    }\n\n    return {\n        getState,\n        dispatch,\n        subscribe\n    }\n}\n```\n\n**2）工作流程**\n\n1. const store = createStore(fn)生成数据;\n2. action: {type: Symble('action001'), payload: 'payload' }定义行为;\n3. dispatch发起action: store.dispatch(doSomething('action001'));\n4. reducer: 处理action, 返回新的state;\n\n通俗点解释\n\n1. 首先，用户（通过View）发出Action，发出方式就用到了dispatch方法\n2. 然后，Store自动调用Reducer，并且传入两个参数：当前State和收到的Action，Reducer会返回新的State\n3. State一旦有变化，Store就会调用监听函数，来更新View\n\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 225,
+          "subject": "",
+          "title": "说一下 Redux 的原理，介绍下整体的一个工作流程"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["阿里", "脉脉"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 4,
+        "qid": 224,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "**1）Redux的理解**\n\n- 一个状态容器，提供可预测化的状态管理。 \n- 一种函数式的编程风格\n- 所有的状态，保存在一个对象里面\n\n**2）原理** \n\nRedux源码主要分为以下几个模块文件\n\n- compose.js 提供从右到左进行函数式编程\n- createStore.js 提供作为生成唯一store的函数\n- combineReducers.js 提供合并多个reducer的函数，保证store的唯一性\n- bindActionCreators.js 可以让开发者在不直接接触dispacth的前提下进行更改state的操作\n- applyMiddleware.js  这个方法通过中间件来增强dispatch的功能\n\n```js\nconst actionTypes = {\n    ADD: 'ADD',\n    CHANGEINFO: 'CHANGEINFO',\n}\n\nconst initState = {\n    info: '初始化',\n}\n\nexport default function initReducer(state=initState, action) {\n    switch(action.type) {\n        case actionTypes.CHANGEINFO:\n            return {\n                ...state,\n                info: action.preload.info || '',\n            }\n        default:\n            return { ...state };\n    }\n}\n\nexport default function createStore(reducer, initialState, middleFunc) {\n\n    if (initialState && typeof initialState === 'function') {\n        middleFunc = initialState;\n        initialState = undefined;\n    }\n\n    let currentState = initialState;\n\n    const listeners = [];\n\n    if (middleFunc && typeof middleFunc === 'function') {\n        // 封装dispatch \n        return middleFunc(createStore)(reducer, initialState);\n    }\n\n    const getState = () => {\n        return currentState;\n    }\n\n    const dispatch = (action) => {\n        currentState = reducer(currentState, action);\n\n        listeners.forEach(listener => {\n            listener();\n        })\n    }\n\n    const subscribe = (listener) => {\n        listeners.push(listener);\n    }\n\n    return {\n        getState,\n        dispatch,\n        subscribe\n    }\n}\n```\n\n**3）主要解决问题**\n\n组件间connect共享store实现通信, 通过统一的store进行数据在各个生命周期内的管理, 将数据从ui中进行抽离, 实现mvvm的数据核心, 更方便进行页面状态的管理和切片\n\n- 每个State变化可预测\n- 动作与状态统一管理",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 224,
+          "subject": "",
+          "title": "说一下对 React-redux 的理解以及它的原理，主要解决什么问题"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["完美世界", "酷家乐"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 4,
+        "qid": 147,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 147,
+          "subject": "",
+          "title": "说一下单向数据流有什么好处"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["网易", "脉脉", "快手"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 8,
+        "qid": 159,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 159,
+          "subject": "",
+          "title": "说一下对 React 和 Vue 的理解，它们的异同"
+        },
+        "tech_tag": ["React", "Vue"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["高德", "有赞", "酷家乐"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 4,
+        "qid": 195,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 195,
+          "subject": "",
+          "title": "说一下 React.Component 和 Ract.PureComponent 的区别"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["高德"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 5,
+        "qid": 196,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 196,
+          "subject": "",
+          "title": "说一下对 React Hook 的理解，它的实现原理，和生命周期有哪些区别？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["高德"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 5,
+        "qid": 202,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 202,
+          "subject": "",
+          "title": "说一下 React 有状态组件与无状态组件区别，以及为什么要用，它的优缺点"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["脉脉", "酷家乐"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 5,
+        "qid": 223,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 223,
+          "subject": "",
+          "title": "说一下对 React context 的理解"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["脉脉"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 4,
+        "qid": 226,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 226,
+          "subject": "",
+          "title": "React 如何避免 renderd 的触发"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["脉脉", "菜鸟网络", "蘑菇街"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 4,
+        "qid": 228,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 228,
+          "subject": "",
+          "title": "说一下对 vnode 的理解，vnode 的引入与直接操作原生 dom 相比，哪一个相率更高，为什么"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["百分点"],
+        "date": "Fri, 19 Jun 2020 16:20:41 GMT",
+        "favorite_num": 4,
+        "qid": 270,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 270,
+          "subject": "",
+          "title": "React15/16.x 的区别"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["伴鱼"],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 5,
+        "qid": 91,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "**1）useState**\n\n` const [count, setCount] = useState(0)`\n\nuseState 运用了JavaScript 解构赋值的思想\n \n数组和对象解构赋值的区别是：\n\n- 数组的元素是按次序排列的，数组解构时变量的取值由数组元素的位置决定，变量名可以任意命名.\n- 对象的属性没有次序，解构时变量名必须与属性同名，才能取到正确的值。\n- 因此使用数组会更灵活，可以任意命名 state 和修改 state 的方法名。\n\n**2）为什么要使用数组而不是对象**\n\n因为useState内部原理是把state声明成一个数组，需要顺序一一对应\n\n```js\nfunction App(){\n    const [number, setNumber] = React.useState(0)\n    return (\n        <div className='App'>\n            <p>{number}</p >\n            <p>\n              <button onClick={() => setNumber(number + 1)}>+1</button>\n            </p >\n        </div>\n    )\n}\n```\n\n每次点击button number的值都会+1 组件都会重新render\n\n**3）通过自己实现一个React.useState来深入理解**\n\n**①代码实现**\n\n```js\nlet _state //全局_state用来存储state的值，避免重新渲染的时候被myUseState重置为初始值\nconst myUseState = initialValue => {\n    _state = _state === undefined ? initialValue : _state\n    const setState = (newValue) => {\n        _state = newValue\n        render()\n    }\n    return [_state, setState]\n}\n\nconst render = () => {\n    ReactDOM.render(<App1 />, document.getElementById('root'))\n}\n\nfunction App1(){\n    const [n, setN] = myUseState(0)\n    return (\n        <div className='App'>\n            <p>{n}</p >\n            <p>\n                <button onClick={() => setN(n + 1)}>+1</button>\n            </p >\n        </div>\n    )\n}\n```\n\n上面的方案用一个useState可行，如果一个组件用了两个useState，由于数据都放在_state里，所以会冲突。\n\n改进思路：把_state做成数组，比如_state = [0,0]\n\n**②改进方案**\n\n```js\nlet _state = [] //全局_state用来存储state的值，避免重新渲染的时候被myUseState重置为初始值\nlet index = 0\nconst myUseState = initialValue => {\n    const currentIndex = index\n    _state[currentIndex] = _state[currentIndex] === undefined ? initialValue : _state[currentIndex]\n    const setState = newValue => {\n        _state[currentIndex] = newValue\n        render()\n    }\n    index += 1\n    return [_state[currentIndex], setState]\n}\n\nconst render = () => {\n    index = 0\n    ReactDOM.render(<App1 />, document.getElementById('root'))\n}\n\nfunction App1(){\n    const [n, setN] = myUseState(0)\n    const [m, setM] = myUseState(0)\n    return (\n        <div className='App'>\n            <p>{n}</p >\n            <p>\n                <button onClick={() => setN(n + 1)}>+1</button>\n            </p >\n            <p>{m}</p >\n            <p>\n                <button onClick={() => setM(m + 1)}>+1</button>\n            </p >\n        </div>\n    )\n}\n```\n\n**③得出结论**\n\n`[state, setState] = useState(initialValue)`返回一个包含2个元素的数组:状态值和状态更新函数。\n\n内部原理是把state声明成一个数组，需要顺序一一对应。\n\n由于一个组件可以使用多个useState，为了避免冲突并确保state的准确性，useState 要使用数组而不是对象。",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 91,
+          "subject": "",
+          "title": "为什么 useState 要使用数组而不是对象"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["快手"],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 10,
+        "qid": 72,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "**1）Redux 和 Vuex区别**\n\n- Vuex改进了Redux中的Action和Reducer函数，以mutations变化函数取代Reducer，无需switch,只需在对应的mutation函数里改变state值即可\n- Vuex由于Vue自动重新渲染的特性，无需订阅重新渲染函数，只要生成新的State即可\n- Vuex数据流的顺序是:View调用store.commit提交对应的请求到Store中对应的mutation函数->store改变(vue检测到数据变化自动渲染)\n\n通俗点理解就是，vuex 弱化 dispatch, 通过commit进行store状态的一次更变;取消了action概念, 不必传入特定的action形式进行指定变更; 弱化reducer, 基于commit参数直接对数据进行转变, 使得框架更加简易;\n\n**2）共同思想**\n\n- 单一的数据源\n- 变化可以预测\n\n**本质上：** redux与vuex都是对mvvm思想的服务, 将数据从视图中抽离的一种方案;\n\n**形式上：** vuex借鉴了redux, 将store作为全局的数据中心, 进行mode管理;\n\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 72,
+          "subject": "",
+          "title": "Redux 和 Vuex 有什么区别，说下一它们的共同思想"
+        },
+        "tech_tag": ["React", "Vue"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": [],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 5,
+        "qid": 52,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 答案\n\n这三者是目前react解决代码复用的主要方式。\n\n高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而形成的设计模式。具体而言，高阶组件是参数为组件，返回值为新组件的函数。\n\nrender props是指一种在 React 组件之间使用一个值为函数的 prop 共享代码的简单技术，更具体的说，render prop 是一个用于告知组件需要渲染什么内容的函数 prop。\n\n通常，render props 和高阶组件只渲染一个子节点。让 Hook 来服务这个使用场景更加简单。这两种模式仍有用武之地，（例如，一个虚拟滚动条组件或许会有一个 renderItem 属性，或是一个可见的容器组件或许会有它自己的 DOM 结构）。但在大部分场景下，Hook 足够了，并且能够帮助减少嵌套。\n\n#### HOC\n\n> 官方解释：高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而形成的设计模式。\n\n简言之，HOC是一种组件的设计模式，HOC接受一个组件和额外的参数（如果需要），返回一个新的组件。HOC 是纯函数，没有副作用。\n\n看一个例子：\n\n```js\n// hoc的定义\nfunction withSubscription(WrappedComponent, selectData) {\n  return class extends React.Component {\n    constructor(props) {\n      super(props);\n      this.state = {\n        data: selectData(DataSource, props)\n      };\n    }\n    // 一些通用的逻辑处理\n    render() {\n      // ... 并使用新数据渲染被包装的组件!\n      return <WrappedComponent data={this.state.data} {...this.props} />;\n    }\n  };\n\n// 使用\nconst BlogPostWithSubscription = withSubscription(BlogPost,\n  (DataSource, props) => DataSource.getBlogPost(props.id));\n```\n\nhoc的优缺点：\n\n- 优点： 逻辑服用、不影响被包裹组件的内部逻辑\n- 缺点：hoc传递给被包裹组件的props容易和被包裹后的组件重名，进而被覆盖\n\n\n#### Render props\n\n> 官方解释：术语 “render prop” 是指一种在 React 组件之间使用一个值为函数的 prop 共享代码的简单技术\n\n具有 render prop 的组件接受一个返回React 元素的函数，将render的渲染逻辑注入到组件内部。在这里，“render”的命名可以是任何其他有效的标识符。\n\n看一个例子：\n\n```js\n// DataProvider组件内部的渲染逻辑如下\nclass DataProvider extends React.Components {\n \tstate = {\n    name: 'Tom'\n  }\n\n\trender() {\n    return (\n    \t<div>\n      \t<p>共享数据组件自己内部的渲染逻辑</p>\n      \t{ this.props.render(this.state) }\n      </div>\n    );\n  }\n}\n\n// 调用方式\n<DataProvider render={data => (\n  <h1>Hello {data.name}</h1>\n)}/>\n\n```\n\n\n由此可以看到，render props的优缺点也很明显：\n\n- 优势：数据共享、代码复用，将组件内的state作为props传递给调用者，将渲染逻辑交给调用者\n- 劣势：无法在 return 语句外访问数据、嵌套写法不够优雅\n\n\n\n#### Hooks\n\n> 官方：*Hook* 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。通过自定义hook，可以复用代码逻辑。\n\n看个例子：\n\n```js\n// 自定义一个获取订阅数据的hook\nfunction useSubscription() {\n  const data = DataSource.getComments();\n  return [data];\n}\n// \nfunction CommentList(props) {\n  const {data} = props;\n  const [subData] = useSubscription();\n\t...\n}\n// 使用\n<CommentList data='hello' />\n```\n\n以上可以看出，hook解决了hoc的prop覆盖的问题，同时使用的方式解决了render props的嵌套地狱的问题；\n\nhook的优点如下：\n\n- 使用直观\n- 解决hoc的prop 重名问题\n- 解决render props 因共享数据 而出现嵌套地狱的问题\n- 能在return之外使用数据的问题\n\n> 需要注意的是：hook只能在组件顶层使用，不可在分支语句中使用。\n\n#### 总结：\n\nHoc、render props和hook都是为了解决代码复用的问题，但是hoc和render props都有特定的使用场景和明显的缺点。hook是react16.8更新的新的API，让组件逻辑复用更简洁明了，同时也解决了hoc和render props的一些缺点。\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 52,
+          "subject": "",
+          "title": "React 高阶组件 renderprops hooks 有什么区别，为什么要不断迭代"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["脉脉"],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 6,
+        "qid": 54,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 答案\n\nReact通过引入Virtual DOM的概念，极大地避免无效的Dom操作，已使我们的页面的构建效率提到了极大的提升。但是如何高效地通过对比新旧Virtual DOM来找出真正的Dom变化之处同样也决定着页面的性能，React用其特殊的diff算法解决这个问题。Virtual DOM+React diff的组合极大地保障了React的性能，使其在业界有着不错的性能口碑。diff算法并非React首创，React只是对diff算法做了一个优化，但却是因为这个优化，给React带来了极大的性能提升，\n\n\n####  react dom-diff策略\n\n![react-diff策略](http://img-static.yidengxuetang.com/wxapp/issue-img/react-diff.png)\n\n1. Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。\n2. 拥有相同类的两个组件将会生成相似的树形结构，拥有不同类的两个组件将会生成不同的树形结构。\n3. 对于同一层级的一组子节点，它们可以通过唯一 id 进行区分。\n\n基于以上三个前提策略，React 分别对 tree diff、component diff 以及 element diff 进行算法优化。\n\n**1）tree diff**\n\n基于策略1，React 对树的算法进行了简洁明了的优化，即对树进行分层比较，两棵树只会对同一层次的节点进行比较。\n\n由于 DOM 节点跨层级的移动操作少到可以忽略不计，针对这一现象，React 通过 updateDepth 对 Virtual DOM 树进行层级控制，只会对同一个父节点下的所有子节点进行比较。当发现节点已经不存在，则该节点及其子节点会被完全删除掉，不会用于进一步的比较。这样只需要对树进行一次遍历，便能完成整个 DOM 树的比较。\n\n**2）component diff**\n\nReact 是基于组件构建应用的，对于组件间的比较所采取的策略也是简洁高效。\n\n- 如果是同一类型的组件，按照原策略继续比较 virtual DOM tree。\n- 如果不是，则将该组件判断为 dirty component，从而替换整个组件下的所有子节点。\n- 对于同一类型的组件，有可能其 Virtual DOM 没有任何变化，如果能够确切- 的知道这点那可以节省大量的 diff 运算时间，因此 React 允许用户通过 shouldComponentUpdate() 来判断该组件是否需要进行 diff。\n\n**3）element diff**\n\n当节点处于同一层级时，React diff 提供了三种节点操作，分别为：INSERT_MARKUP（插入）、MOVE_EXISTING（移动）和 REMOVE_NODE（删除）。\n\n- INSERT_MARKUP，新的 component 类型不在老集合里， 即是全新的节点，需要对新节点执行插入操作。\n- MOVE_EXISTING，在老集合有新 component 类型，且 element 是可更新的类型，generateComponentChildren 已调用 receiveComponent，这种情况下 preChild=nextChild，就需要做移动操作，可以复用以前的 DOM 节点。\n- REMOVE_NODE，老 component 类型，在新集合里也有，但对应的 element 不同则不能直接复用和更新，需要执行删除操作，或者老 component 不在新集合里的，也需要执行删除操作。\n\n允许开发者对同一层级的同组子节点，添加唯一key进行区分\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 54,
+          "subject": "",
+          "title": "说一下 React diff 算法"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["网易"],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 6,
+        "qid": 53,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 答案\n\nreact的类组建通过state管理内部状态，而唯一改变状态更新的视图只能通过setState和forceUpdate。\n\nsetState最终也会走forceUpdate。那么我们首先要知道，每个类组建都有一个updater对象用于管理state的变化，\n\n当我们调用setState传入partialState时，会将partialState存入updater中的pendingState中，\n\n此时我们updater又会调用emitUpdate来决定当前是否立即更新，判断条件简单来说是否有nextProps，或者updateQueue的isPending是否开启。\n\nupdateQueue用于批量管理updater。\n\n如果updatequeue的isPendiing为true，那么就将当前update直接加入updateQueue的队列中。\n\n开启isPending的方式可以是自定义方法和生命周期函数等。\n\n当这些方法执行完毕更新update，调用update的componentUpdate，判断组件的shouldComponentUpdate决定是否调用forceUpdate进行更新。\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 53,
+          "subject": "",
+          "title": "说一下 React setState 原理"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": [
+          "完美世界",
+          "高德",
+          "脉脉",
+          "有赞",
+          "挖财",
+          "沪江",
+          "携程",
+          "喜马拉雅",
+          "酷家乐"
+        ],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 5,
+        "qid": 55,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 答案\n\nReact生命周期钩子函数都是针对类组件的，即所有的钩子函数都写在class定义的类组件中。\n\n在React 15版本生命周期只有三个阶段，而在React 16版本新增了一个阶段： 错误处理阶段。\n\nReact16版本生命周期共分为四个阶段，有12个钩子函数，四个阶段分别为，初始化、运行中、销毁、错误处理(16.3之后)\n\n组件从被创建到被销毁的过程称为组件的生命周期。通常可以分为三个阶段：**挂载阶段、更新阶段、卸载阶段**\n\n![react-lifecycles](http://img-static.yidengxuetang.com/wxapp/issue-img/reacglyfecle.png)\n\n#### 一、挂载阶段\n\n**constructor**\n\n在这个方法中需要接收父组件传递过来的props属性对象，必须在这个方法中调用super(props)才能保证props被传入组件中。\n\n该方法通常用于初始化组件的state以及绑定事件处理方法\n\n```js\n// Footer.js\n  constructor(props) {\n    super(props);\n    // 初始化state状态\n    this.state = {\n      count: 0,\n      isShow: true\n    };\n    // 将事件处理函数绑定到类实例上\n    // this.handleAdd = this.handleAdd.bind(this);\n  }\n```\n\n\n\n**componentWillMount**\n\n组件即将挂载，在render之前调用\n\n这个方法在组件被挂载到DOM前调用，且只会被调用一次。这个方法在实际项目中很少会用到，因为可以在该方法中执行的工作都可以提前到constructor中。在这个方法中调用this.setState不会引起组件的重新渲染。\n\n注意的是：在React16.3版本之后不应该使用,因为官网中已经标记为过时，虽然仍然可以使用，但是不推荐再使用。由于该函数在Render函数之前调用,因此使用同步的setState方法不会触发额外的render处理\n\n```js\n// Footer.js\n  componentWillMount(){\n    console.log('组件挂载到dom之前执行，我只会调用一次，调用setState不会触发组件的重新渲染');\n  }\n\n// 会有警告，提示将不被再使用，现在已经重命名，在未来版本将不再被使用\n\n// 改为  UNSAFE_componentWillMount  警告会消失\n```\n\n在这个生命周期，数据可以获取到，但是真实DOM没有获取到，它相当于是Vue生命周期中 created + beforeMount。\n\n因为这个钩子可能会产生副作用或是订阅，所以几乎不会使用这个钩子函数\n\n还有它可以在服务端被调用，就是这个方法可以用于在服务器上渲染,这个方法因为是在渲染之前被调用，也是惟一一个可以直接同步修改state的地方。\n\n**render**\n\n这是定义组件时唯一必要的方法（组件的其他生命周期方法都可以省略）。在这个方法中，根据组件的props和state返回一个React元素，用于描述组件的UI，通常React元素使用JSX语法定义。需要注意的是，render并不负责组件的实际渲染工作，它只是返回一个UI的描述，真正的渲染出页面DOM的工作由React自身负责。\n\n要知道的是：render()方法必须是一个纯函数，他不应该改变state，也不能直接和浏览器进行交互，应该将事件放在其他生命周期函数中。在这个方法中不能执行任何有副作用的操作，所以**不能在render中调用this.setState，这会改变组件的状态。\n\n如果shouldComponentUpdate()返回false，render()不会被调用。\n\n主要两个作用：\n\n1. 计算 this.props / this.state 返回对应的结果\n2. 通过React.createElement将 jsx 转化为 VDOM对象模型 【重要】\n\n**componentDidMount**\n\n在组件被挂载到DOM后调用，且只会被调用一次。这时候已经可以获取到DOM结构，因此**依赖DOM节点的操作可以放到这个方法中**。这个方法**通常还会用于向服务器端请求数据**。在这个方法中调用this.setState会引起组件的重新渲染。\n\ncomponentDidMount是执行组件与服务器通信的最佳地方，原因主要有两个：\n\n1. 在componentDidMount中执行服务器通信可以保证获取到数据时，组件已经处于挂载状态，这时即使要直接操作DOM也是安全的，而componentWillMount无法保证这一点。如果要初始化第三方的dom库，也在这里进行初始化。\n2. 当组件在服务器端渲染时，componentWillMount会被调用两次，一次是在服务器端，另一次是在浏览器端，而componentDidMount能保证在任何情况下只会被调用一次，从而不会发送多余的数据请求.\n3. 注意它只能在浏览器端调用,在服务器端使用React的时候不会调用,装载是将组件渲染,并且构造DOM元素,然后塞入页面的过程,这个状态是不可能在服务器端完成的,服务器端不可能产生DOM树\n\n作用：\n\n1. 数据可以获取到，真实DOM也可以获取到\n2. 可以进行数据请求，进行数据修改，\n3. 是唯一一个可以同步修改state的方法,指的是数据发生改变之后，直接显示在视图上了\n4. 操作真实DOM【 第三方库的实例化 】\n\n#### 二、更新阶段\n\n**componentWillReceiveProps(nextProps)**\n\n这个方法只在props引起的组件更新过程中，才会被调用。不会在组件初始化props时调用这个方法，调用this.setState也不会触发\n\n只要父组件的render函数被调用,在render函数里面被渲染的子组件就会经历更新的过程,无论父组件传给子组件的props有没有改变,都会触发子组件的componentWillReceiveProps函数\n\n官方建议使用getDerivedStateFromProps函数代替componentWillReceiveProps。\n\n注意：在挂载过程中,React不会针对初始props调用此方法,更新阶段才会触发。可以理解为第一次渲染时,父组件的componentWillReceiveProps函数不会被执行,如果是第二次渲染时,已经存在于父组件中,则该componentWillReceiveProps才会执行\n\n**shouldComponentUpdate**\n\n调用shouldComponentUpdate使React知道，组件的输出是否受state和props的影响。默认每个状态的更改都会重新渲染，大多数情况下应该保持这个默认行为。\n\n默认只要状态变了，组件就会重新渲染，但是可以再这个生命周期中，通过返回false还是true来改变这个默认行为。\n\n它决定一个组件什么时候不需要被渲染,在组件更新过程中,Render函数之前调用执行,它同Render函数一样,要求有返回结果的函数\n\n返回一个boolean值,告诉React库这个组件在这次更新过程是否要继续,如果该函数返回true,那么继续更新,调用render函数,反之,若函数返回false,那么立刻停止更新过程,便不会执行render函数\n\n一般通过比较nextProps、nextState和组件当前的props、state决定这个方法的返回结果。这个方法可以用来减少组件不必要的渲染，从而优化组件的性能。\n\n如果发现没必要的渲染,那就干脆不用渲染了\n\n```js\nshouldComponentUpdate(nextProps,nextState){\n  //决定视图是否渲染，true渲染视图，false视图不渲染，必须要有这个返回值\n  if(nextProps.props.属性名 !== this.props.属性名 || nextState.state属性名 !== this.state.state属性名){\n    return true;\n  }else{\n    return false;\n  }\n}\n```\n\n**componentWillUpdate（nextProps,nextState）**\n\n可以作为组件更新发生前执行某些工作的地方，一般也很少用到。\n\n注：shouldComponentUpdate和componentWillUpdate中都不能调用setState，否则会引起循环调用问题，render永远无法被调用，组件也无法正常渲染。如果需要,则在componentWillReceiveProps函数中改变。或者调用getDerivedStateFromProps。\n\n> 这个钩子函数中切记不要使用 this.setState,会造成死循环\n\n**componentDidUpdate（prevProps,prevState）\n\n在更新发生后立即调用componentDidUpdate()。此方法不用于初始渲染。当组件更新时，将此作为一个机会来操作DOM。只要您将当前的props与以前的props进行比较（例如，如果props没有改变，则可能不需要网络请求），这也是做网络请求的好地方。\n\n> 注意：\n\n1. 无论是父组件props的修改还是state状态的更改都会触发该方法\n2. 在处理业务或发送网络请求时,一定要做好条件比较,否则容易造成死循环，因为无论是父组件props的修改还是state状态的更改都会触发该方法，所以一定要做好条件较\n\n#### 三、卸载阶段\n\n组件从DOM中被卸载的过程，这个过程中只有一个生命周期方法：\n\n**componentWillUnmount**\n\n在组件被卸载并销毁之前立即被调用。在此方法中执行任何必要的清理，例如使定时器无效，取消网络请求或清理在componentDidMount中创建的任何监听。\n\n主要是为了善后工作，比如关闭定时器，删除定义的对象\n\n#### 四、错误处理阶段\n\n新增的\n\n**componentDidCatch(error, info)**\n\n此生命周期在后代组件抛出错误后被调用。 它接收两个参数：\n\n- `error` —— 抛出的错误。\n- info-- 带有 `componentStack` key 的对象，其中包含有关组件引发错误的栈信息\n\n------\n\n新的生命周期增加了static getDerivedStateFromProps()以及getSnapshotBeforeUpdate()，废弃了原有的componentWillMount()、componentWillUpdate()以及componentWillReceiveProps()\n\n**原生命周期图**\n\n![origin-lifecycle](http://img-static.yidengxuetang.com/wxapp/issue-img/old-lifycycle.png)\n\n**新生命周期图**\n\n![new-lifecycle](http://img-static.yidengxuetang.com/wxapp/issue-img/new-lifycycle.png)\n\n**为什么要改变生命周期**\n\n从上面的生命周期的图中可以看出，被废弃的三个函数都是在render之前，因为fiber的出现，很可能因为高优先级任务的出现而打断现有任务导致它们会被执行多次\n\n另外的一个原因则是，React想约束使用者，好的框架能够让人不得已写出容易维护和扩展的代码，这一点又是从何谈起，我们可以从新增加以及即将废弃的生命周期分析入手\n\n1）componentWillMount\n\n首先这个函数的功能完全可以使用componentDidMount和constructor来代替，异步获取的数据的情况上面已经说明了，而如果抛去异步获取数据，其余的即是初始化而已，这些功能都可以在constructor中执行，除此之外，如果我们在willMount中订阅事件，但在服务端这并不会执行willUnMount事件，也就是说服务端会导致内存泄漏\n\n所以componentWillMount完全可以不使用，但使用者有时候难免因为各种各样的情况（如作者犯浑）在componentWillMount中做一些操作，那么React为了约束开发者，干脆就抛掉了这个API\n\n2）componentWillReceiveProps\n\n在老版本的 React 中，如果组件自身的某个 state 跟其 props 密切相关的话，一直都没有一种很优雅的处理方式去更新 state，而是需要在 componentWillReceiveProps 中判断前后两个 props 是否相同，如果不同再将新的 props 更新到相应的 state 上去。这样做一来会破坏 state 数据的单一数据源，导致组件状态变得不可预测，另一方面也会增加组件的重绘次数。类似的业务需求也有很多，如一个可以横向滑动的列表，当前高亮的 Tab 显然隶属于列表自身的状态，但很多情况下，业务需求会要求从外部跳转至列表时，根据传入的某个值，直接定位到某个 Tab。\n\n为了解决这些问题，React引入了第一个新的生命周期，getDerivedStateFromProps\n\n3）componentWillReceiveProps与getDerivedStateFromProps对比\n\n```js\n// 原有\ncomponentWillReceiveProps(nextProps){\n    if(nextProps.tab !== this.props.tab){\n        this.setState({\n            tab:nextProps.tab\n        })\n    }\n    this.tabChange();\n}\n\n// 新的\nstatic getDerivedStateFromProps(nextProps,prevState){\n    if(nextProps.tab !== prevState.tab){\n        return {\n            tab:nextProps.tab\n        }\n    }\n    return null;\n}\ncomponentDisUpdate(prevProps,prevState){\n    this.tabChange();\n}\n```\n\n看似乎没有什么改变，特别是当我们把this,tabChange也放在didUpdate中执行时（正确做法），完全没有不同，但这也是我们一开始想说的，React通过API来约束开发者写出更好的代码，而新的使用方法有以下的优点：\n\n1. getDSFP是静态方法，在这里不能使用this，也就是一个纯函数，开发者不能写出副作用的代码\n\n2. 开发者只能通过prevState而不是prevProps来做对比，保证了state和props之间的简单关系以及不需要处理第一次渲染时prevProps为空的情况\n\n3. 基于第一点，将状态变化（setState）和昂贵操作（tabChange）区分开，更加便于 render 和 commit 阶段操作或者说优化。\n\n4）componentWillUpdate\n\n与 componentWillReceiveProps 类似，许多开发者也会在 componentWillUpdate 中根据 props 的变化去触发一些回调。但不论是 componentWillReceiveProps 还是 componentWillUpdate，都有可能在一次更新中被调用多次，也就是说写在这里的回调函数也有可能会被调用多次，这显然是不可取的。与 componentDidMount 类似，componentDidUpdate 也不存在这样的问题，一次更新中 componentDidUpdate 只会被调用一次，所以将原先写在 componentWillUpdate 中的回调迁移至 componentDidUpdate 就可以解决这个问题。\n\n另外一种情况则是我们需要获取DOM元素状态，但是由于在fiber中，render可打断，可能在willMount中获取到的元素状态很可能与实际需要的不同，这个通常可以使用第二个新增的生命函数的解决，getSnapshotBeforeUpdate(prevProps, prevState) \n\n5）getSnapshotBeforeUpdate(prevProps, prevState) // 返回的值作为componentDidUpdate的第三个参数\n\n与willMount不同的是， getSnapshotBeforeUpdate会在最终确定的render执行之前执行，也就是能保证其获取到的元素状态与didUpdate中获取到的元素状态相同。官方参考代码\n\n```js\nclass ScrollingList extends React.Component {\n  constructor(props) {\n    super(props);\n    this.listRef = React.createRef();\n  }\n\n  getSnapshotBeforeUpdate(prevProps, prevState) {\n    // 我们是否在 list 中添加新的 items ？\n    // 捕获滚动​​位置以便我们稍后调整滚动位置。\n    if (prevProps.list.length < this.props.list.length) {\n      const list = this.listRef.current;\n      return list.scrollHeight - list.scrollTop;\n    }\n    return null;\n  }\n\n  componentDidUpdate(prevProps, prevState, snapshot) {\n    // 如果我们 snapshot 有值，说明我们刚刚添加了新的 items，\n    // 调整滚动位置使得这些新 items 不会将旧的 items 推出视图。\n    //（这里的 snapshot 是 getSnapshotBeforeUpdate 的返回值）\n    if (snapshot !== null) {\n      const list = this.listRef.current;\n      list.scrollTop = list.scrollHeight - snapshot;\n    }\n  }\n\n  render() {\n    return (\n      <div ref={this.listRef}>{/* ...contents... */}</div>\n    );\n  }\n}\n```\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 55,
+          "subject": "",
+          "title": "说一下 React 生命周期，以及都有哪些改变？为什么去掉了那几个旧的生命周期？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴", "挖财"],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 4,
+        "qid": 57,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 答案\n\nKeys 是 React 用于追踪哪些列表中元素被修改、被添加或者被移除的辅助标识\n\n在开发过程中，我们需要保证某个元素的 key 在其同级元素中具有唯一性\n\n在 React Diff 算法中 React 会借助元素的 Key 值来判断该元素是新近创建的还是被移动而来的元素，从而减少不必要的元素重渲染\n\n此外，React 还需要借助 Key 值来判断元素与本地状态的关联关系\n\n> 几点注意事项\n>\n> 1、key值一定要和具体的元素一一对应到。\n>\n> 2、尽量不要用数组的index去作为key。\n>\n> 3、永远不要试图在render的时候用随机数或者其他操作给元素加上不稳定的key，这样造成的性能开销比不加key的情况下更糟糕。\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 57,
+          "subject": "",
+          "title": "React key 是干嘛用的 为什么要加？key 主要是解决哪一类问题的"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["洋葱学院"],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 4,
+        "qid": 35,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 答案\n\n#### 简单封装一个数据持久化的组件\n\n```js\nlet storage={\n    set(key, value){//增加\n        localStorage.setItem(key, JSON.stringify(value));\n    },\n    get(key){//获取\n        return JSON.parse(localStorage.getItem(key));\n    },\n    remove(key){//删除\n        localStorage.removeItem(key);\n    }\n};\nexport default Storage;\n```\n\n#### 封装一个数据持久化的工具\n\n前端持久化，不用思考直接就能想到`localStorage`，没错，不管用什么库，说到持久化应该跟它脱不了干系。\n\n```js\nconst Storage = {\n// 存\n  set(k, v) {\n    localstorage.setItem(k, JSON.stringify(v))\n  },\n  // 取\n  get(k) {\n    return JSON.parse(localStorage.getItem(k))\n  },\n  // 删\n  del(k) {\n    localStorage.removeItem(k)\n  }\n}\n\nexport default Storage\n```\n\n管你什么框架，简单的持久化都好使吧，其实封装都多余。\n\n#### React周边的工具\n\n有个库叫做`redux-persist`，顾名思义，结合了`redux`来实现的数据持久化的那么一个工具。\n\n先猜测一下，可能是将`redux`中`store`里的数据缓存到浏览器的`localStorage`中。\n\n具体实现参考：\n\n```js\n// 前提第一步是得在项目中安装 redux-persist\n// npm i redux-persist\n\n// 1.既有的redux里逻辑不变，在此基础上加工一下store\n// src/redux/store/index.js\nimport { createStore } from 'redux'\nimport reducers from '../reducers/index.js'\nimport { persistStore, persistReducer } from 'redux-persist'\nimport storage from 'redux-persist/lib/storage'\nimport autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'\n\nconst persistConfig = {\n  key: 'root',\n  storage: storage,\n  stateReconciler: autoMergeLevel2,\n  whitelist: ['needStorage'] // 配置需要数据持久化的reducer\n}\n\nconst persistReducer = persistReducer(persistConfig, reducers)\n\nconst store = createStore(persistReducer)\n\nexport default store\nexport const persistor = persistStore(store)\n\n// 2. 在入口文件中， 将PersistGate作为页面内容的父标签\n// src/index.js\nimport React from 'react'\nimport ReactDom from 'react-dom'\nimport { Provider } from 'react-redux'\nimport store from './redux/store/index.js'\nimport { persistor } from './redux/store/index.js'\nimport { PersistGate } from 'redux-persist/lib/integration/react'\n\nReactDOM.render(\n  <Provider store={store}>\n  \t<PersistGate loading={null} persistor={persistor}>\n  \t// contents\n  \t</PersistGate>\n  </Provider>,\n\tdocument.getElementById('app')\n)\n```\n\n打开浏览器调试工具`Application`就会发现`localStorage`中有`persist`缓存数据，所以它的原理还是`localStorage`咯。\n\n\n#### 数据持久化注意事项\n\n1. 数据持久化本质是利用localstorage，同一个域名共享同一个, 且存储量不能超过5M，存储量太大会影响性能，建议不超过2.5M\n2. 如果要控制过期时间，可以在set数据时加个时间戳\n3. 注意JSON.stringify，有一些对象无法存储，例如function、正则等\n4. 若业务线众多，建议划分域名使用localstorage\n5. 跨页面传输数据，优先建议url传输数据",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 35,
+          "subject": "",
+          "title": "React 数据持久化有什么实践吗？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["洋葱学院"],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 4,
+        "qid": 36,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 答案\n\n#### 1）共同点\n\n为了解决状态管理混乱，无法有效同步的问题\n\n统一维护管理应用状态；\n\n某一状态只有一个可信数据来源（通常命名为store，指状态容器）；\n\n操作更新状态方式统一，并且可控（通常以action方式提供更新状态的途径）；\n\n支持将store与React组件连接，如react-redux，mobx-react；\n\n\n#### 2）区别\n\n**Redux**\n\nRedux更多的是遵循Flux模式的一种实现，是一个JavaScript库，它关注点主要是以下几方面：\n\n- Action：一个JavaScript对象，描述动作相关信息，主要包含type属性和payload属性：\n    - type：action 类型；\n    - payload：负载数据；\n- Reducer：定义应用状态如何响应不同动作（action），如何更新状态；\n    - Store：管理action和reducer及其关系的对象，主要提供以下功能：\n    - 维护应用状态并支持访问状态（getState()）；\n    - 支持监听action的分发，更新状态（dispatch(action)）；\n    - 支持订阅store的变更（subscribe(listener)）；\n- 异步流：由于Redux所有对store状态的变更，都应该通过action触发，异步任务（通常都是业务或获取数据任务）也不例外，而为了不将业务或数据相关的任务混入React组件中，就需要使用其他框架配合管理异步任务流程，如redux-thunk，redux-saga等；\n\n**Mobx**\n\nMobx是一个透明函数响应式编程（Transparently Functional Reactive Programming，TFRP）的状态管理库，它使得状态管理简单可伸缩：\n\n- Action：定义改变状态的动作函数，包括如何变更状态；\n- Store：集中管理模块状态（State）和动作（action）\n- Derivation（衍生）：从应用状态中派生而出，且没有任何其他影响的数据\n\n**对比总结**\n\n1. redux将数据保存在单一的store中，mobx将数据保存在分散的多个store中\n2. redux使用plain object保存数据，需要手动处理变化后的操作；mobx适用observable保存数据，数据变化后自动处理响应的操作\n3. redux使用不可变状态，这意味着状态是只读的，不能直接去修改它，而是应该返回一个新的状态，同时使用纯函数；mobx中的状态是可变的，可以直接对其进行修改\n4. mobx相对来说比较简单，在其中有很多的抽象，mobx更多的使用面向对象的编程思维；redux会比较复杂，因为其中的函数式编程思想掌握起来不是那么容易，同时需要借助一系列的中间件来处理异步和副作用\n5. mobx中有更多的抽象和封装，调试会比较困难，同时结果也难以预测；而redux提供能够进行时间回溯的开发工具，同时其纯函数以及更少的抽象，让调试变得更加的容易\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 36,
+          "subject": "",
+          "title": "使用过 mobox 吗？mobox 和 redux 有什么区别？"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴"],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 4,
+        "qid": 58,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 答案\n\n#### 1.使用redux-thunk中间件\n\n**1）配置中间件，在store的创建中配置**\n\n```js\nimport {createStore, applyMiddleware, compose} from 'redux';\nimport reducer from './reducer';\nimport thunk from 'redux-thunk'\n\n// 设置调试工具\nconst composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;\n// 设置中间件\nconst enhancer = composeEnhancers(\n  applyMiddleware(thunk)\n);\n\nconst store = createStore(reducer, enhancer);\n\nexport default store;\n```\n\n**2）添加一个返回函数的actionCreator，将异步请求逻辑放到这里**\n\n```js\n/**\n  发送get请求，并生成相应action，更新store的函数\n  @param url {string} 请求地址\n  @param func {function} 真正需要生成的action对应的actionCreator\n  @return {function} \n*/\n// dispatch为自动接收的store.dispatch函数 \nexport const getHttpAction = (url, func) => (dispatch) => {\n    axios.get(url).then(function(res){\n        const action = func(res.data)\n        dispatch(action)\n    })\n}\n```\n\n**3）生成action，并发送action**\n\n```js\ncomponentDidMount(){\n    var action = getHttpAction('/getData', getInitTodoItemAction)\n    // 发送函数类型的action时，该action的函数体会自动执行\n    store.dispatch(action)\n}\n```\n\n#### 2.使用redux-saga中间件\n\nredux-saga可以捕获action，然后执行一个函数，那么可以把异步请求代码放在这个函数中\n\n**1）配置中间件**\n\n```js\nimport {createStore, applyMiddleware, compose} from 'redux';\nimport reducer from './reducer';\nimport createSagaMiddleware from 'redux-saga'\nimport TodoListSaga from './sagas'\n\nconst composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;\nconst sagaMiddleware = createSagaMiddleware()\n\nconst enhancer = composeEnhancers(\n  applyMiddleware(sagaMiddleware)\n);\n\nconst store = createStore(reducer, enhancer);\nsagaMiddleware.run(TodoListSaga)\n\nexport default store;\n```\n\n**2）将异步请求放在在sagas.js文件中**\n\n```js\nimport {takeEvery, put} from 'redux-saga/effects'\nimport {initTodoList} from './actionCreator'\nimport {GET_INIT_ITEM} from './actionTypes'\nimport axios from 'axios'\n\nfunction* func(){\n    try{\n        // 可以获取异步返回数据\n        const res = yield axios.get('/getData')\n        const action = initTodoList(res.data)\n        // 将action发送到reducer\n        yield put(action)\n    }catch(e){\n        console.log('网络请求失败')\n    }\n}\n\nfunction* mySaga(){\n    // 自动捕获GET_INIT_ITEM类型的action，并执行func\n    yield takeEvery(GET_INIT_ITEM, func)\n}\n\nexport default mySaga\n```\n\n**3）发送action**\n\n```js\ncomponentDidMount(){\n  const action = getInitTodoItemAction()\n  store.dispatch(action)\n}\n```\n",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 58,
+          "subject": "",
+          "title": "Redux 中异步的请求怎么处理"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      },
+      {
+        "audit_flag": 0,
+        "corp_tag": ["滴滴"],
+        "date": "Fri, 19 Jun 2020 16:20:40 GMT",
+        "favorite_num": 4,
+        "qid": 32,
+        "qtype": "short_answer",
+        "short_answer": {
+          "analysis": "### 代码实现\n\n#### jsx代码\n\n```js\nimport React, { Component } from 'react';\nimport { is, fromJS } from 'immutable';\nimport ReactDOM from 'react-dom';\nimport ReactCSSTransitionGroup from 'react-addons-css-transition-group';\nimport './dialog.css';\nlet defaultState = {\n  alertStatus:false,\n  alertTip:\"提示\",\n  closeDialog:function(){},\n  childs:''\n}\nclass Dialog extends Component{\n  state = {\n    ...defaultState\n  };\n  // css动画组件设置为目标组件\n  FirstChild = props => {\n    const childrenArray = React.Children.toArray(props.children);\n    return childrenArray[0] || null;\n  }\n  //打开弹窗\n  open =(options)=>{\n    options = options || {};\n    options.alertStatus = true;\n    var props = options.props || {};\n    var childs = this.renderChildren(props,options.childrens) || '';\n    console.log(childs);\n    this.setState({\n      ...defaultState,\n      ...options,\n      childs\n    })\n  }\n  //关闭弹窗\n  close(){\n    this.state.closeDialog();\n    this.setState({\n      ...defaultState\n    })\n  }\n  renderChildren(props,childrens) {\n    //遍历所有子组件\n    var childs = [];\n    childrens = childrens || [];\n    var ps = {\n        ...props,  //给子组件绑定props\n        _close:this.close  //给子组件也绑定一个关闭弹窗的事件    \n       };\n    childrens.forEach((currentItem,index) => {\n        childs.push(React.createElement(\n            currentItem,\n            {\n                ...ps,\n                key:index\n            }\n        ));\n    })\n    return childs;\n  }\n  shouldComponentUpdate(nextProps, nextState){\n    return !is(fromJS(this.props), fromJS(nextProps)) || !is(fromJS(this.state), fromJS(nextState))\n  }\n   \n  render(){\n    return (\n      <ReactCSSTransitionGroup\n        component={this.FirstChild}\n        transitionName='hide'\n        transitionEnterTimeout={300}\n        transitionLeaveTimeout={300}>\n        <div className=\"dialog-con\" style={this.state.alertStatus? {display:'block'}:{display:'none'}}>\n            {this.state.childs}\n        </div>\n      </ReactCSSTransitionGroup>\n    );\n  }\n}\nlet div = document.createElement('div');\nlet props = {\n   \n};\ndocument.body.appendChild(div);\nlet Box = ReactD\n```\n\n```js\n//子类jsx\nimport React, { Component } from 'react';\nclass Child extends Component {\n    constructor(props){\n        super(props);\n        this.state = {date: new Date()};\n  }\n  showValue=()=>{\n    this.props.showValue && this.props.showValue()\n  }\n  render() {\n    return (\n      <div className=\"Child\">\n        <div className=\"content\">\n           Child\n           <button onClick={this.showValue}>调用父的方法</button>\n        </div>\n      </div>\n    );\n  }\n}\nexport default Child;\n```\n\n#### css代码\n\n```css\n.dialog-con{\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.3);\n}\n```",
+          "answer": "",
+          "biz_type": 1,
+          "qid": 32,
+          "subject": "",
+          "title": "react 实现一个全局的 dialog"
+        },
+        "tech_tag": ["React"],
+        "uid": 0,
+        "uname": ""
+      }
+    ],
+    "page": 1,
+    "pages": 1,
+    "uid": 4510
+  },
+  "status": 0
+}

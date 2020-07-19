@@ -32,6 +32,11 @@ function getSidebar(sidebarPath) {
           }
         })
         curSidebar.children = curSidebarChildren
+      } else {
+        curSidebar = {
+          title: item.replace(".md", ""),
+          path: `/${sidebarPath}/${item.replace(".md", "")}`,
+        }
       }
       sidebars.push(curSidebar)
     }
@@ -49,7 +54,6 @@ module.exports = {
       includeLevel: [2, 3],
     },
   },
-  // base: '/lu-frontwiki/',
   base: "/lutest/",
   // configureWebpack: {
   //   resolve: {
@@ -71,28 +75,12 @@ module.exports = {
       { text: "首页", link: "/" },
       { text: "Prepare", link: "/prepare/" },
       { text: "Js", link: "/js/" },
-      // { text: 'React', link: '/react/' },
-      // { text: 'Vue', link: '/vue/' },
-      // { text: '框架通识', link: '/framework/' },
-      // { text: '安全性能', link: '/safety/' },
-      // { text: 'FullStack', link: '/fullstack/' },
-      // { text: '手撸代码无敌', link: '/handrolledcode/' },
-      // { text: '数据算法', link: '/dataalgorithm/' },
-      // { text: '工程化', link: '/engineering/' },
-      // { text: '其他', link: '/other/' },
+      { text: "Collection", link: "/collection/" },
     ],
     sidebar: {
       "/js/": getSidebar("js"),
       "/prepare/": getSidebar("prepare"),
-      // '/react/':getSidebar('react'),
-      // '/vue/':getSidebar('vue'),
-      // '/framework/':getSidebar('framework'),
-      // '/safety/':getSidebar('safety'),
-      // '/fullstack/': getSidebar('fullstack'),
-      // '/handrolledcode/': getSidebar('handrolledcode'),
-      // '/dataalgorithm/': getSidebar('dataalgorithm'),
-      // '/engineering/': getSidebar('engineering'),
-      // '/other/':getSidebar('other'),
+      "/collection/": getSidebar("collection"),
     },
   },
 }
