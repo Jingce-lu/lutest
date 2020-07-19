@@ -2,7 +2,7 @@
   <div>
     <CollectionDetail
       :title="title"
-      :shortAnswer.async="setAnswer()"
+      :shortAnswer="setAnswer()"
       :corp_tag="corp_tag"
     />
   </div>
@@ -25,9 +25,8 @@ export default {
       }
   },
   methods: {
-    
     setAnswer(){
-      if(window && window.sessionStorage.getItem("dataDetail")){
+      if(typeof window && window.sessionStorage.getItem("dataDetail")){
         const { short_answer } = JSON.parse(window.sessionStorage.getItem("dataDetail"));
         return short_answer.analysis
       }
