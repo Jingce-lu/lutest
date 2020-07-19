@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     setAnswer(){
-      if(typeof window && window.sessionStorage.getItem("dataDetail")){
+      if(typeof window !== 'undefined' && window.sessionStorage.getItem("dataDetail")){
         const { short_answer } = JSON.parse(window.sessionStorage.getItem("dataDetail"));
         return short_answer.analysis
       }
