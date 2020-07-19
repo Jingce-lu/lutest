@@ -18,16 +18,17 @@ export default {
     }
   },
   mounted() {
-    if(window.sessionStorage.getItem("dataDetail")){
-        let {corp_tag, short_answer} = JSON.parse(window.sessionStorage.getItem("dataDetail"));
+    this.window = window;
+    if(sessionStorage.getItem("dataDetail")){
+        let {corp_tag, short_answer} = JSON.parse(sessionStorage.getItem("dataDetail"));
         this.title = short_answer.title;
         this.corp_tag = corp_tag;
       }
   },
   methods: {
     setAnswer(){
-      if(window.sessionStorage.getItem("dataDetail")){
-        const { short_answer} = JSON.parse(window.sessionStorage.getItem("dataDetail"));
+      if(sessionStorage.getItem("dataDetail")){
+        const { short_answer} = JSON.parse(sessionStorage.getItem("dataDetail"));
         return short_answer.analysis
       }
     }
