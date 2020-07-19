@@ -37,7 +37,8 @@ export default {
   watch: {},
   methods: {
     gotoBack() {
-      window.history.back();
+      // window.history.back();
+      this.$router.go(-1);
     }
   }
 };

@@ -3,10 +3,7 @@
     <div>
       <a href="05-react" class="link">
         <div>
-          <img
-            src="https://cdn.docschina.org/static/media/react.16ed8348.svg"
-            alt="react"
-          />
+          <img src="https://cdn.docschina.org/static/media/react.16ed8348.svg" alt="react" />
         </div>
         <div>React</div>
       </a>
@@ -14,10 +11,7 @@
     <div>
       <a href="04-vue" class="link">
         <div>
-          <img
-            src="https://cdn.docschina.org/static/media/vue.9a45fc76.svg"
-            alt="vue"
-          />
+          <img src="https://cdn.docschina.org/static/media/vue.9a45fc76.svg" alt="vue" />
         </div>
         <div>Vue</div>
       </a>
@@ -36,10 +30,7 @@
     <div>
       <a href="07-node" class="link">
         <div>
-          <img
-            src="https://cdn.docschina.org/static/media/node.a2d39902.svg"
-            alt="javascript"
-          />
+          <img src="https://cdn.docschina.org/static/media/node.a2d39902.svg" alt="node" />
         </div>
         <div>Node</div>
       </a>
@@ -48,13 +39,9 @@
 </template>
 
 <script>
-var json = require("../json/html.json");
 export default {
   name: "BrochureList",
-  mounted() {
-    console.log(1111);
-    console.log(json.msg);
-  }
+  mounted() {}
 };
 </script>
 

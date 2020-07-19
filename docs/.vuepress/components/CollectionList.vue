@@ -34,8 +34,6 @@ export default {
   methods: {
     gotoDetail(item) {
       window.sessionStorage.setItem("dataDetail", JSON.stringify(item));
-      // window.localStorage.removeItem("dataDetail");
-      // window.localStorage.setItem("dataDetail", JSON.stringify(item));
       this.$router.push("/collection/detail").catch(err => err);
     }
   }
