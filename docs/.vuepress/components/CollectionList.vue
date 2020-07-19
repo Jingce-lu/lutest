@@ -1,11 +1,7 @@
 <template>
   <div>
     <ul>
-      <li
-        v-for="(item, key) of dataSource"
-        :key="key"
-        @click="gotoDetail(item)"
-      >
+      <li v-for="(item, key) of dataSource" :key="key" @click="gotoDetail(item)">
         <a :href="item.link">{{ key + 1 }}. {{ item.short_answer.title }}</a>
       </li>
     </ul>
@@ -33,7 +29,8 @@ export default {
   },
   methods: {
     gotoDetail(item) {
-      window.sessionStorage.setItem("dataDetail", JSON.stringify(item));
+      window &&
+        window.sessionStorage.setItem("dataDetail", JSON.stringify(item));
       this.$router.push("/collection/detail").catch(err => err);
     }
   }
