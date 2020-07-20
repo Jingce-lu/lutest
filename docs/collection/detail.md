@@ -18,7 +18,7 @@ export default {
     }
   },
   mounted() {
-    if(window && window.sessionStorage.getItem("dataDetail")){
+    if(window.sessionStorage.getItem("dataDetail")){
         let {corp_tag, short_answer} = JSON.parse(window.sessionStorage.getItem("dataDetail"));
         this.title = short_answer.title;
         this.corp_tag = corp_tag;
