@@ -2069,6 +2069,8 @@ virtual DOM 是将真实的 DOM 的数据抽取出来，以对象的形式模拟
 
 React 官方给出的定义是：Render Props 是指一种在 React 组件之间使用一个值为函数的 prop 共享代码的简单技术
 
+**render props 模式的应用，就是做一个 React 组件**
+
 是把 S 封装成一个 component，同时这个 component 留了一个 props 用来接收需要渲染的组件。我认为下面这两种写法都是 render props，因为他们的结构基本一样，结果完全一样。
 
 ```js
