@@ -76,11 +76,13 @@ module.exports = {
       { text: "Prepare", link: "/prepare/" },
       { text: "Js", link: "/js/" },
       { text: "Collection", link: "/collection/" },
+      { text: "技术小册", link: "/brochure/" },
     ],
     sidebar: {
       "/js/": getSidebar("js"),
       "/prepare/": getSidebar("prepare"),
       "/collection/": getSidebar("collection"),
+      '/brochure/':getSidebar('brochure'),
     },
   },
 }
