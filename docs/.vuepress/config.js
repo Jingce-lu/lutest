@@ -76,6 +76,7 @@ module.exports = {
       { text: "Prepare", link: "/prepare/" },
       { text: "Js", link: "/js/" },
       { text: "Collection", link: "/collection/" },
+      { text: "study2020", link: "/study2020/" },
       { text: "技术小册", link: "/brochure/" },
     ],
     sidebar: {
