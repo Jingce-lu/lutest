@@ -75,4 +75,27 @@ v-model 通过修改 AST 元素，给 el 添加一个 prop 相当于我们在 in
 
 它的本质是通过监听用户的输入或者数据的更新，之后触发 DOM 元素的变化
 
-## 6.
+## 6. props
+
+props 的数据传输是单向的，也就是说，父组件给子组件传值，子组件只能调用，不能修改。若在子组件中强行修改 props 数据，Vue.js 会在控制台给出警告。若项目中必须修改，可以使用以下两种方法。
+
+```js
+// 例1 - 在组件内部定义数据
+props: ["title"],
+data(){
+  return {
+    local_title: this.title  // 返回local_title变量
+  }
+}
+
+
+// 例2 - 使用计算属性
+props: ["title"],
+computed: {
+  local_title: ()=>{ // 返回local_title的计算属性
+    return this.title.trim()
+  }
+}
+```
+
+## 7.
