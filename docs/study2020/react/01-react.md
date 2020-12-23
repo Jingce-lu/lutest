@@ -307,3 +307,146 @@ Flux 的最大特点，就是数据的"单向流动"。
 - 中间件是独立的函数
 - 中间件可以组合使用
 - 中间件有一个统一的接口
+
+```js
+({ dispatch, getState }) => next => action => next(action);
+```
+
+redux-thunk
+
+```js
+function createThunkMiddleware(extraArgument) {
+  return ({ dispatch, getState }) => next => action => {
+    if (typeof action === "function") {
+      return action(dispatch, getState, extraArgument);
+    }
+    return next(action);
+  };
+}
+
+const thunk = createThunkMiddleware();
+export default thunk;
+```
+
+使用中间件
+
+1. 第一种方法是用 Redux 提供的 applyMiddleware 来包装 createStore 产生一个新的创建 Store 的函数，以使用 redux-thunk 中间件为例
+
+   ```js
+   import { createStore, applyMiddleware } from "redux";
+   import thunkMiddleware from "redux-thunk";
+
+   const configureStore = applyMiddleware(thunkMiddleware)(createStore);
+   const store = configureStore(reducer, initialStore);
+   ```
+
+2. 第二种方法也就是把 applyMiddleware 的结果当作 Store Enhancer，和其它 Enhancer 混合之后作为 createStore 参数传入
+   以同时使用 redux-thunk 和 Redux Devtools 增强器为例，代码如下
+
+   ```js
+   import { createStore, applyMiddleware, compose } from "redux";
+   import thunkMiddleware from "redux-thunk";
+
+   const win = window;
+   const storeEnhancers = compose(
+     applyMiddleware(...middlewares),
+     win && win.devToolsExtension ? win.devToolsExtension : f => f
+   );
+   const store = createStore(reducer, storeEnhancers);
+   ```
+
+## 18. shouldComponentUpdate 模拟 PuerComponent
+
+```jsx
+class Demo1 extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    const { props, state } = this;
+
+    function shallowCompare(a, b) {
+      return a === b || Object.keys(a).every(k => a[k] === b[k]);
+    }
+
+    return shallowCompare(nextProps, props) && shallowCompare(nextState, state);
+  }
+}
+
+class Demo2 extends PuerComponent {}
+```
+
+## 19. 任意组件通讯
+
+1. 利用共同祖先
+2. 状态管理
+3. 利用消息中间件，就是引入一个全局消息工具，两个组件通过这个全局消息工具进行通信
+
+   ```js
+   class EventEmitter {
+     constructor() {
+       this.eventMap = {};
+     }
+     sub(name, cb) {
+       const eventList = (this.eventMap[name] = this.eventMap[name] || []);
+       eventList.push(cb);
+     }
+     pub(name, ...data) {
+       (this.evnetMap[name] || []).forEach(cb => cb(...data));
+     }
+   }
+
+   // 全局消息工具
+   const event = new EventEmitter();
+
+   // 一个组件
+   class Element1 extends Component {
+     constructor() {
+       // 订阅消息
+       event.sub("element2update", () => {
+         console.log("element2 update");
+       });
+     }
+   }
+
+   // 另一个组件
+   class Element2 extends Component {
+     constructor() {
+       // 发布消息
+       setTimeout(function() {
+         event.pub("element2update");
+       }, 2000);
+     }
+   }
+   ```
+
+4. context 桥梁
+
+   ```js
+   import PropTypes from "prop-types";
+
+   class Child extends Component {
+     // 后代组件生命需要读取context上的数据
+     static contextTypes = {
+       text: PropTypes.string
+     };
+
+     render() {
+       // 通过 this.context 读取 context 上的数据
+       return <div>{this.context.text}</div>;
+     }
+   }
+
+   class Ancestor extends Component {
+     // 祖先组件生命需要context上放入数据
+     static childContextTypes = {
+       text: PropTypes.string
+     };
+
+     // 祖先组件往context上放入数据
+     getChildContext() {
+       return {
+         text: "路小二"
+       };
+     }
+   }
+   ```
+
+## 20.
