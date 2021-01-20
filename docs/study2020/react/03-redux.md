@@ -201,3 +201,99 @@ Counter.propTypes = {
 
 export default Counter;
 ```
+
+## 6.redux 源码
+
+### 6.1 createStore
+
+```js
+const createStore = reducer => {
+  let state;
+
+  // listeners用来存储所有的监听函数
+  let listeners = [];
+
+  const getState = () => state;
+
+  const dispatch = action => {
+    state = reducer(state, action);
+    // 每一次状态更新后，都需要调用listeners数组中的每一个监听函数
+    listeners.forEach(listener => listener());
+  };
+
+  const subscribe = listener => {
+    // subscribe 可能会被调用多次，每一次调用时，都将相关的监听函数存入listeners数组中
+    listeners.push(listener);
+    // 返回一个函数，进行取消订阅
+    return () => {
+      listeners = listeners.filter(item => item !== listener);
+    };
+  };
+
+  return { getState, dispatch, subscribe };
+};
+```
+
+### 6.2 combineReducers
+
+```js
+const combineReducers = reducers => {
+  return (state = {}, action) => {
+    return Object.keys(reducers).reduce((nextState, key) => {
+      nextState[key] = reducers[key](state[key], action);
+      return nextState;
+    }, {});
+  };
+};
+```
+
+### 6.3 applyMiddleware
+
+```js
+export default funtion applyMiddleware(...middlewares){
+  return next=>
+    (reducer, intialState) => {
+      var store = next(reducer, initialState);
+      var dispatch = store.dispatch;
+      var chain = [];
+
+      var middlewareAPI = {
+        getState: store.getState,
+        dispatch: action=>dispatch(action)
+      }
+
+      chain = middlewares.map(middleware=>middleware(middlewareAPI))
+
+      dispatch = compose(...chain, store.dispatch)
+
+      return {
+        ...store,
+        dispatch
+      }
+    }
+}
+```
+
+chain 数组中的每一项都是对原始 `dispatch` 的增强，并进行控制权转移，所以就有了`dispatch=compose(...chain, store.dispatch)`
+
+```js
+export default function compose(...funcs) {
+  if (funcs.length === 0) {
+    return arg => arg;
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0];
+  }
+
+  return funcs.reduce((a, b) => (...args) => a(b(...args)));
+}
+```
+
+## 7.写一个中间件的固定套路模式
+
+```js
+const customMiddleware = store => next => action => {
+  // ...
+};
+```
