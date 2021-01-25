@@ -513,4 +513,14 @@ class Demo2 extends PuerComponent {}
    }
    ```
 
-## 20.
+## 20. setState Promise 化
+
+使用 Promise 包装原生的 this.setState 发放为 setStateAsync 方法，setStateAsync 返回一个 Promise 对象。
+
+```js
+setStateAsync(state){
+  return new Promise(resolve=>{
+    this.setState(state,resolve)
+  })
+}
+```
