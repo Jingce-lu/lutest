@@ -308,6 +308,8 @@ Flux 的最大特点，就是数据的"单向流动"。
 - 中间件可以组合使用
 - 中间件有一个统一的接口
 
+Redux 中间件提供是位于 `action` 被派发之后，到达 `reducer` 之前的扩展点，因此我们可以利用 Redux 中间件来完成**日志记录、调用一部接口或者路由**等
+
 ```js
 ({ dispatch, getState }) => next => action => next(action);
 ```
