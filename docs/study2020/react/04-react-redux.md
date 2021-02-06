@@ -1,5 +1,46 @@
 # React-redux
 
+[[TOC]]
+
+```js
+connect([mapStateToProps], [mapDispatchToProps], [mergeProps], [options]);
+```
+
+## mapStateToProps
+
+```js
+function mapStateToProps(state, [ownProps]) {
+  return {};
+}
+```
+
+## mapDispatchToProps
+
+mapDispatchToProps 的作用是将 dispatch 作为 props 传递给 WrappedComponent 组件。**它可以是一个函数，也可以是一个对象**
+
+若果传递的是一个对象，那么键值应该是一个函数，用来描述 action 的生成。也就是说，每个定义在该对象中的函数都将被当做 Redux action create(构造器)，其中所定义的方法名将作为属性名被合并到组件的 props 中
+
+```js
+const mapDispatchToProps = onFirst:(data)=>{
+  type: "FIRST_ACTION",
+  data: data
+}
+```
+
+如果 mapDispatchToProps 传递的是一个函数，那么这个函数将接收 dispatch 方法以及容器组件的 props 作为参数，最终也返回一个对象
+
+````js
+const mapDispatchToProps = (dispatch,ownProps)=> {
+  return {
+    onFirstAct: ()=>dispatch({
+      type: "FIRST_ACTION",
+      data: ownProps.data
+    })
+  }
+}
+
+## Demo
+
 ```js
 // react-and-redux/chapter-03/react-redux/src/Store.js
 mport {createStore} from 'redux';
@@ -14,7 +55,7 @@ const initValues = {
 const store = createStore(reducer, initValues);
 
 export default store;
-```
+````
 
 ```js
 // react-and-redux/chapter-03/react-redux/src/Reducer.js
