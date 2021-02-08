@@ -297,7 +297,7 @@ Flux 的最大特点，就是数据的"单向流动"。
 
 ## 17. 扩展 Redux
 
-两种扩展 Redux 的方法
+### 17.1 两种扩展 Redux 的方法
 
 1. 中间件
 2. Store Enhancer
@@ -314,7 +314,7 @@ Redux 中间件提供是位于 `action` 被派发之后，到达 `reducer` 之�
 ({ dispatch, getState }) => next => action => next(action);
 ```
 
-redux-thunk
+### 17.2 redux-thunk
 
 ```js
 function createThunkMiddleware(extraArgument) {
@@ -330,7 +330,7 @@ const thunk = createThunkMiddleware();
 export default thunk;
 ```
 
-使用中间件
+### 17.3 使用中间件
 
 1. 第一种方法是用 Redux 提供的 applyMiddleware 来包装 createStore 产生一个新的创建 Store 的函数，以使用 redux-thunk 中间件为例
 
@@ -356,6 +356,68 @@ export default thunk;
    );
    const store = createStore(reducer, storeEnhancers);
    ```
+
+### 17.4 增强型日志 log dispatch
+
+```js
+const addLoggingToDispatch = store => {
+  const rawDispatch = store.dispatch;
+
+  if (!console.group) {
+    return rawDispatch;
+  }
+
+  // 返回的函数就是添加更新日志之后的全新dispatch
+  return action => {
+    // 按照action类型进行输出分组，保证在同一个action下拥有相同的日志title
+    console.group(action.type);
+    // 打印更新前的state
+    console.log("%c previous state", "color:gray", store.getState());
+    // 打印出当前action
+    console.log("%c action", "color: blue", action);
+
+    // 调用原始的dispatch并记录返回值
+    const returnValue = rawDispatch(action);
+
+    // 打印更新后的state
+    console.log("%c next state", "color: green", store.getState());
+
+    console.group(action.type);
+
+    return returnValue;
+  };
+};
+```
+
+最后加入对开发环境和生产环境的判断
+
+```js
+if(process.env.NODE_ENV !=="production"){
+  const store.dispatch = addLoggingToDispatch(store)
+}
+```
+
+### 17.5 dispatch 改造识别 Promise
+
+```js
+const addPromiseSupportToDispatch = store => {
+  const rawDispatch = store.dispatch;
+
+  // 返回的函数就是添加更新日志之后的全新dispatch
+  return action=>{
+    // 对action进行判断，当是一个Promise对象时
+    if(typeof action.then === "function"){
+      return action.then(rawDispatch)
+    }
+
+    return rawDispatch(action)
+  }
+}
+
+if(process.env.NODE_ENV !=="production"){
+  const store.dispatch = addPromiseSupportToDispatch(store)
+}
+```
 
 ## 18. shouldComponentUpdate 模拟 PuerComponent
 
