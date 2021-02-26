@@ -78,12 +78,14 @@ module.exports = {
       { text: "Collection", link: "/collection/" },
       { text: "study2020", link: "/study2020/" },
       { text: "技术小册", link: "/brochure/" },
+      { text: "Mac", link: "/mac/" },
     ],
     sidebar: {
       "/js/": getSidebar("js"),
       "/prepare/": getSidebar("prepare"),
       "/collection/": getSidebar("collection"),
-      '/brochure/':getSidebar('brochure'),
+      '/brochure/': getSidebar('brochure'),
+      '/study2020/':getSidebar('study2020'),
     },
   },
 }
