@@ -85,7 +85,8 @@ module.exports = {
       "/prepare/": getSidebar("prepare"),
       "/collection/": getSidebar("collection"),
       '/brochure/': getSidebar('brochure'),
-      '/study2020/':getSidebar('study2020'),
+      '/study2020/': getSidebar('study2020'),
+      '/mac/':getSidebar('mac'),
     },
   },
 }
