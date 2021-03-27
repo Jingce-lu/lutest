@@ -263,9 +263,27 @@ export default function applyMiddleware(...middlewares) {
 
 跟传统的事件的处理机制不同，React 把所有定义的事件都绑定到结构的最顶层。使用一个事件监听器 watch 所有事件，并且它内部包含一个映射表，记录了事件与组件事件处理函数的对应关系。当事件触发时，React 会根据映射关系找到真正的事件处理函数并调用。当组件被安装或被卸载时，对应的函数会被自动添加到事件监听器的内部映射表或者从表中删除
 
+**事件绑定方式**
+
+1. 直接在 DOM 元素中绑定
+   ```html
+   <button onclick="alert(1);">Test</button>
+   ```
+2. 在 JavaScript 中，通过为元素的事件属性赋值的方式实现绑定
+   ```js
+   el.onclick = e => {
+     console.log(e);
+   };
+   ```
+3. 通过事件监听函数实现绑定
+   ```js
+   el.addEventListener("click", () => {}, false);
+   el.attachEvent("onclick", () => {});
+   ```
+
 ## 15. 受控组件和非受控组件
 
-受控组件就是可以被 react 状态控制的组件  
+**受控组件就是可以被 react 状态控制的组件**  
 在 react 中，Input textarea 等组件默认是非受控组件（输入框内部的值是用户控制，和 React 无关）。但是也可以转化成受控组件，就是通过 onChange 事件获取当前输入内容，将当前输入内容作为 value 传入，此时就成为受控组件。  
 好处：可以通过 onChange 事件控制用户输入，使用正则表达式过滤不合理输入。
 
@@ -524,3 +542,9 @@ setStateAsync(state){
   })
 }
 ```
+
+## 21. 综合
+
+- React 的所有组件都继承自顶层类 `React.Component`。它的定义非常简洁，只是初始化了 `ReactComponent` 方法，声明了 `props`、`context`、`refs` 等，并在原型上定义了 `setState` 和 `foreUpdate` 方法。内部初始化的生命周期方法与 `createClass` 方法使用的是同一个方法创建的
+
+- 在 React 中，数据是自顶向下单向流动的，即从父组件到子组件，这条原则让组件之间的关系变得简单且可预测

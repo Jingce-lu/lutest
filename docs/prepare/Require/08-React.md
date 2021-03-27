@@ -1422,6 +1422,19 @@ ReactComponent.prototype.setState = function(partialState, callback) {
 
 在代码中调用 setState 函数之后，React 会将传入的参数对象与组件当前的状态合并，然后触发所谓的调和过程（Reconciliation）。经过调和过程，React 会以相对高效的方式根据新的状态构建 React 元素树并且着手重新渲染整个 UI 界面。在 React 得到元素树之后，React 会自动计算出新的树与老树的节点差异，然后根据差异对界面进行最小化重渲染。在差异计算算法中，React 能够相对精确地知道哪些位置发生了改变以及应该如何改变，这就保证了按需更新，而不是全部重新渲染。
 
+setState 通过一个队列机制实现 state 更新。当执行 setState 时，会将需要更新的 state 合并后放入状态队列，而不会立刻更新 this.state，队列机制可以高效地批量更新 state。如果不通过 setState 而直接修改 this.state 的值，那么该 state 将不会被放入状态队列中，当下次调用 setState 并对状态队列进行合并时，将会忽略之前直接被修改的 state,而造成无法预知的错误。因此，应该使用 setState 方法来更新 state,同时 React 也正是利用状态队列机制实现了 setState 的异步更新，避免频繁的重复更新 state。相关代码如下：
+
+```js
+// 将新的state合并到状态更新队列中
+var nextState = this._processPendingState(nextProps, nextContext);
+
+// 根据更新队列和 shouldComponentUpdate 的状态来判断是否需要更新组件
+var shouldUpdate =
+  this._pendingForceUpdate ||
+  !inst.shouldComponentUpdate ||
+  inst.shouldComponentUpdate(nextProps, nextState, nextContext);
+```
+
 ## 33. react 中的 setState 批量更新的过程是什么？
 
 在 React 的生命周期和合成事件执行前后都有相应的钩子，分别是`pre钩子`和`post钩子`，pre 钩子会调用`batchedUpdate`方法将`isBatchingUpdates`变量置为`true`，开启批量更新，而 post 钩子会将`isBatchingUpdates`置为`false`
