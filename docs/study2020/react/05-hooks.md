@@ -92,3 +92,15 @@ const React = (function () {
 ```
 
 这也是 hook 只可以在顶层使用，不能写在循环体、条件渲染，或者嵌套 function 里的原因。 React 内部实现需要调用顺序来记录每个 useState 的调用，以做区分
+
+## React hook 之 hook 之所以被设计为 hook 的原因
+
+- useState 让函数式组件能够使用 state
+- useEffect 让函数式组件可以模拟生命周期方法，并进行副作用操作
+- useReducer 让我们能够更清晰地处理状态数据
+- useContext 可以获取 context 的值
+
+那么为什么其他的一些 API，如 React.memo 并没有成为一个 hook 呢？ 事实上 React 认为能够成为 hook 有两个特定条件
+
+1. **可组合**： 这个新特性需要具有组合能力，也就是说需要有复用价值，因为 hook 的一大用途就是完成组件的复用，因此，开发者可以自定义 hook,而不必使用官方指定的 hook.
+2. **可调试**: hook 的一大特性就是能够调试，如果应用出现差错，要能够从错误的 props 和 state 中找到错误的组件或逻辑，具有这样调试功能的特性才有资格成为一个 hook

@@ -148,7 +148,7 @@ Mobx 最关键的函数在于 autoRun，举个例子，它可以达到这样的�
 ```js
 const obj = observable({
   a: 1,
-  b: 2
+  b: 2,
 });
 
 autoRun(() => {
@@ -466,7 +466,7 @@ useCallback：如果你需要一个不会随着组件更新而重新创建的 ca
 效果：通过 `useInputValue()` 拿到 Input 框当前用户输入的值，而不是手动监听 onChange 再腾一个 `otherInputValue` 和一个回调函数把这一堆逻辑写在无关的地方。
 
 ```tsx
-let name = useInputValue("Jamie");
+let name = useInputValue('Jamie');
 // name = { value: 'Jamie', onChange: [Function] }
 return <input {...name} />;
 ```
@@ -478,13 +478,13 @@ return <input {...name} />;
 ```tsx
 function useInputValue(initialValue) {
   let [value, setValue] = useState(initialValue);
-  let onChange = useCallback(function(event) {
+  let onChange = useCallback(function (event) {
     setValue(event.currentTarget.value);
   }, []);
 
   return {
     value,
-    onChange
+    onChange,
   };
 }
 ```
@@ -505,7 +505,7 @@ function Foo() {
 }
 function App() {
   return (
-    <Provider value={"grey"}>
+    <Provider value={'grey'}>
       <Foo />
     </Provider>
   );
@@ -515,7 +515,7 @@ function App() {
 通过 React createContext 的语法，在 APP 组件中可以跨过 Foo 组件给 Bar 传递数据。而在 React Hooks 中，我们可以使用 `useContext` 进行改造
 
 ```jsx
-const colorContext = React.createContext("gray");
+const colorContext = React.createContext('gray');
 function Bar() {
   const color = useContext(colorContext);
   return <div>{color}</div>;
@@ -525,7 +525,7 @@ function Foo() {
 }
 function App() {
   return (
-    <colorContext.Provider value={"red"}>
+    <colorContext.Provider value={'red'}>
       <Foo />
     </colorContext.Provider>
   );
@@ -571,15 +571,15 @@ function HeaderBar() {
 以下是用 reducer 重写 useState 一节的计数器示例：
 
 ```js {17}
-import React, { useReducer } from "react";
+import React, { useReducer } from 'react';
 
 const initialState = { count: 0 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "increment":
+    case 'increment':
       return { count: state.count + 1 };
-    case "decrement":
+    case 'decrement':
       return { count: state.count - 1 };
     default:
       throw new Error();
@@ -591,8 +591,8 @@ function Counter() {
   return (
     <>
       Count: {state.count}
-      <button onClick={() => dispatch({ type: "increment" })}>+</button>
-      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
     </>
   );
 }
@@ -610,7 +610,7 @@ useCallback(fn, inputs) is equivalent to useMemo(() => fn, inputs).
 function App() {
   const memoizedHandleClick = useMemo(
     () => () => {
-      console.log("Click happened");
+      console.log('Click happened');
     },
     []
   ); // 空数组代表无论什么情况下该函数都不会发生改变
@@ -644,9 +644,9 @@ function Parent({ a, b }) {
 useRef 跟 createRef 类似，都可以用来生成对 DOM 对象的引用
 
 ```js
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react';
 function App() {
-  let [name, setName] = useState("Nate");
+  let [name, setName] = useState('Nate');
   let nameRef = useRef();
   const submitButton = () => {
     setName(nameRef.current.value);
@@ -680,7 +680,7 @@ function App() {
 
   useEffect(() => {
     setTimeout(() => {
-      alert("count: " + count);
+      alert('count: ' + count);
     }, 3000);
   }, [count]);
 
@@ -701,7 +701,7 @@ function App() {
   const count = useRef(0);
 
   const showCount = () => {
-    alert("count: " + count.current);
+    alert('count: ' + count.current);
   };
 
   const handleClick = number => {
@@ -726,12 +726,7 @@ function App() {
 通过 useImperativeHandle 用于让父组件获取子组件内的索引
 
 ```js
-import React, {
-  useRef,
-  useEffect,
-  useImperativeHandle,
-  forwardRef
-} from "react";
+import React, { useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 function ChildInputComponent(props, ref) {
   const inputRef = useRef(null);
   useImperativeHandle(ref, () => inputRef.current);
@@ -761,15 +756,15 @@ function App() {
 function App() {
   const [width, setWidth] = useState(0);
   useLayoutEffect(() => {
-    const title = document.querySelector("#title");
+    const title = document.querySelector('#title');
     const titleWidth = title.getBoundingClientRect().width;
-    console.log("useLayoutEffect");
+    console.log('useLayoutEffect');
     if (width !== titleWidth) {
       setWidth(titleWidth);
     }
   });
   useEffect(() => {
-    console.log("useEffect");
+    console.log('useEffect');
   });
   return (
     <div>
@@ -830,22 +825,22 @@ const CustomComp = () => {
 1. 利用 store 存储数据信息，利用 store.getState()得到当前的状态值
    导入 redux 中的 createStore 方法,创建一个 store
    ```js
-   import { createStore } from "redux";
+   import { createStore } from 'redux';
    const store = createStore();
    ```
 2. state 是 store 某一个时刻的数据值，store 里面的数据变更会触发 store.subscribe 中回调函数，在里面设置 setState 引发 view 更新
 3. 定义 action 类型 type 和携带的数据，action 是一个对象里面必须有 type 属性,它标识了 action 类型名称，也可以用函数生成 action
    ```js
    const action = {
-     type: "CHANGE",
-     data: "data"
+     type: 'CHANGE',
+     data: 'data',
    };
    //another way to create a action with function
    function actionsCreator(obj) {
      return {
-       type: "CHANGE",
+       type: 'CHANGE',
        name: obj.name,
-       pass: obj.pass
+       pass: obj.pass,
      };
    }
    ```
@@ -863,15 +858,15 @@ redux-saga 是通过 genetator 实现的，如果不支持 generator 需要通�
 1. 创建一个 helloSaga.js 文件
    ```js
    export function* helloSaga() {
-     console.log("Hello Sagas!");
+     console.log('Hello Sagas!');
    }
    ```
 2. 在 redux 中使用 redux-saga 中间件  
    在 main.js 中：
    ```js
-   import { createStore, applyMiddleware } from "redux";
-   import createSagaMiddleware from "redux-saga";
-   import { helloSaga } from "./sagas";
+   import { createStore, applyMiddleware } from 'redux';
+   import createSagaMiddleware from 'redux-saga';
+   import { helloSaga } from './sagas';
    const sagaMiddleware = createSagaMiddleware();
    const store = createStore(reducer, applyMiddleware(sagaMiddleware));
    sagaMiddleware.run(helloSaga);
@@ -930,7 +925,7 @@ export default function applyMiddleware(...middlewares) {
     };
     const middlewareAPI = {
       getState: store.getState,
-      dispatch: (...args) => dispatch(...args)
+      dispatch: (...args) => dispatch(...args),
     };
     // 让每个 middleware 带着 middlewareAPI 这个参数分别执行一遍
     const chain = middlewares.map(middleware => middleware(middlewareAPI));
@@ -938,7 +933,7 @@ export default function applyMiddleware(...middlewares) {
     dispatch = compose(...chain)(store.dispatch);
     return {
       ...store,
-      dispatch
+      dispatch,
     };
   };
 }
@@ -947,8 +942,7 @@ export default function applyMiddleware(...middlewares) {
 applyMiddleware 这个函数的核心就在于在于组合 compose，通过将不同的 middlewares 一层一层包裹到原生的 dispatch 之上，然后对 middleware 的设计采用柯里化的方式，以便于 compose ，从而可以动态产生 next 方法以及保持 store 的一致性。
 
 ```js
-const doNothingMidddleware = ({ dispatch, getState }) => next => action =>
-  next(action);
+const doNothingMidddleware = ({ dispatch, getState }) => next => action => next(action);
 ```
 
 **redux-thunk 实现**
@@ -956,7 +950,7 @@ const doNothingMidddleware = ({ dispatch, getState }) => next => action =>
 ```js
 function createThunkMiddleware(extraArgument) {
   return ({ dispatch, getState }) => next => action => {
-    if (typeof action === "function") {
+    if (typeof action === 'function') {
       return action(dispatch, getState, extraArgument);
     }
     return next(action);
@@ -982,15 +976,15 @@ const addLoggingToDispatch = store => {
     // 按照action类型进行输出分组，保证同一个action下拥有相同的日志title
     console.group(action.type);
     // 打印更新前的state
-    console.log("%c previous state", "color: gray", store.getState());
+    console.log('%c previous state', 'color: gray', store.getState());
     // 打印当前action
-    console.log("%c action", "color: blue", action);
+    console.log('%c action', 'color: blue', action);
 
     // 调用原始的dispatch并记录返回值
     const returnValue = next(action);
 
     // 打印更新后的state
-    console.log("%c next state", "color: green", store.getState());
+    console.log('%c next state', 'color: green', store.getState());
 
     console.group(action.type);
 
@@ -1044,8 +1038,8 @@ const mapDispatchToProps = (dispatch, ownProps) => return {
 connect(state => ({
   computedDate: {
     height: state.height,
-    width: state.width
-  }
+    width: state.width,
+  },
 }))(someComponent);
 ```
 
@@ -1077,15 +1071,15 @@ connect(
   state => ({
     computedData: {
       height: state.height,
-      width: state.width
-    }
+      width: state.width,
+    },
   }),
   [mapDispatchToProps],
   [mergeProps],
   {
     areStatesEqual: (prev, next) => {
       return prev.height === next.height && prev.widht === next.width;
-    }
+    },
   }
 )(someComponent);
 ```
@@ -1138,7 +1132,7 @@ class Parent extends React.Component {
 
 class Child extends React.Component {
   test() {
-    console.log("child method called by ref");
+    console.log('child method called by ref');
   }
 }
 ```
@@ -1227,13 +1221,13 @@ attachRef 方法又是什么时候被调用的呢？我们这儿就不源码分�
 ### 受控组件 DOM 操作、双向数据绑定
 
 ```js
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 class Input extends Component {
   constructor() {
     super();
-    this.state = { val: "" };
+    this.state = { val: '' };
   }
   handleChange = event => {
     let val = event.target.value;
@@ -1244,11 +1238,8 @@ class Input extends Component {
     return (
       <div>
         <p>{this.state.val}</p>
-        <input
-          type="text"
-          value={this.state.val}
-          onChange={this.handleChange}
-        /> //input就是受控组件 被状态对象的属性控制
+        <input type="text" value={this.state.val} onChange={this.handleChange} /> //input就是受控组件
+        被状态对象的属性控制
       </div>
     );
   }
@@ -1258,8 +1249,8 @@ ReactDOM.render(<Input />, window.app);
 ```
 
 ```js
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 class Sum extends Component {
   constructor() {
@@ -1269,25 +1260,20 @@ class Sum extends Component {
   handleChangeA = event => {
     this.setState({
       a: parseInt(event.target.value),
-      result: parseInt(event.target.value) + this.state.b
+      result: parseInt(event.target.value) + this.state.b,
     });
   };
   handleChangeB = event => {
     this.setState({
       b: parseInt(event.target.value),
-      result: parseInt(event.target.value) + this.state.a
+      result: parseInt(event.target.value) + this.state.a,
     });
   };
   render() {
     return (
       <div>
-        <input type="text" value={this.state.a} onChange={this.handleChangeA} />{" "}
-        +
-        <input
-          type="text"
-          value={this.state.b}
-          onChange={this.handleChangeB}
-        /> =
+        <input type="text" value={this.state.a} onChange={this.handleChangeA} /> +
+        <input type="text" value={this.state.b} onChange={this.handleChangeB} /> =
         <input type="text" value={this.state.result} />
       </div>
     );
@@ -1300,8 +1286,8 @@ ReactDOM.render(<Sum />, window.app);
 ### 非受控组件 DOM 操作
 
 ```js
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 class Sum extends Component {
   handleChange = event => {
@@ -1356,7 +1342,7 @@ class PubSub {
   emit(eventName, ...data) {
     const currentEvent = this.eventList[eventName];
 
-    if (Object.prototype.toString.call(currentEvent) !== "[object Array]") {
+    if (Object.prototype.toString.call(currentEvent) !== '[object Array]') {
       return false;
     }
 
@@ -1371,23 +1357,23 @@ class PubSub {
 const pubsub = new PubSub();
 
 // 订阅A事件
-pubsub.on("A", (...args) => {
+pubsub.on('A', (...args) => {
   console.log(args);
 });
 
 // 订阅B事件
-pubsub.on("B", (...args) => {
+pubsub.on('B', (...args) => {
   console.log(args);
 });
 
 // 发布A事件
-pubsub.emit("A", {
-  name: "zhaoyiming",
-  work: "FE"
+pubsub.emit('A', {
+  name: 'zhaoyiming',
+  work: 'FE',
 });
 
 // 发布B事件
-pubsub.emit("B", "event B");
+pubsub.emit('B', 'event B');
 ```
 
 ## 31. 为什么不直接更新 state 状态，源码中式如何解读的？
@@ -1395,23 +1381,19 @@ pubsub.emit("B", "event B");
 setState 是组件原型链上的方法，参数为 partialState, callback，看样子长得还是比较 55 开的，参数也不多。提前预告几个参数，\_pendingStateQueue, dirtyComponents, isBatchingUpdates, internalInstance, transaction
 
 ```js
-ReactComponent.prototype.setState = function(partialState, callback) {
-  !(
-    typeof partialState === "object" ||
-    typeof partialState === "function" ||
-    partialState == null
-  )
-    ? "development" !== "production"
+ReactComponent.prototype.setState = function (partialState, callback) {
+  !(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null)
+    ? 'development' !== 'production'
       ? invariant(
           false,
-          "setState(...): takes an object of state variables to update or a function which returns an object of state variables."
+          'setState(...): takes an object of state variables to update or a function which returns an object of state variables.'
         )
-      : _prodInvariant("85")
+      : _prodInvariant('85')
     : void 0;
   this.updater.enqueueSetState(this, partialState);
   // 如果有回调函数，在状态进行更新后执行
   if (callback) {
-    this.updater.enqueueCallback(this, callback, "setState");
+    this.updater.enqueueCallback(this, callback, 'setState');
   }
 };
 ```
@@ -1448,8 +1430,8 @@ var shouldUpdate =
 ```js
 class Modal extends Component {
   componentDidMount() {
-    this.modalTarget = document.createElement("div");
-    this.modalTarget.className = "modal";
+    this.modalTarget = document.createElement('div');
+    this.modalTarget.className = 'modal';
     document.body.appendChild(this.modalTarget);
     this.renderModal();
   }
@@ -1499,7 +1481,7 @@ render() {
 8. 静态方法必须被拷贝
 
 ```javascript
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 export default (WrappedComponent, name) => {
   class NewComponent extends Component {
@@ -1612,15 +1594,15 @@ function withPersistentData(WrappedComponent) {
 }
 
 function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || "Component";
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 ```
 
 ## 37. React 的单元测试
 
 ```js
-import ShallowRenderer from "react-test-renderer/shallow"; // ES6
-var ShallowRenderer = require("react-test-renderer/shallow"); // ES5 with npm
+import ShallowRenderer from 'react-test-renderer/shallow'; // ES6
+var ShallowRenderer = require('react-test-renderer/shallow'); // ES5 with npm
 ```
 
 例如，如果你有如下的组件：
@@ -1639,17 +1621,17 @@ function MyComponent() {
 你可以使用断言：
 
 ```js
-import ShallowRenderer from "react-test-renderer/shallow";
+import ShallowRenderer from 'react-test-renderer/shallow';
 
 // 测试代码:
 const renderer = new ShallowRenderer();
 renderer.render(<MyComponent />);
 const result = renderer.getRenderOutput();
 
-expect(result.type).toBe("div");
+expect(result.type).toBe('div');
 expect(result.props.children).toEqual([
   <span className="heading">Title</span>,
-  <Subcomponent foo="bar" />
+  <Subcomponent foo="bar" />,
 ]);
 ```
 
@@ -1664,14 +1646,14 @@ expect(result.props.children).toEqual([
 当 Provider 提供的值更改时，Consumer 必须重新渲染
 
 ```js
-import React, { createContext } from "react";
+import React, { createContext } from 'react';
 
 // 创建Context的唯一方法
 const ThemeContext = createContext();
 
 class App extends React.Component {
   state = {
-    theme: "red"
+    theme: 'red',
   };
   render() {
     const { theme } = this.state;
@@ -1681,7 +1663,7 @@ class App extends React.Component {
         {/* 当Context的Provider值更改时，Consumer 的值必须重新渲染 */}
         <button
           onClick={() => {
-            this.setState({ theme: "yellow" });
+            this.setState({ theme: 'yellow' });
           }}
         >
           按钮
@@ -1713,14 +1695,16 @@ class Middle extends React.Component {
 export default App;
 ```
 
-## 40. suspense 组件
+## 40. React.Suspense 和 React.lazy
+
+### React.Suspense 和 React.lazy 使用
 
 Suspense 指的是 React 在等待组件时“suspend（暂停）”渲染，并显示加载标识的新功能。 在 React 16.6 中，Suspense 只支持一个场景：使用 `React.lazy()` 和 `<React.Suspense>` 实现的懒加载组件。
 
 关于 Suspense 的使用，先来看下示例代码
 
 ```js
-const OtherComponent = React.lazy(() => import("./OtherComponent"));
+const OtherComponent = React.lazy(() => import('./OtherComponent'));
 
 function MyComponent() {
   return (
@@ -1740,8 +1724,8 @@ function MyComponent() {
 fallback 属性接受任何在组件加载过程中你想展示的 React 元素。你可以将 `Suspense` 组件置于懒加载组件之上的任何位置。你甚至可以用一个 `Suspense` 组件包裹多个懒加载组件。
 
 ```js
-const OtherComponent = React.lazy(() => import("./OtherComponent"));
-const AnotherComponent = React.lazy(() => import("./AnotherComponent"));
+const OtherComponent = React.lazy(() => import('./OtherComponent'));
+const AnotherComponent = React.lazy(() => import('./AnotherComponent'));
 
 function MyComponent() {
   return (
@@ -1756,6 +1740,34 @@ function MyComponent() {
   );
 }
 ```
+
+### 手动实现一个 React.Suspense 组件，简单版本未考虑边界情况
+
+```js
+export class Suspense extends React.Component {
+  state = {
+    isLoading: false,
+  };
+
+  componentDidCatch(error) {
+    if (typeof error.then === 'function') {
+      this.setState({ isLoading: true });
+      error.then(() => {
+        this.setState({ isLoading: false });
+      });
+    }
+  }
+
+  render() {
+    const { children, fallback } = this.props;
+    const { isLoading } = this.state;
+
+    return isLoading ? fallback : children;
+  }
+}
+```
+
+这段代码的核心思路就是，在首次渲染 Promise 出错时使用 componentDidCatch 进行捕获，然后通过状态切换渲染 fallback 组件；在 Promise 决议之后，通过状态切换渲染目标组件。
 
 ## 41. 用 shouldComponentUpdate 模拟 PureComponent
 
@@ -1802,8 +1814,8 @@ class Demo2 extends React.PureComponent {}
    class Element1 extends Component {
      constructor() {
        // 订阅消息
-       event.sub("element2update", () => {
-         console.log("element2 update");
+       event.sub('element2update', () => {
+         console.log('element2 update');
        });
      }
    }
@@ -1812,8 +1824,8 @@ class Demo2 extends React.PureComponent {}
    class Element2 extends Component {
      constructor() {
        // 发布消息
-       setTimeout(function() {
-         event.pub("element2update");
+       setTimeout(function () {
+         event.pub('element2update');
        }, 2000);
      }
    }
@@ -1822,12 +1834,12 @@ class Demo2 extends React.PureComponent {}
 4. context 桥梁
 
    ```js
-   import PropTypes from "prop-types";
+   import PropTypes from 'prop-types';
 
    class Child extends Component {
      // 后代组件生命需要读取context上的数据
      static contextTypes = {
-       text: PropTypes.string
+       text: PropTypes.string,
      };
 
      render() {
@@ -1839,13 +1851,13 @@ class Demo2 extends React.PureComponent {}
    class Ancestor extends Component {
      // 祖先组件生命需要context上放入数据
      static childContextTypes = {
-       text: PropTypes.string
+       text: PropTypes.string,
      };
 
      // 祖先组件往context上放入数据
      getChildContext() {
        return {
-         text: "路小二"
+         text: '路小二',
        };
      }
    }
@@ -1854,14 +1866,14 @@ class Demo2 extends React.PureComponent {}
 ## 43. asyncComponent
 
 ```jsx
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 export default function asyncComponent(importComponent) {
   class AsyncComponent extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        component: null
+        component: null,
       };
     }
 
@@ -1869,7 +1881,7 @@ export default function asyncComponent(importComponent) {
       importComponent().then(mod => {
         this.setState({
           // 同时兼容ES6和CommonJS的模块
-          component: mod.default ? mod.default : mod
+          component: mod.default ? mod.default : mod,
         });
       });
     }
@@ -1893,10 +1905,9 @@ function withHOC(WrapComponent) {
   // 此处未定义名称或者希望动态定义名称
   return class extends React.Component {
     // 定义displayName
-    static displayName = `withHOC(${WrapComponent.displayName ||
-      WrapComponent.name})`;
+    static displayName = `withHOC(${WrapComponent.displayName || WrapComponent.name})`;
     render() {
-      console.log("inside HOC");
+      console.log('inside HOC');
       return <WrapComponent {...this.props} />;
     }
   };
@@ -1985,18 +1996,18 @@ virtual DOM 是将真实的 DOM 的数据抽取出来，以对象的形式模拟
 
    ```js
    let initialState = {};
-   if (localStorage.getItem("store")) {
-     initialState = JSON.parse(localStorage.getItem("store"));
+   if (localStorage.getItem('store')) {
+     initialState = JSON.parse(localStorage.getItem('store'));
    }
 
    // 1. Initialize
    const app = dva({
      history: browserHistory,
-     initialState: initialState
+     initialState: initialState,
    });
 
-   window.onunload = function() {
-     localStorage.setItem("store", JSON.stringify(app._store.getState()));
+   window.onunload = function () {
+     localStorage.setItem('store', JSON.stringify(app._store.getState()));
    };
    ```
 
@@ -2004,25 +2015,25 @@ virtual DOM 是将真实的 DOM 的数据抽取出来，以对象的形式模拟
 
    ```js
    // 1. 使用redux-persist持久化数据存储
-   import { createStore } from "redux";
-   import reducer from "../reducer"; //引入deducer文件
-   import { persistStore, persistReducer } from "redux-persist";
+   import { createStore } from 'redux';
+   import reducer from '../reducer'; //引入deducer文件
+   import { persistStore, persistReducer } from 'redux-persist';
    //  存储机制，可换成其他机制，当前使用sessionStorage机制
-   import storageSession from "redux-persist/lib/storage/session";
+   import storageSession from 'redux-persist/lib/storage/session';
    // import storage from 'redux-persist/lib/storage'; //localStorage机制
    //import { AsyncStorage } from 'react-native'; //react-native
    // 数据对象
    const storageConfig = {
-     key: "root", // 必须有的
+     key: 'root', // 必须有的
      storage: storageSession, // 缓存机制
-     blacklist: ["name", "age"] // reducer 里不持久化的数据,除此外均为持久化数据
+     blacklist: ['name', 'age'], // reducer 里不持久化的数据,除此外均为持久化数据
    };
 
    // 或者
    const storageConfig = {
-     key: "root", // 必须有的
+     key: 'root', // 必须有的
      storage: storageSession, // 缓存机制
-     whitelist: ["name", "age"] // reducer 里持久化的数据,除此外均为不持久化数据
+     whitelist: ['name', 'age'], // reducer 里持久化的数据,除此外均为不持久化数据
    };
    const myPersistReducer = persistReducer(storageConfig, reducer);
    const store = createStore(myPersistReducer);
@@ -2030,13 +2041,13 @@ virtual DOM 是将真实的 DOM 的数据抽取出来，以对象的形式模拟
    export default store;
 
    // 2.在入口文件index.js里面将PersistGate标签作为父标签，如下：
-   import React from "react";
-   import ReactDOM from "react-dom";
-   import Router from "./router";
-   import { Provider } from "react-redux";
-   import { PersistGate } from "redux-persist/lib/integration/react";
-   import configStore from "./redux/store";
-   import { persistor } from "./redux/store";
+   import React from 'react';
+   import ReactDOM from 'react-dom';
+   import Router from './router';
+   import { Provider } from 'react-redux';
+   import { PersistGate } from 'redux-persist/lib/integration/react';
+   import configStore from './redux/store';
+   import { persistor } from './redux/store';
 
    ReactDOM.render(
      <Provider store={configStore}>
@@ -2044,7 +2055,7 @@ virtual DOM 是将真实的 DOM 的数据抽取出来，以对象的形式模拟
          <Router />
        </PersistGate>
      </Provider>,
-     document.getElementById("root")
+     document.getElementById('root')
    );
    // 这就完成了通过redux-persist实现redux持久化本地数据存储。
    ```
@@ -2089,10 +2100,10 @@ React 官方给出的定义是：Render Props 是指一种在 React 组件之间
 ```js
 // 第一种，就是官方文档的写法：
 const S = ({ render }) => {
-  const [state, setState] = useState("someValue");
+  const [state, setState] = useState('someValue');
   useEffect(() => {
     // ...some code...
-    setState("anotherValue");
+    setState('anotherValue');
   });
   return render(state);
 };
@@ -2112,10 +2123,10 @@ const App = () => {
 
 //  第二种，也是可用的写法。
 const S = ({ render }) => {
-  const [state, setState] = useState("someValue");
+  const [state, setState] = useState('someValue');
   useEffect(() => {
     // ...some code...
-    setState("anotherValue");
+    setState('anotherValue');
   });
   const Render = render;
   return <Render s={state} />;
@@ -2136,8 +2147,8 @@ const App = () => {
 ```
 
 ```jsx
-import React from "react";
-import MousePoint from "./MousePoint";
+import React from 'react';
+import MousePoint from './MousePoint';
 export default class MouseTracker extends React.Component {
   constructor(props) {
     super(props);
@@ -2164,20 +2175,20 @@ export default class MouseTracker extends React.Component {
 我们这里渲染一个 MousePoint 组件，这个组件接受一个 render props，这个 props 不是简单的属性或者对象，而是一个函数。
 
 ```js
-import React from "react";
+import React from 'react';
 export default class MousePoint extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       positionX: 0,
-      positionY: 0
+      positionY: 0,
     };
   }
   componentDidMount() {
-    document.addEventListener("mousemove", e => {
+    document.addEventListener('mousemove', e => {
       this.setState({
         positionX: e.clientX,
-        positionY: e.clientY
+        positionY: e.clientY,
       });
     });
   }
@@ -2195,7 +2206,7 @@ export default class MousePoint extends React.Component {
 说到这里，我们不得不提到 `this.props.children`
 
 ```jsx
-import React from "react";
+import React from 'react';
 export default class ChildComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -2233,10 +2244,10 @@ hooks 就是把 S 封装成 useS，也就是一个 custom hooks，然后在 A，
 
 ```js
 const useS = () => {
-  const [state, setState] = useState("someValue");
+  const [state, setState] = useState('someValue');
   useEffect(() => {
     // ...some code...
-    setState("anotherValue");
+    setState('anotherValue');
   });
   return state;
 };
@@ -2253,7 +2264,7 @@ const A = () => {
 
 ```js
 // /hooks/useMouse.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 export default () => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
@@ -2262,21 +2273,21 @@ export default () => {
     setPositionY(e.clientY);
   };
   useEffect(() => {
-    document.addEventListener("mousemove", getMousePosition);
+    document.addEventListener('mousemove', getMousePosition);
     return () => {
-      document.removeEventListener("mousemove", getMousePosition);
+      document.removeEventListener('mousemove', getMousePosition);
     };
   });
   return {
     positionX: positionX,
-    positionY: positionY
+    positionY: positionY,
   };
 };
 ```
 
 ```js
-import React, { useState, useEffect } from "react";
-import useMousePosition from "../hooks/useMouse";
+import React, { useState, useEffect } from 'react';
+import useMousePosition from '../hooks/useMouse';
 
 export default () => {
   const mousePosition = useMousePosition();
@@ -2304,12 +2315,12 @@ export default () => {
 <div align="center"><img :src="$withBase('/images/prepare/new/2020050903.png')" alt="images/prepare/new/2020050903.png"></div>
 
 ```jsx
-import React, { Component } from "react";
-import "./input.css";
+import React, { Component } from 'react';
+import './input.css';
 
 function debounce(fn, delay = 500) {
   let timeout = null;
-  return function(e, ...args) {
+  return function (e, ...args) {
     e.persist && e.persist();
     timeout && clearTimeout(timeout);
     timeout = setTimeout(() => {
@@ -2342,20 +2353,20 @@ export default class Input extends Component {
     super(props);
     this.state = {
       keyWords: [
-        "前端工程师1",
-        "前端高级开发1",
-        "后端工程师1",
-        "测试开发1",
-        "项目主管1",
-        "dress",
-        "Recent",
-        "123456",
-        "awdad1"
+        '前端工程师1',
+        '前端高级开发1',
+        '后端工程师1',
+        '测试开发1',
+        '项目主管1',
+        'dress',
+        'Recent',
+        '123456',
+        'awdad1',
       ],
-      inputValue: "",
-      inputType: "text",
+      inputValue: '',
+      inputType: 'text',
       inputMaxLen: 20,
-      wordsList: []
+      wordsList: [],
     };
     this.handleInput = debounce(this.handleInput, 200);
     this.handleMaxLenChange = debounce(this.handleMaxLenChange, 400);
@@ -2363,31 +2374,31 @@ export default class Input extends Component {
 
   handleInput = e => {
     const {
-      target: { value }
+      target: { value },
     } = e;
     const { keyWords } = this.state;
     const tipsList = !value
       ? []
       : keyWords.filter(item => {
-          const res = item.search(new RegExp(value, "i"));
+          const res = item.search(new RegExp(value, 'i'));
           return res !== -1;
         });
     this.setState({
       inputValue: value,
-      tipsList
+      tipsList,
     });
   };
 
   handleTypeClick = e => {
     const {
-      target: { name }
+      target: { name },
     } = e;
     this.setState({ inputType: name });
   };
 
   handleMaxLenChange = e => {
     const {
-      target: { value }
+      target: { value },
     } = e;
     const { inputValue } = this.state;
     const newInputValue = inputValue.substr(0, +value);
@@ -2404,11 +2415,7 @@ export default class Input extends Component {
           <button name="text">文本</button>
           <button name="number">数字</button>
           <span>最大长度: </span>
-          <input
-            type="number"
-            placeholder="默认: 20"
-            onInput={this.handleMaxLenChange}
-          />
+          <input type="number" placeholder="默认: 20" onInput={this.handleMaxLenChange} />
         </div>
         <div className="input__container">
           <div className="input__wrap">
