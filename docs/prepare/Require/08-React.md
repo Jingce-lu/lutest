@@ -61,10 +61,10 @@
 
 - 卸载阶段
 
-  - componentWillUnmount
+  - `componentWillUnmount`
 
 - 错误处理
-  - componentDidCatch
+  - `componentDidCatch`
 
 **React16**新的生命周期弃用了 `componentWillMount`、`componentWillReceivePorps`，`componentWillUpdate`新增了 `getDerivedStateFromProps`、`getSnapshotBeforeUpdate`来代替弃用的三个钩子函数。
 
@@ -726,7 +726,12 @@ function App() {
 通过 useImperativeHandle 用于让父组件获取子组件内的索引
 
 ```js
-import React, { useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useImperativeHandle,
+  forwardRef,
+} from 'react';
 function ChildInputComponent(props, ref) {
   const inputRef = useRef(null);
   useImperativeHandle(ref, () => inputRef.current);
@@ -942,7 +947,8 @@ export default function applyMiddleware(...middlewares) {
 applyMiddleware 这个函数的核心就在于在于组合 compose，通过将不同的 middlewares 一层一层包裹到原生的 dispatch 之上，然后对 middleware 的设计采用柯里化的方式，以便于 compose ，从而可以动态产生 next 方法以及保持 store 的一致性。
 
 ```js
-const doNothingMidddleware = ({ dispatch, getState }) => next => action => next(action);
+const doNothingMidddleware = ({ dispatch, getState }) => next => action =>
+  next(action);
 ```
 
 **redux-thunk 实现**
@@ -1238,8 +1244,11 @@ class Input extends Component {
     return (
       <div>
         <p>{this.state.val}</p>
-        <input type="text" value={this.state.val} onChange={this.handleChange} /> //input就是受控组件
-        被状态对象的属性控制
+        <input
+          type="text"
+          value={this.state.val}
+          onChange={this.handleChange}
+        /> //input就是受控组件 被状态对象的属性控制
       </div>
     );
   }
@@ -1272,8 +1281,13 @@ class Sum extends Component {
   render() {
     return (
       <div>
-        <input type="text" value={this.state.a} onChange={this.handleChangeA} /> +
-        <input type="text" value={this.state.b} onChange={this.handleChangeB} /> =
+        <input type="text" value={this.state.a} onChange={this.handleChangeA} />{' '}
+        +
+        <input
+          type="text"
+          value={this.state.b}
+          onChange={this.handleChangeB}
+        /> =
         <input type="text" value={this.state.result} />
       </div>
     );
@@ -1382,7 +1396,11 @@ setState 是组件原型链上的方法，参数为 partialState, callback，看
 
 ```js
 ReactComponent.prototype.setState = function (partialState, callback) {
-  !(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null)
+  !(
+    typeof partialState === 'object' ||
+    typeof partialState === 'function' ||
+    partialState == null
+  )
     ? 'development' !== 'production'
       ? invariant(
           false,
@@ -1905,7 +1923,9 @@ function withHOC(WrapComponent) {
   // 此处未定义名称或者希望动态定义名称
   return class extends React.Component {
     // 定义displayName
-    static displayName = `withHOC(${WrapComponent.displayName || WrapComponent.name})`;
+    static displayName = `withHOC(${
+      WrapComponent.displayName || WrapComponent.name
+    })`;
     render() {
       console.log('inside HOC');
       return <WrapComponent {...this.props} />;
@@ -2415,7 +2435,11 @@ export default class Input extends Component {
           <button name="text">文本</button>
           <button name="number">数字</button>
           <span>最大长度: </span>
-          <input type="number" placeholder="默认: 20" onInput={this.handleMaxLenChange} />
+          <input
+            type="number"
+            placeholder="默认: 20"
+            onInput={this.handleMaxLenChange}
+          />
         </div>
         <div className="input__container">
           <div className="input__wrap">
