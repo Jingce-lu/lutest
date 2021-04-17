@@ -66,7 +66,7 @@
 - 错误处理
   - `componentDidCatch`
 
-**React16**新的生命周期弃用了 `componentWillMount`、`componentWillReceivePorps`，`componentWillUpdate`新增了 `getDerivedStateFromProps`、`getSnapshotBeforeUpdate`来代替弃用的三个钩子函数。
+**React16**新的生命周期弃用了 `componentWillMount`、 `componentWillReceivePorps`， `componentWillUpdate`新增了 `getDerivedStateFromProps`、 `getSnapshotBeforeUpdate`来代替弃用的三个钩子函数。
 
 > **React16**并没有删除这三个钩子函数，但是不能和新增的钩子函数混用， **React17**将会删除这三个钩子函数，新增了对错误的处理（ `componentDidCatch`）
 
