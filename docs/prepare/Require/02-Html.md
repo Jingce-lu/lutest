@@ -149,6 +149,18 @@ setTimeout(() => {
 
 ## 11. 设计一个策略和方法，实现在 https 的前端项目里进行 http 请求
 
+Mixed Content: The page at 'xxx' was loaded over HTTPS, but requested an insecure resource 'xxx'. This request has been blocked; the content must be served over HTTPS.
+
+解决办法：
+
+页面的head中加入：
+
+```html
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+```
+
+意思是自动将http的不安全请求升级为https
+
 **get 请求**  
 在没有 CSP(Content Security Policy)的考虑上, get 请求都是可以的
 
@@ -220,15 +232,38 @@ datalist 支持全局属性和事件属性。
 </datalist>
 ```
 
-## 15. HTML5 的应用程序缓存与浏览器缓存有什么不同？
+## 15. 举例说明如何使用纯 html 怎么实现下拉提示的功能？
 
-应用程序缓存是 HTML5 的重要特性之一，提供了离线使用的功能，让应用程序可以获取本地的网站内容，例如 HTML、CSS、图片以及 JavaScript。这个特性可以提高网站性能，它的实现借助于 manifest 文件，与传统浏览器缓存相比，它不强制用户访问的网站内容被缓存
+datalist 标签
 
-1. 浏览器缓存针对单个文件,H5 离线缓存针对整个应用
-2. H5 缓存断网还能用,浏览器缓存断网就用不了
-3. H5 缓存核心是 applicationCache 对象,浏览器缓存核心是 cache-control
+```html
+<!DOCTYPE html>
+<html lang="en">
 
-发现`application cache`这个标准居然被废弃了；被`Service Workers`标准给替代了；
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <label for="favorite_team">Favorite Team:</label>
+    <!-- 注意input的list属性与datalist的id属性进行绑定 -->
+    <input type="text" name="team" id="favorite_team" list="team_list" autocomplete="off">
+    <datalist id="team_list">
+        <!-- 指定了value值之后，value和innerHTML类似于标题与副标题之间的关系，选中后input的值是value -->
+        <option value="A">Aus Tigers</option>
+        <option value="B">Detroit Lions</option>
+        <option value="C">Detroit Pistons</option>
+        <option value="D">Detroit Red Wings</option>
+        <option value="E">Detroit Tigers</option>
+    </datalist>
+</datalist>
+</body>
+
+</html>
+```
 
 ## 16. 简述下 HTML 的快捷键属性是哪个？并举例说明有什么用？
 
@@ -510,38 +545,15 @@ document.execCommand('bold',false');
 3. raw 可上传任意格式的文本，可以上传 text、json、xml、html 等各种文本类型。
 4. binary 等同于 Content-Type:application/octet-stream，只可上传二进制数据。
 
-## 25. 举例说明如何使用纯 html 怎么实现下拉提示的功能？
+## 25. HTML5 的应用程序缓存与浏览器缓存有什么不同？
 
-datalist 标签
+应用程序缓存是 HTML5 的重要特性之一，提供了离线使用的功能，让应用程序可以获取本地的网站内容，例如 HTML、CSS、图片以及 JavaScript。这个特性可以提高网站性能，它的实现借助于 manifest 文件，与传统浏览器缓存相比，它不强制用户访问的网站内容被缓存
 
-```html
-<!DOCTYPE html>
-<html lang="en">
+1. 浏览器缓存针对单个文件,H5 离线缓存针对整个应用
+2. H5 缓存断网还能用,浏览器缓存断网就用不了
+3. H5 缓存核心是 applicationCache 对象,浏览器缓存核心是 cache-control
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-
-<body>
-    <label for="favorite_team">Favorite Team:</label>
-    <!-- 注意input的list属性与datalist的id属性进行绑定 -->
-    <input type="text" name="team" id="favorite_team" list="team_list" autocomplete="off">
-    <datalist id="team_list">
-        <!-- 指定了value值之后，value和innerHTML类似于标题与副标题之间的关系，选中后input的值是value -->
-        <option value="A">Aus Tigers</option>
-        <option value="B">Detroit Lions</option>
-        <option value="C">Detroit Pistons</option>
-        <option value="D">Detroit Red Wings</option>
-        <option value="E">Detroit Tigers</option>
-    </datalist>
-</datalist>
-</body>
-
-</html>
-```
+发现`application cache`这个标准居然被废弃了；被`Service Workers`标准给替代了；
 
 ## 26. HTML5 如何调用摄像头？
 
