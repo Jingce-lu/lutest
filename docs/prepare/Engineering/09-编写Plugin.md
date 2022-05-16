@@ -15,7 +15,7 @@ class BasicPlugin {
 
   // Webpack 会调用 BasicPlugin 实例的 apply 方法给插件实例传入 compiler 对象
   apply(compiler) {
-    compiler.plugin("compilation", function(compilation) {});
+    compiler.plugin('compilation', function (compilation) {});
   }
 }
 
@@ -26,9 +26,9 @@ module.exports = BasicPlugin;
 在使用这个 Plugin 时，相关配置代码如下：
 
 ```js
-const BasicPlugin = require("./BasicPlugin.js");
+const BasicPlugin = require('./BasicPlugin.js');
 module.export = {
-  plugins: [new BasicPlugin(options)]
+  plugins: [new BasicPlugin(options)],
 };
 ```
 
@@ -38,12 +38,12 @@ Webpack 启动后，在读取配置的过程中会先执行 `new BasicPlugin(opt
 
 ## Compiler 和 Compilation
 
-在开发 Plugin 时最常用的两个对象就是 Compiler 和 Compilation，它们是 Plugin 和 Webpack 之间的桥梁。 Compiler 和 Compilation 的含义如下：
+在开发 Plugin 时最常用的两个对象就是 `Compiler` 和 `Compilation`，它们是 Plugin 和 Webpack 之间的桥梁。 Compiler 和 Compilation 的含义如下：
 
-- Compiler 对象包含了 Webpack 环境所有的的配置信息，包含 options，loaders，plugins 这些信息，这个对象在 Webpack 启动时候被实例化，它是全局唯一的，可以简单地把它理解为 Webpack 实例；
-- Compilation 对象包含了当前的模块资源、编译生成资源、变化的文件等。当 Webpack 以开发模式运行时，每当检测到一个文件变化，一次新的 Compilation 将被创建。Compilation 对象也提供了很多事件回调供插件做扩展。通过 Compilation 也能读取到 Compiler 对象。
+- `Compiler` 对象包含了 Webpack 环境所有的的配置信息，包含 options，loaders，plugins 这些信息，这个对象在 Webpack 启动时候被实例化，它是全局唯一的，可以简单地把它理解为 Webpack 实例；
+- `Compilation` 对象包含了当前的模块资源、编译生成资源、变化的文件等。当 Webpack 以开发模式运行时，每当检测到一个文件变化，一次新的 Compilation 将被创建。Compilation 对象也提供了很多事件回调供插件做扩展。通过 Compilation 也能读取到 Compiler 对象。
 
-Compiler 和 Compilation 的区别在于：Compiler 代表了整个 Webpack 从启动到关闭的生命周期，而 Compilation 只是代表了一次新的编译。
+`Compiler` 和 `Compilation` 的区别在于：Compiler 代表了整个 Webpack 从启动到关闭的生命周期，而 Compilation 只是代表了一次新的编译。
 
 ## 事件流
 
@@ -51,7 +51,7 @@ Webpack 就像一条生产线，要经过一系列处理流程后才能将源文
 
 Webpack 通过 [Tapable](https://github.com/webpack/tapable) 来组织这条复杂的生产线。 Webpack 在运行过程中会广播事件，插件只需要监听它所关心的事件，就能加入到这条生产线中，去改变生产线的运作。 Webpack 的事件流机制保证了插件的有序性，使得整个系统扩展性很好。
 
-Webpack 的事件流机制应用了观察者模式，和 Node.js 中的 EventEmitter 非常相似。 Compiler 和 Compilation 都继承自 Tapable，可以直接在 Compiler 和 Compilation 对象上广播和监听事件，方法如下：
+Webpack 的事件流机制应用了观察者模式，和 Node.js 中的 EventEmitter 非常相似。 Compiler 和 Compilation 都继承自 `Tapable`，可以直接在 Compiler 和 Compilation 对象上广播和监听事件，方法如下：
 
 ```js
 /**
@@ -59,13 +59,13 @@ Webpack 的事件流机制应用了观察者模式，和 Node.js 中的 EventEmi
  * event-name 为事件名称，注意不要和现有的事件重名
  * params 为附带的参数
  */
-compiler.apply("event-name", params);
+compiler.apply('event-name', params);
 
 /**
  * 监听名称为 event-name 的事件，当 event-name 事件发生时，函数就会被执行。
  * 同时函数中的 params 参数为广播事件时附带的参数。
  */
-compiler.plugin("event-name", function(params) {});
+compiler.plugin('event-name', function (params) {});
 ```
 
 同理，`compilation.apply` 和 `compilation.plugin` 使用方法和上面一致。
@@ -79,7 +79,7 @@ compiler.plugin("event-name", function(params) {});
 - 有些事件是异步的，这些异步的事件会附带两个参数，第二个参数为回调函数，在插件处理完任务时需要调用回调函数通知 Webpack，才会进入下一处理流程。例如：
 
   ```js
-  compiler.plugin("emit", function(compilation, callback) {
+  compiler.plugin('emit', function (compilation, callback) {
     // 支持处理逻辑
 
     // 处理完毕后执行 callback 以通知 Webpack
@@ -101,21 +101,21 @@ compiler.plugin("event-name", function(params) {});
 ```js
 class Plugin {
   apply(compiler) {
-    compiler.plugin("emit", function(compilation, callback) {
+    compiler.plugin('emit', function (compilation, callback) {
       // compilation.chunks 存放所有代码块，是一个数组
-      compilation.chunks.forEach(function(chunk) {
+      compilation.chunks.forEach(function (chunk) {
         // chunk 代表一个代码块
         // 代码块由多个模块组成，通过 chunk.forEachModule 能读取组成代码块的每个模块
-        chunk.forEachModule(function(module) {
+        chunk.forEachModule(function (module) {
           // module 代表一个模块
           // module.fileDependencies 存放当前模块的所有依赖的文件路径，是一个数组
-          module.fileDependencies.forEach(function(filepath) {});
+          module.fileDependencies.forEach(function (filepath) {});
         });
 
         // Webpack 会根据 Chunk 去生成输出的文件资源，每个 Chunk 都对应一个及其以上的输出文件
         // 例如在 Chunk 中包含了 CSS 模块并且使用了 ExtractTextPlugin 时，
         // 该 Chunk 就会生成 .js 和 .css 两个文件
-        chunk.files.forEach(function(filename) {
+        chunk.files.forEach(function (filename) {
           // compilation.assets 存放当前所有即将输出的资源
           // 调用一个输出资源的 source() 方法能获取到输出资源的内容
           let source = compilation.assets[filename].source();
@@ -138,7 +138,7 @@ Webpack 会从配置的入口模块出发，依次找出所有的依赖模块，
 
 ```js
 // 当依赖的文件发生变化时会触发 watch-run 事件
-compiler.plugin("watch-run", (watching, callback) => {
+compiler.plugin('watch-run', (watching, callback) => {
   // 获取发生变化的文件列表
   const changedFiles = watching.compiler.watchFileSystem.watcher.mtimes;
   // changedFiles 格式为键值对，键为发生变化的文件路径。
@@ -152,7 +152,7 @@ compiler.plugin("watch-run", (watching, callback) => {
 默认情况下 Webpack 只会监视入口和其依赖的模块是否发生变化，在有些情况下项目可能需要引入新的文件，例如引入一个 HTML 文件。 由于 JavaScript 文件不会去导入 HTML 文件，Webpack 就不会监听 HTML 文件的变化，编辑 HTML 文件时就不会重新触发新的 Compilation。 为了监听 HTML 文件的变化，我们需要把 HTML 文件加入到依赖列表中，为此可以使用如下代码：
 
 ```js
-compiler.plugin("after-compile", (compilation, callback) => {
+compiler.plugin('after-compile', (compilation, callback) => {
   // 把 HTML 文件添加到文件依赖列表，好让 Webpack 去监听 HTML 模块文件，在 HTML 模版文件发生变化时重新启动一次编译
   compilation.fileDependencies.push(filePath);
   callback();
@@ -168,7 +168,7 @@ compiler.plugin("after-compile", (compilation, callback) => {
 设置 `compilation.assets` 的代码如下：
 
 ```js
-compiler.plugin("emit", (compilation, callback) => {
+compiler.plugin('emit', (compilation, callback) => {
   // 设置名称为 fileName 的输出资源
   compilation.assets[fileName] = {
     // 返回文件内容
@@ -178,8 +178,8 @@ compiler.plugin("emit", (compilation, callback) => {
     },
     // 返回文件大小
     size: () => {
-      return Buffer.byteLength(fileContent, "utf8");
-    }
+      return Buffer.byteLength(fileContent, 'utf8');
+    },
   };
   callback();
 });
@@ -188,7 +188,7 @@ compiler.plugin("emit", (compilation, callback) => {
 读取 `compilation.assets` 的代码如下：
 
 ```js
-compiler.plugin("emit", (compilation, callback) => {
+compiler.plugin('emit', (compilation, callback) => {
   // 读取名称为 fileName 的输出资源
   const asset = compilation.assets[fileName];
   // 获取输出资源的内容
@@ -236,8 +236,8 @@ module.exports = {
         // Webpack 构建失败，err 是导致错误的原因
         console.error(err);
       }
-    )
-  ]
+    ),
+  ],
 };
 ```
 
@@ -257,11 +257,11 @@ class EndWebpackPlugin {
   }
 
   apply(compiler) {
-    compiler.plugin("done", stats => {
+    compiler.plugin('done', stats => {
       // 在 done 事件中回调 doneCallback
       this.doneCallback(stats);
     });
-    compiler.plugin("failed", err => {
+    compiler.plugin('failed', err => {
       // 在 failed 事件中回调 failCallback
       this.failCallback(err);
     });
