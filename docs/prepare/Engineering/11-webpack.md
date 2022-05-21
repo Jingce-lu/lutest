@@ -182,9 +182,9 @@ exports.c = 4;
 exports.__esModule = true;
 ```
 
-babel 转换 es6 的模块输出逻辑非常简单，即将所有输出都赋值给 exports，并带上一个标志 `__esModule` 表明这是个由 es6 转换来的 commonjs 输出。
+babel 转换 es6 的模块输出逻辑非常简单，即将所有输出都赋值给 `exports`，并带上一个标志 `__esModule` 表明这是个由 es6 转换来的 `commonjs` 输出。
 
-babel 将模块的导出转换为 commonjs 规范后，也会将引入 import 也转换为 commonjs 规范。即采用 require 去引用模块，再加以一定的处理，符合 es6 的使用意图。
+babel 将模块的导出转换为 commonjs 规范后，也会将引入 `import` 也转换为 `commonjs` 规范。即采用 `require` 去引用模块，再加以一定的处理，符合 es6 的使用意图。
 
 引入 default
 
@@ -278,7 +278,7 @@ function _interopRequireWildcard(obj) {
 
 > 为何有的地方使用 require 去引用一个模块时需要加上 default？ require('xx').default
 
-我们经常会使用 es6 的 export default 来输出模块，而且这个输出是这个模块的唯一输出，我们会误以为这种写法输出的是模块的默认输出。
+我们经常会使用 es6 的 `export default` 来输出模块，而且这个输出是这个模块的唯一输出，我们会误以为这种写法输出的是模块的默认输出。
 
 ```js
 // a.js
@@ -294,7 +294,7 @@ var foo = require('./a.js');
 
 在使用 require 进行引用时，我们也会误以为引入的是 a 文件的默认输出。
 
-结果这里需要改成 var foo = require('./a.js').default
+结果这里需要改成 `var foo = require('./a.js').default`
 
 这个场景在写 webpack 代码分割逻辑时经常会遇到。
 
@@ -310,12 +310,12 @@ require.ensure([], require => {
 
 ### 默认 var
 
-如果指定了 output.library = 'test'
+如果指定了 output.library = 'test'  
 入口模块返回的 module.exports 暴露给全局 var test = returned_module_exports
 
 ### commonjs
 
-如果 library: 'spon-ui' 入口模块返回的 module.exports 赋值给 exports['spon-ui']
+如果 `library: 'spon-ui'` 入口模块返回的 `module.exports` 赋值给 `exports['spon-ui']`
 
 ### commonjs2
 

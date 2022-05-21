@@ -64,7 +64,7 @@ export default {
 而它定义在`/src/core/global-api/index.js`第 48 行：
 
 ```js
-import { observe } from "core/observer/index";
+import { observe } from 'core/observer/index';
 // ...
 // 2.6 explicit observable API
 Vue.observable = <T>(obj: T): T => {
@@ -122,9 +122,9 @@ computed: {
 <p style="color: red">Vue 中的 computed 是如何实现的</p>
 computed本身是通过代理的方式代理到组件实例上的，所以读取计算属性的时候，执行的是一个内部的getter，而不是用户定义的方法。
 
-computed 内部实现了一个惰性的 watcher，在实例化的时候不会去求值，其内部通过 dirty 属性标记计算属性是否需要重新求值。当 computed 依赖的任一状态（不一定是 return 中的）发生变化，都会通知这个惰性 watcher，让它把 dirty 属性设置为 true。所以，当再次读取这个计算属性的时候，就会重新去求值。
+computed 内部实现了一个惰性的 `watcher`，在实例化的时候不会去求值，其内部通过 `dirty` 属性标记计算属性是否需要重新求值。当 `computed` 依赖的任一状态（不一定是 return 中的）发生变化，都会通知这个`惰性 watcher`，让它把 `dirty` 属性设置为 `true`。所以，当再次读取这个计算属性的时候，就会重新去求值。
 
-惰性 watcher/计算属性在创建时是不会去求值的，是在使用的时候去求值的。
+**惰性 watcher/计算属性**在创建时是不会去求值的，是在使用的时候去求值的。
 
 ## 5. 如何 watch 监听一个对象内部的变化。
 
@@ -185,14 +185,14 @@ vue 的 dom 渲染是虚拟 dom，数据发生变化时，diff 算法会只比�
 
 ```js
 // 修改数据
-vm.msg = "Hello";
+vm.msg = 'Hello';
 // DOM 还没有更新
-Vue.nextTick(function() {
+Vue.nextTick(function () {
   // DOM 更新了
 });
 
 // 作为一个 Promise 使用 (2.1.0 起新增，详见接下来的提示)
-Vue.nextTick().then(function() {
+Vue.nextTick().then(function () {
   // DOM 更新了
 });
 ```
@@ -240,17 +240,17 @@ Vue.nextTick().then(function() {
    const Demo = {
      render(h) {
        return h(
-         "button",
+         'button',
          {
            on: {
              click: () => {
                state.count++;
-             }
-           }
+             },
+           },
          },
          `count is: ${state.count}`
        );
-     }
+     },
    };
    ```
 
@@ -364,31 +364,31 @@ var name;
 //第一个参数：定义属性的对象。
 //第二个参数：要定义或修改的属性的名称。
 //第三个参数：将被定义或修改的属性描述符。
-Object.defineProperty(obj, "data", {
+Object.defineProperty(obj, 'data', {
   //获取值
-  get: function() {
+  get: function () {
     return name;
   },
   //设置值
-  set: function(val) {
+  set: function (val) {
     name = val;
     console.log(val);
-  }
+  },
 });
 //赋值调用set
-obj.data = "aaa";
+obj.data = 'aaa';
 //取值调用get
 console.log(obj.data);
 
 // 详细版
-myVue.prototype._obverse = function(obj) {
+myVue.prototype._obverse = function (obj) {
   // obj = {number: 0}
   var value;
   for (key in obj) {
     //遍历obj对象
     if (obj.hasOwnProperty(key)) {
       value = obj[key];
-      if (typeof value === "object") {
+      if (typeof value === 'object') {
         //如果值是对象，则递归处理
         this._obverse(value);
       }
@@ -396,16 +396,16 @@ myVue.prototype._obverse = function(obj) {
         //关键
         enumerable: true,
         configurable: true,
-        get: function() {
+        get: function () {
           console.log(`获取${value}`);
           return value;
         },
-        set: function(newVal) {
+        set: function (newVal) {
           console.log(`更新${newVal}`);
           if (value !== newVal) {
             value = newVal;
           }
-        }
+        },
       });
     }
   }
@@ -419,10 +419,10 @@ myVue.prototype._obverse = function(obj) {
 具体思路：父组件通过`props`传值给子组件，子组件通过 `$emit` 来通知父组件修改相应的 props 值，具体实现如下：
 
 ```js
-import Vue from "vue";
+import Vue from 'vue';
 
 const component = {
-  props: ["value"],
+  props: ['value'],
   template: `
     <div>
       <input type="text" @input="handleInput" :value="value">
@@ -433,16 +433,16 @@ const component = {
   },
   methods: {
     handleInput(e) {
-      this.$emit("input", e.target.value);
-    }
-  }
+      this.$emit('input', e.target.value);
+    },
+  },
 };
 
 new Vue({
   components: {
-    CompOne: component
+    CompOne: component,
   },
-  el: "#root",
+  el: '#root',
   template: `
     <div>
       <comp-one :value="value" @input="value = arguments[0]"></comp-one>
@@ -450,9 +450,9 @@ new Vue({
   `,
   data() {
     return {
-      value: "123"
+      value: '123',
     };
-  }
+  },
 });
 ```
 
@@ -495,21 +495,21 @@ v-model 本质就是一个语法糖，可以看成是`value + input`方法的语
   </div>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      obj: {
-        a: "obj.a"
-      }
-    };
-  },
-  methods: {
-    addObjB() {
-      this.obj.b = "obj.b";
-      console.log(this.obj);
-    }
-  }
-};
+  export default {
+    data() {
+      return {
+        obj: {
+          a: 'obj.a',
+        },
+      };
+    },
+    methods: {
+      addObjB() {
+        this.obj.b = 'obj.b';
+        console.log(this.obj);
+      },
+    },
+  };
 </script>
 ```
 
@@ -595,28 +595,28 @@ console.log(b); // [1, 3, 4]
     <p id="p"></p>
 </body>
 <script>
-const input = document.getElementById("input");
-const p = document.getElementById("p");
-const obj = {};
+  const input = document.getElementById('input');
+  const p = document.getElementById('p');
+  const obj = {};
 
-const newObj = new Proxy(obj, {
-  get: function(target, key, receiver) {
-    console.log(`getting ${key}!`);
-    return Reflect.get(target, key, receiver);
-  },
-  set: function(target, key, value, receiver) {
-    console.log(target, key, value, receiver);
-    if (key === "text") {
-      input.value = value;
-      p.innerHTML = value;
-    }
-    return Reflect.set(target, key, value, receiver);
-  }
-});
+  const newObj = new Proxy(obj, {
+    get: function (target, key, receiver) {
+      console.log(`getting ${key}!`);
+      return Reflect.get(target, key, receiver);
+    },
+    set: function (target, key, value, receiver) {
+      console.log(target, key, value, receiver);
+      if (key === 'text') {
+        input.value = value;
+        p.innerHTML = value;
+      }
+      return Reflect.set(target, key, value, receiver);
+    },
+  });
 
-input.addEventListener("keyup", function(e) {
-  newObj.text = e.target.value;
-});
+  input.addEventListener('keyup', function (e) {
+    newObj.text = e.target.value;
+  });
 </script>
 ```
 
@@ -628,17 +628,17 @@ input.addEventListener("keyup", function(e) {
 
 ```js
 switch (mode) {
-  case "history":
+  case 'history':
     this.history = new HTML5History(this, options.base);
     break;
-  case "hash":
+  case 'hash':
     this.history = new HashHistory(this, options.base, this.fallback);
     break;
-  case "abstract":
+  case 'abstract':
     this.history = new AbstractHistory(this, options.base);
     break;
   default:
-    if (process.env.NODE_ENV !== "production") {
+    if (process.env.NODE_ENV !== 'production') {
       assert(false, `invalid mode: ${mode}`);
     }
 }
@@ -674,7 +674,7 @@ vue-router 全局有三个守卫：
 
 ```js
 // main.js 入口文件
-import router from "./router"; // 引入路由
+import router from './router'; // 引入路由
 router.beforeEach((to, from, next) => {
   next();
 });
@@ -682,7 +682,7 @@ router.beforeResolve((to, from, next) => {
   next();
 });
 router.afterEach((to, from) => {
-  console.log("afterEach 全局后置钩子");
+  console.log('afterEach 全局后置钩子');
 });
 ```
 
@@ -694,14 +694,14 @@ router.afterEach((to, from) => {
 const router = new VueRouter({
   routes: [
     {
-      path: "/foo",
+      path: '/foo',
       component: Foo,
       beforeEnter: (to, from, next) => {
         // 参数用法什么的都一样,调用顺序在全局前置守卫后面，所以不会被全局守卫覆盖
         // ...
-      }
-    }
-  ]
+      },
+    },
+  ],
 });
 ```
 
@@ -740,9 +740,9 @@ history --- 利用 History interface 在 HTML5 中新增的方法, 主要有`his
 ```js
 $router.addRoutes([
   {
-    path: "/home",
-    component: home
-  }
+    path: '/home',
+    component: home,
+  },
 ]);
 ```
 
@@ -761,7 +761,7 @@ $router.addRoutes([
 function getViews(path) {
   return resolve => {
     require.ensure([], require => {
-      resolve(require("@/page/" + path + ".vue"));
+      resolve(require('@/page/' + path + '.vue'));
     });
   };
 }
@@ -774,11 +774,11 @@ function getViews(path) {
 ```js
 $router.addRoutes([
   {
-    path: "/",
-    component: resolve => require(["@/components/Layout"], resolve),
-    meta: { title: "Layout" },
-    children: dataRouter
-  }
+    path: '/',
+    component: resolve => require(['@/components/Layout'], resolve),
+    meta: { title: 'Layout' },
+    children: dataRouter,
+  },
 ]);
 ```
 
@@ -787,7 +787,7 @@ $router.addRoutes([
 import 异步加载
 
 ```js
-const component = () => import("./....");
+const component = () => import('./....');
 ```
 
 ## 24. vuex 的 action 和 mutation 的特性是什么？有什么区别？
@@ -848,12 +848,12 @@ vuex 一般用于中大型 web 单页应用中对应用的状态进行管理，�
 
 ```js
 // 注册一个全局自定义指令 `v-focus`
-Vue.directive("focus", {
+Vue.directive('focus', {
   // 当被绑定的元素插入到 DOM 中时……
-  inserted: function(el) {
+  inserted: function (el) {
     // 聚焦元素
     el.focus();
-  }
+  },
 });
 ```
 
@@ -963,17 +963,17 @@ Base.vue
   </div>
 </template>
 <script>
-export default {
-  name: "Base",
-  props: {
-    test: Number
-  },
-  methods: {
-    Click() {
-      this.$emit("Base-click");
-    }
-  }
-};
+  export default {
+    name: 'Base',
+    props: {
+      test: Number,
+    },
+    methods: {
+      Click() {
+        this.$emit('Base-click');
+      },
+    },
+  };
 </script>
 ```
 
@@ -1002,18 +1002,18 @@ export default consoleMixin {
   </div>
 </template>
 <script>
-export default {
-  name: "Base",
-  props: {
-    test: Number
-  },
-  mixins: [consoleMixin],
-  methods: {
-    Click() {
-      this.$emit("Base-click");
-    }
-  }
-};
+  export default {
+    name: 'Base',
+    props: {
+      test: Number,
+    },
+    mixins: [consoleMixin],
+    methods: {
+      Click() {
+        this.$emit('Base-click');
+      },
+    },
+  };
 </script>
 ```
 
@@ -1034,11 +1034,11 @@ export default function Console(BaseComponent) {
   return {
     template: '<wrapped v-on="$listeners" v-bind="$attrs"/>',
     components: {
-      wrapped: BaseComponent
+      wrapped: BaseComponent,
     },
     mounted() {
-      console.log("haha");
-    }
+      console.log('haha');
+    },
   };
 }
 ```
@@ -1049,7 +1049,7 @@ export default function Console(BaseComponent) {
 function WithConsole(WrappedComponent) {
   return {
     mounted() {
-      console.log("I have already mounted");
+      console.log('I have already mounted');
     },
     props: WrappedComponent.props,
     render(h) {
@@ -1069,11 +1069,11 @@ function WithConsole(WrappedComponent) {
           props: this.$props,
           // 透传 scopedSlots
           scopedSlots: this.$scopedSlots,
-          attrs: this.$attrs
+          attrs: this.$attrs,
         },
         slots
       );
-    }
+    },
   };
 }
 ```
@@ -1084,7 +1084,7 @@ function WithConsole(WrappedComponent) {
 
 ```js
 // permission.js
-import store from "@/store";
+import store from '@/store';
 
 export default {
   inserted(el, binding, vnode) {
@@ -1104,18 +1104,18 @@ export default {
     } else {
       throw new Error(`need roles! Like v-permission="['admin','editor']"`);
     }
-  }
+  },
 };
 
 // index.js
-import permission from "./permission";
+import permission from './permission';
 
-const install = function(Vue) {
-  Vue.directive("permission", permission);
+const install = function (Vue) {
+  Vue.directive('permission', permission);
 };
 
 if (window.Vue) {
-  window["permission"] = permission;
+  window['permission'] = permission;
   Vue.use(install); // eslint-disable-line
 }
 
@@ -1141,9 +1141,9 @@ export default permission;
 
 <script>
   // 当然你也可以为了方便使用，将它注册到全局
-  import permission from "@/directive/permission/index.js"; // 权限判断指令
+  import permission from '@/directive/permission/index.js'; // 权限判断指令
   export default {
-    directives: { permission }
+    directives: { permission },
   };
 </script>
 ```
@@ -1168,30 +1168,30 @@ export default permission;
      </div>
    </template>
    <script>
-   export default {
-     data() {
-       return {
-         msg: "hello vue"
-       };
-     },
-     components: {}
-   };
+     export default {
+       data() {
+         return {
+           msg: 'hello vue',
+         };
+       },
+       components: {},
+     };
    </script>
    <style></style>
    ```
 4. test 文件夹下的 index.js 中的代码如下：
    ```js {3,4}
-   import MyTest from "./Test.vue";
+   import MyTest from './Test.vue';
    const Test = {
      install(Vue) {
-       Vue.component("Test", MyTest);
-     }
+       Vue.component('Test', MyTest);
+     },
    };
    export default Test;
    ```
 5. 入口文件 main.js 进行相关的配置：
    ```js
-   import Test from "./components/test";
+   import Test from './components/test';
    Vue.use(Test);
    ```
 6. 如此这般，就可以在其它组件中正常使用，如下：
@@ -1214,45 +1214,45 @@ export default permission;
 ## 36. 你有自己用 vue 写过 UI 组件库吗？
 
 ```js {9}
-import Buttonn from "./button/index.vue";
-import Icon from "./icon";
+import Buttonn from './button/index.vue';
+import Icon from './icon';
 
 // 所有组件列表
 const components = [Buttonn, Icon];
-const install = function(Vue) {
+const install = function (Vue) {
   // 遍历并注册所有组件
   components.map(component => {
     Vue.component(component.name, component);
   });
 };
 // 检测是否为vue环境
-if (typeof window !== "undefined" && window.Vue) {
+if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
 // export 一个包含install函数的对象
 export default {
-  install
+  install,
 };
 ```
 
 在 vue 的 main.js 里面引入并使用
 
 ```js {6}
-import Vue from "vue";
-import App from "./App";
-import router from "./router";
-import install from "../packages";
+import Vue from 'vue';
+import App from './App';
+import router from './router';
+import install from '../packages';
 
 Vue.use(install);
 
 Vue.config.productionTip = false;
 
 new Vue({
-  el: "#app",
+  el: '#app',
   router,
   components: { App },
-  template: "<App/>"
+  template: '<App/>',
 });
 ```
 
@@ -1265,23 +1265,23 @@ UI 组件中的 button 组件
   </button>
 </template>
 <script>
-export default {
-  name: "Buttonn",
-  props: {
-    type: {
-      type: String,
-      default: "default"
-    }
-  }
-};
+  export default {
+    name: 'Buttonn',
+    props: {
+      type: {
+        type: String,
+        default: 'default',
+      },
+    },
+  };
 </script>
 <style>
-.primary {
-  padding: 12px 20px;
-  border-radius: 4px;
-  background: #fff;
-  border: 1px solid #dcdfe6;
-}
+  .primary {
+    padding: 12px 20px;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #dcdfe6;
+  }
 </style>
 ```
 
@@ -1324,40 +1324,40 @@ export default {
   ></el-input>
 </template>
 <script>
-export default {
-  props: {
-    value: Number,
-    disabled: Boolean
-  },
-  data() {
-    return {
-      current: ""
-    };
-  },
-  watch: {
-    value(val) {
-      if (val > 0) {
-        this.current = (val / 100).toFixed(2);
+  export default {
+    props: {
+      value: Number,
+      disabled: Boolean,
+    },
+    data() {
+      return {
+        current: '',
+      };
+    },
+    watch: {
+      value(val) {
+        if (val > 0) {
+          this.current = (val / 100).toFixed(2);
+        } else {
+          this.current = '';
+        }
+      },
+    },
+    created() {
+      if (this.value > 0) {
+        this.current = (this.value / 100).toFixed(2);
       } else {
-        this.current = "";
+        this.current = '';
       }
-    }
-  },
-  created() {
-    if (this.value > 0) {
-      this.current = (this.value / 100).toFixed(2);
-    } else {
-      this.current = "";
-    }
-  },
-  methods: {
-    change() {
-      let value = this.current * 100 || 0;
-      this.current = (value / 100).toFixed(2);
-      this.$emit("input", value.toFixed(0) * 1);
-    }
-  }
-};
+    },
+    methods: {
+      change() {
+        let value = this.current * 100 || 0;
+        this.current = (value / 100).toFixed(2);
+        this.$emit('input', value.toFixed(0) * 1);
+      },
+    },
+  };
 </script>
 ```
 
@@ -1437,8 +1437,8 @@ export const connectWebViewJavascriptBridge = callback => {
     callback(WebViewJavascriptBridge);
   } else {
     document.addEventListener(
-      "WebViewJavascriptBridgeReady",
-      function() {
+      'WebViewJavascriptBridgeReady',
+      function () {
         callback(WebViewJavascriptBridge);
       },
       false
@@ -1463,29 +1463,29 @@ export const connectWebViewJavascriptBridge = callback => {
   ></el-button>
 </template>
 <script>
-export default {
-  name: 'mButton',
-  inheritAttrs: false,
-  props: {
-    debounce: {
-      type: [Boolean, Number]
-    }
-  },
-  data() {
-    return {
-      timer: 0,
-      loading: false
-    }
-  },
-  methods: {
-    myClick() {
-      if (!this.debounce) {
-        return this.loading = true clearTimeout(this.timer) this.timer = setTimeout(() => {
-          this.loading = false
-         }, typeof this.debounce === 'boolean' ? 500 : this.debounce)
+  export default {
+    name: 'mButton',
+    inheritAttrs: false,
+    props: {
+      debounce: {
+        type: [Boolean, Number]
+      }
+    },
+    data() {
+      return {
+        timer: 0,
+        loading: false
+      }
+    },
+    methods: {
+      myClick() {
+        if (!this.debounce) {
+          return this.loading = true clearTimeout(this.timer) this.timer = setTimeout(() => {
+            this.loading = false
+           }, typeof this.debounce === 'boolean' ? 500 : this.debounce)
+        }
       }
     }
-  }
 </script>
 ```
 
@@ -1499,25 +1499,25 @@ export default {
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import env from "@/config/env";
+  import { mapGetters } from 'vuex';
+  import env from '@/config/env';
 
-export default {
-  props: {
-    // 按钮唯一标识
-    buttonId: {
-      type: String,
-      required: true
-    }
-  },
+  export default {
+    props: {
+      // 按钮唯一标识
+      buttonId: {
+        type: String,
+        required: true,
+      },
+    },
 
-  computed: {
-    ...mapGetters(["getUserBtns"]),
-    validButton: function() {
-      return env.debug ? true : this.getUserBtns[this.buttonId];
-    }
-  }
-};
+    computed: {
+      ...mapGetters(['getUserBtns']),
+      validButton: function () {
+        return env.debug ? true : this.getUserBtns[this.buttonId];
+      },
+    },
+  };
 </script>
 ```
 
@@ -1584,11 +1584,11 @@ Vue 中子组件调用父组件的方法，这里有三种方法提供参考：
 
 ```js
 //store.js
-import Vue from "vue";
+import Vue from 'vue';
 
 export let store = Vue.observable({
   count: 0,
-  name: "张三"
+  name: '张三',
 });
 export let mutations = {
   setCount(count) {
@@ -1596,7 +1596,7 @@ export let mutations = {
   },
   setName(name) {
     store.name = name;
-  }
+  },
 };
 ```
 
@@ -1659,14 +1659,14 @@ const arrayPrtot = Array.prototype;
 const arrayMethods = Object.create(arrayPrtot);
 const orig = arrayPrtot.push; //缓存原始方法
 
-Object.defineProperty(arrayMethods, "push", {
+Object.defineProperty(arrayMethods, 'push', {
   value: function mutator(...args) {
-    console.log("我使用了push改变了数组哦");
+    console.log('我使用了push改变了数组哦');
     return orig.apply(this, args);
   },
   enumerable: false,
   writable: true,
-  configurable: true
+  configurable: true,
 });
 
 var arr = [];
@@ -1707,12 +1707,12 @@ Vuex 和一般的全局对象有以下几点不同：
 ## 55. 介绍一下项目中单元测试的情况，用例有多少，如何运行
 
 ```js
-import HelloWorld from "@/components/HelloWorld";
-import Vue from "vue";
-import { expect } from "chai";
+import HelloWorld from '@/components/HelloWorld';
+import Vue from 'vue';
+import { expect } from 'chai';
 
-describe("Hello World .vue", () => {
-  it("传递属性后能否正常显示结果", () => {
+describe('Hello World .vue', () => {
+  it('传递属性后能否正常显示结果', () => {
     //测试组件的ui效果 是否和预期的一致
     // 原生自己测试vue
     // extend 方法可以根据实例创建一个类
@@ -1721,23 +1721,23 @@ describe("Hello World .vue", () => {
     // vm.$el mocha 测试的时候集成了 jsdom
     let vm = new Constructor({
       propsData: {
-        msg: "hello"
-      }
+        msg: 'hello',
+      },
     }).$mount();
 
-    expect(vm.$el.querySelector("h1").innerHTML).to.be.contain("hello");
+    expect(vm.$el.querySelector('h1').innerHTML).to.be.contain('hello');
   });
 });
 ```
 
 ```js
 // 引用vue的测试工具
-import { mount } from "@vue/test-utils";
+import { mount } from '@vue/test-utils';
 
-describe("Hello World .vue", () => {
+describe('Hello World .vue', () => {
   let wrapper = mount(HelloWorld);
-  wrapper.setProps({ msg: "hello" });
-  expect(wrapper.find("h1")).to.be.contain("hello");
+  wrapper.setProps({ msg: 'hello' });
+  expect(wrapper.find('h1')).to.be.contain('hello');
 });
 ```
 
@@ -1807,9 +1807,9 @@ Vue 的数据是响应式的，但其实模板中并不是所有的数据都是�
 
 1. 使用全局得 set 方法
    ```js
-   this.$set(this.todos, 0, { name: "zhangsan", age: 15 });
+   this.$set(this.todos, 0, { name: 'zhangsan', age: 15 });
    // 或者对象
-   this.$set(this.obj, "key", value);
+   this.$set(this.obj, 'key', value);
    ```
 2. 强制更新
    ```js
@@ -1844,33 +1844,33 @@ methods : {
 
 ```js
 // 在开头引入webpack，后面的plugins那里需要
-var webpack = require("webpack");
+var webpack = require('webpack');
 // resolve
 
 module.exports = {
   // 其他代码...
   resolve: {
-    extensions: ["", ".js", ".vue"],
-    fallback: [path.join(__dirname, "../node_modules")],
+    extensions: ['', '.js', '.vue'],
+    fallback: [path.join(__dirname, '../node_modules')],
     alias: {
-      src: path.resolve(__dirname, "../src"),
-      assets: path.resolve(__dirname, "../src/assets"),
-      components: path.resolve(__dirname, "../src/components"),
+      src: path.resolve(__dirname, '../src'),
+      assets: path.resolve(__dirname, '../src/assets'),
+      components: path.resolve(__dirname, '../src/components'),
 
       // webpack 使用 jQuery，如果是自行下载的
       // 'jquery': path.resolve(__dirname, '../src/assets/libs/jquery/jquery.min'),
       // 如果使用NPM安装的jQuery
-      jquery: "jquery"
-    }
+      jquery: 'jquery',
+    },
   },
 
   // 增加一个plugins
   plugins: [
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
-    })
-  ]
+      $: 'jquery',
+      jQuery: 'jquery',
+    }),
+  ],
 
   // 其他代码...
 };
@@ -1880,8 +1880,8 @@ module.exports = {
 
 ```js
 // 使用Bootstrap
-import "./assets/libs/bootstrap/css/bootstrap.min.css";
-import "./assets/libs/bootstrap/js/bootstrap.min";
+import './assets/libs/bootstrap/css/bootstrap.min.css';
+import './assets/libs/bootstrap/js/bootstrap.min';
 ```
 
 这样 Bootstrap 就正确的被引用并构建。  
@@ -1889,10 +1889,10 @@ import "./assets/libs/bootstrap/js/bootstrap.min";
 
 ```js
 // 使用toastr
-import "assets/libs/toastr/toastr.min.css";
-import toastr from "assets/libs/toastr/toastr.min";
+import 'assets/libs/toastr/toastr.min.css';
+import toastr from 'assets/libs/toastr/toastr.min';
 
-toastr.success("Hello");
+toastr.success('Hello');
 ```
 
 ## 65. vue 事件中传入\$event，使用 e.target 和 e.currentTarget 有什么区别？
@@ -2063,25 +2063,25 @@ this.$store.commit('setInfo',res); //更新myInfo
 登录成功后将用户和菜单数据同步至 vuex
 
 ```js
-this.$axios.post("/login", formdata).then(res => {
+this.$axios.post('/login', formdata).then(res => {
   if (res.data.code === 0) {
     // console.log(res.data)
     let user = res.data.data.userData;
     let menu = res.data.data.menuData;
-    sessionStorage.setItem("un", encrypt("kim", user.name));
+    sessionStorage.setItem('un', encrypt('kim', user.name));
     //sessionStorage.set('uid', user.userId)
-    this.$store.dispatch("set_user", user);
-    this.$store.dispatch("set_menu", JSON.stringfy(menu));
+    this.$store.dispatch('set_user', user);
+    this.$store.dispatch('set_menu', JSON.stringfy(menu));
     // 消息提示
     this.$message({
       showClose: false,
       message: res.data.msg,
-      type: "success",
-      duration: 3000
+      type: 'success',
+      duration: 3000,
     });
     let router = this.$router;
     setTimeout(() => {
-      router.push("/");
+      router.push('/');
     }, 100);
   }
 });
@@ -2118,18 +2118,18 @@ mounted(){
 ```js
 // 创建组件构造器
 let Component = Vue.extend({
-  template: "<div>test</div>"
+  template: '<div>test</div>',
 });
 // 挂载到 #app 上
-new Component().$mount("#app");
+new Component().$mount('#app');
 // 除了上面的方式，还可以用来扩展已有的组件
 let SuperComponent = Vue.extend(Component);
 new SuperComponent({
   created() {
     console.log(1);
-  }
+  },
 });
-new SuperComponent().$mount("#app");
+new SuperComponent().$mount('#app');
 ```
 
 ## 70. mixin 和 mixins 区别
@@ -2141,7 +2141,7 @@ Vue.mixin({
   beforeCreate() {
     // ...逻辑
     // 这种方式会影响到每个组件的 beforeCreate 钩子函数
-  }
+  },
 });
 ```
 
@@ -2234,16 +2234,16 @@ VUEX
    ```js
    routes = [
      {
-       name: "detail",
-       path: "/detail",
+       name: 'detail',
+       path: '/detail',
        meta: {
-         requireAuth: true
-       }
+         requireAuth: true,
+       },
      },
      {
-       name: "login",
-       path: "/login"
-     }
+       name: 'login',
+       path: '/login',
+     },
    ];
    ```
 2. 再配置 router.beforeEach:
@@ -2256,8 +2256,8 @@ VUEX
          next(); // 已登录
        } else {
          next({
-           path: "/login",
-           query: { redirect: to.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+           path: '/login',
+           query: { redirect: to.fullPath }, // 将跳转的路由path作为参数，登录成功后跳转到该路由
          });
        }
      } else {
@@ -2278,9 +2278,9 @@ let obj = JSON.parse(JSON.stringify(this.temp1));
 
 ```js
 Vue.component(
-  "async-webpack-example",
+  'async-webpack-example',
   // 这个 `import` 函数会返回一个 `Promise` 对象。
-  () => import("./my-async-component")
+  () => import('./my-async-component')
 );
 ```
 
@@ -2293,11 +2293,11 @@ Vue.component(
 - 第二个参数是将要注册的 Vue 组件。
 
 ```js
-import Vue from "vue";
+import Vue from 'vue';
 // 引入loading组件
-import Loading from "./loading.vue";
+import Loading from './loading.vue';
 // 将loading注册为全局组件，在别的组件中通过<loading>标签使用Loading组件
-Vue.component("loading", Loading);
+Vue.component('loading', Loading);
 ```
 
 ### 使用 `Vue.use` 注册插件。
@@ -2308,22 +2308,22 @@ Vue.component("loading", Loading);
 - 在 install 方法内部可以添加`全局方法或者属性`、`全局指令`、`mixin 混入`、`添加实例方法`、`使用 Vue.component()注册组件`等
 
 ```js
-import Vue from "vue";
+import Vue from 'vue';
 
 // 这个插件必须具有install方法
 const plugin = {
   install(Vue, options) {
     // 添加全局方法或者属性
-    Vue.myGlobMethod = function() {};
+    Vue.myGlobMethod = function () {};
     // 添加全局指令
     Vue.directive();
     // 添加混入
     Vue.mixin();
     // 添加实例方法
-    Vue.prototype.$xxx = function() {};
+    Vue.prototype.$xxx = function () {};
     // 注册全局组件
     Vue.component();
-  }
+  },
 };
 
 // Vue.use内部会调用plugin的install方法
@@ -2338,7 +2338,7 @@ Vue.use(plugin);
 
 ```js
 // src/index.js
-const install = function(Vue, opts = {}) {
+const install = function (Vue, opts = {}) {
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
 
@@ -2349,8 +2349,8 @@ const install = function(Vue, opts = {}) {
   Vue.use(Loading.directive);
 
   Vue.prototype.$ELEMENT = {
-    size: opts.size || "",
-    zIndex: opts.zIndex || 2000
+    size: opts.size || '',
+    zIndex: opts.zIndex || 2000,
   };
 
   Vue.prototype.$loading = Loading.service;
@@ -2363,18 +2363,18 @@ const install = function(Vue, opts = {}) {
 };
 
 /* istanbul ignore if */
-if (typeof window !== "undefined" && window.Vue) {
+if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
 module.exports = {
-  version: "2.4.11",
+  version: '2.4.11',
   locale: locale.use,
   i18n: locale.i18n,
   install,
   CollapseTransition,
   Loading,
-  Pagination
+  Pagination,
   //...
 };
 ```
